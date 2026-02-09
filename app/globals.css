@@ -1,26 +1,86 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Colors */
+  --color-bg-base: #C4C8C3;
+  --color-bg-dark: #3E4C4D;
+  --color-bg-accent: #5A6366;
+  --color-text-primary: #2B3233;
+  --color-text-secondary: #667073;
+  --color-cta: #F25F5C;
+  --color-warning: #D97B4A;
+  --color-success: #8B9E6B;
+  --color-tech: #4A7C7E;
+  --color-gold: #C9A961;
+  --color-card: #B5B9B5;
+  --color-divider: #7A8082;
+  
+  /* Fonts */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-industrial: var(--font-orbitron), sans-serif;
+  --font-tech: var(--font-rajdhani), monospace;
+  
+  /* Spacing */
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 32px;
+  --spacing-xl: 48px;
+  --spacing-xxl: 80px;
+
+  /* Custom */
+  --border-width-default: 2px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  body {
+    @apply bg-bg-base text-text-primary font-sans antialiased;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-industrial uppercase tracking-wider;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* NASA Punk Card */
+  .nasa-punk-card {
+    @apply bg-card border-2 border-bg-dark rounded-none md:rounded-sm p-lg shadow-lg relative overflow-hidden;
+  }
+  
+  /* Diagonal Stripes Background */
+  .diagonal-stripes {
+    background-image: repeating-linear-gradient(
+      45deg,
+      #8A9091 0px,
+      #8A9091 1px,
+      transparent 1px,
+      transparent 10px
+    );
+    opacity: 0.1;
+  }
+
+  /* NASA Punk Button */
+  .nasa-punk-button {
+    @apply bg-cta text-white font-industrial uppercase tracking-widest px-8 py-3 border-2 border-bg-dark relative overflow-hidden transition-all duration-300 cursor-pointer;
+  }
+  .nasa-punk-button:hover {
+    @apply bg-warning shadow-[4px_4px_0px_var(--color-bg-dark)];
+  }
+  .nasa-punk-button:active {
+    @apply translate-y-[2px] shadow-none;
+  }
+
+  /* Secondary Button */
+  .nasa-punk-button-secondary {
+    @apply bg-transparent text-bg-dark font-industrial uppercase tracking-widest px-8 py-3 border-2 border-bg-dark transition-all duration-300 cursor-pointer;
+  }
+  .nasa-punk-button-secondary:hover {
+    @apply bg-bg-dark text-white;
+  }
+
+  /* Technical Label */
+  .technical-label {
+    @apply font-tech text-text-secondary uppercase tracking-widest text-xs md:text-sm;
+  }
 }
