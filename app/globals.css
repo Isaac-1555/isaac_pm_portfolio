@@ -17,19 +17,8 @@
   
   /* Fonts */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-industrial: var(--font-orbitron), sans-serif;
-  --font-tech: var(--font-rajdhani), monospace;
-  
-  /* Spacing */
-  --spacing-xs: 8px;
-  --spacing-sm: 16px;
-  --spacing-md: 24px;
-  --spacing-lg: 32px;
-  --spacing-xl: 48px;
-  --spacing-xxl: 80px;
-
-  /* Custom */
-  --border-width-default: 2px;
+  --font-industrial: var(--font-orbitron), ui-sans-serif, system-ui, sans-serif;
+  --font-tech: var(--font-rajdhani), ui-monospace, monospace;
 }
 
 @layer base {
@@ -45,7 +34,7 @@
 @layer components {
   /* NASA Punk Card */
   .nasa-punk-card {
-    @apply bg-card border-2 border-bg-dark rounded-none md:rounded-sm p-lg shadow-lg relative overflow-hidden;
+    @apply bg-card border-2 border-bg-dark rounded p-8 shadow-lg relative overflow-hidden;
   }
   
   /* Diagonal Stripes Background */
@@ -81,6 +70,6 @@
 
   /* Technical Label */
   .technical-label {
-    @apply font-tech text-text-secondary uppercase tracking-widest text-xs md:text-sm;
+    @apply font-tech text-text-secondary uppercase tracking-widest text-xs;
   }
 }
