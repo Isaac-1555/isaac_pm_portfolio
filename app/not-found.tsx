@@ -14,7 +14,7 @@ export default function NotFound() {
           Signal Lost // Coordinates Not Found
         </h2>
         <p className="text-text-primary max-w-md mx-auto mb-8 leading-relaxed">
-          The trajectory you've requested leads to uncharted space. Please recalibrate your navigation systems.
+          The trajectory you&apos;ve requested leads to uncharted space. Please recalibrate your navigation systems.
         </p>
         <Link href="/">
           <Button variant="default" size="lg">

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play } from "lucide-react";
+import { ArrowRight, FileText } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 
@@ -14,38 +14,39 @@ export function Hero() {
 
       <div className="container mx-auto relative z-10 px-6 md:px-8 flex flex-col items-start gap-6">
         <Badge variant="tech" className="animate-pulse">
-          PM-ID: 240827-001
+          OPEN TO WORK
         </Badge>
         
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-industrial uppercase font-bold tracking-wide md:tracking-widest text-text-primary leading-none">
           <span className="block">Product <span className="text-cta">Manager</span></span>
-          <span className="block mt-2"><span className="text-bg-dark">Systems</span> Architect</span>
+          <span className="block mt-2 text-2xl sm:text-3xl md:text-4xl lg:text-5xl normal-case tracking-normal font-sans text-text-secondary">
+            B2B SaaS & Internal Tools
+          </span>
         </h1>
         
-        {/* Fixed: Removed font-tech, using normal font-sans for better readability */}
         <p className="max-w-xl text-base sm:text-lg md:text-xl text-text-secondary font-sans leading-relaxed">
-          Orchestrating complex product ecosystems with data-driven precision and user-centric design.
+          Transforming ambiguous problems into scalable, user-centric solutions. 5+ years driving adoption and workflow efficiency through data-driven strategy.
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 mt-4 md:mt-8 w-full sm:w-auto">
-          <Link href="/case-studies">
+          <Link href="/work">
             <Button size="lg" className="group w-full sm:w-auto">
-              View Case Studies
+              View Work
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
           </Link>
-          <Link href="/about">
+          <Link href="/resume.pdf" target="_blank">
             <Button variant="outline" size="lg" className="group w-full sm:w-auto">
-              Explore Profile
-              <Play className="ml-2 h-4 w-4 transition-transform group-hover:scale-110" />
+              Download Resume
+              <FileText className="ml-2 h-4 w-4 transition-transform group-hover:-rotate-12" />
             </Button>
           </Link>
         </div>
 
-        {/* Technical Decorative Elements */}
-        <div className="absolute bottom-10 right-10 hidden lg:block text-right">
-          <div className="text-xs font-mono text-text-secondary mb-1">COORDS: 45.92, -12.04</div>
-          <div className="text-xs font-mono text-text-secondary">SYS: ONLINE</div>
+        {/* Technical Decorative Elements - Kept for theme consistency but simplified */}
+        <div className="absolute bottom-10 right-10 hidden lg:block text-right opacity-50">
+          <div className="text-xs font-mono text-text-secondary mb-1">STATUS: AVAILABLE</div>
+          <div className="text-xs font-mono text-text-secondary">LOC: CALGARY, AB</div>
         </div>
       </div>
     </section>

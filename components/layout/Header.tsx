@@ -9,9 +9,8 @@ import { Rocket } from "lucide-react";
 
 const navigation = [
   { name: "Home", href: "/" },
-  { name: "Case Studies", href: "/case-studies" },
+  { name: "Work", href: "/work" },
   { name: "About", href: "/about" },
-  { name: "Blog", href: "/blog" },
 ];
 
 export function Header() {
@@ -23,8 +22,8 @@ export function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 font-industrial text-lg md:text-xl font-bold tracking-wide md:tracking-widest text-text-primary hover:text-cta transition-colors shrink-0">
           <Rocket className="h-5 w-5 md:h-6 md:w-6" />
-          <span className="hidden sm:inline">PM-PORTFOLIO</span>
-          <span className="sm:hidden">PM</span>
+          <span className="hidden sm:inline">IDS.PM</span>
+          <span className="sm:hidden">IDS</span>
         </Link>
         
         {/* Desktop Navigation */}
@@ -56,11 +55,14 @@ export function Header() {
         </nav>
 
         {/* CTA Button */}
-        <div className="flex items-center">
-          <Link href="/contact">
+        <div className="flex items-center gap-4">
+          <Link href="/contact" className="hidden md:block text-sm font-medium text-text-secondary hover:text-cta transition-colors uppercase tracking-wide">
+            Contact
+          </Link>
+          <Link href="/resume.pdf" target="_blank">
             <Button variant="default" size="sm" className="text-xs md:text-sm px-3 md:px-4">
-              <span className="hidden sm:inline">Initiate Contact</span>
-              <span className="sm:hidden">Contact</span>
+              <span className="hidden sm:inline">Resume</span>
+              <span className="sm:hidden">CV</span>
             </Button>
           </Link>
         </div>
