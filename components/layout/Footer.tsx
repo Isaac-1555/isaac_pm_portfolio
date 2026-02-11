@@ -22,7 +22,7 @@ export function Footer() {
             <h4 className="text-base font-industrial font-bold mb-4 text-bg-base uppercase tracking-widest">Connect</h4>
             <ul className="space-y-3">
               <li>
-                <Link href="https://linkedin.com/in/isaac-daniel-sudakar-182792375" target="_blank" className="flex items-center gap-2 text-sm text-text-secondary hover:text-cta transition-colors font-sans">
+                <Link href="https://www.linkedin.com/in/isaac-daniel-sudakar-182792375" target="_blank" className="flex items-center gap-2 text-sm text-text-secondary hover:text-cta transition-colors font-sans">
                   <Linkedin className="h-4 w-4 shrink-0" /> 
                   <span>LinkedIn</span>
                 </Link>

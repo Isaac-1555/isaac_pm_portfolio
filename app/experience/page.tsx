@@ -1,5 +1,7 @@
 import { Badge } from "@/components/ui/badge";
-import { Rocket, Shield, Database, Users, GraduationCap } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Rocket, Shield, Database, Users, GraduationCap, FileText } from "lucide-react";
 
 const skills = [
   { 
@@ -30,6 +32,12 @@ const experience = [
     company: "The Blessed Life",
     period: "2023 - Present",
     description: "Owning end-to-end product delivery for B2B workflow initiatives. Leading customer discovery, problem framing, and roadmap prioritization. Achieved ~25% improvement in workflow completion rates and ~30% increase in feature adoption.",
+  },
+  {
+    role: "Product Operations Specialist",
+    company: "Calgary Coop",
+    period: "2023",
+    description: "Implemented workflow improvements that boosted team efficiency by 20%. Reduced file retrieval time 35% through optimized categorization. Streamlined documentation processedd supporting internal porduct tracking.",
   },
   {
     role: "Electrical Engineer",
@@ -72,6 +80,14 @@ export default function AboutPage() {
           <p className="text-lg text-text-secondary leading-relaxed mt-4">
             Strong background in customer research, problem framing, and cross functional execution across engineering, design, and business stakeholders. Proven ability to translate complex operational workflows into scalable product solutions, define success metrics, and continuously improve adoption and outcomes.
           </p>
+          <div className="mt-8">
+            <Link href="/Resume_Isaac_Daniel_Sudakar.pdf" download target="_blank">
+              <Button variant="outline" className="gap-2">
+                <FileText className="h-4 w-4" />
+                Download Resume
+              </Button>
+            </Link>
+          </div>
         </div>
 
         <section className="mb-24">

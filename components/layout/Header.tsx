@@ -10,7 +10,7 @@ import { Rocket } from "lucide-react";
 const navigation = [
   { name: "Home", href: "/" },
   { name: "Work", href: "/work" },
-  { name: "About", href: "/about" },
+  { name: "BLOG", href: "/blog" },
 ];
 
 export function Header() {
@@ -56,10 +56,10 @@ export function Header() {
 
         {/* CTA Button */}
         <div className="flex items-center gap-4">
-          <Link href="/contact" className="hidden md:block text-sm font-medium text-text-secondary hover:text-cta transition-colors uppercase tracking-wide">
+          <Link href="https://www.linkedin.com/in/isaac-daniel-sudakar-182792375" target="_blank" className="hidden md:block text-sm font-medium text-text-secondary hover:text-cta transition-colors uppercase tracking-wide">
             Contact
           </Link>
-          <Link href="/resume.pdf" target="_blank">
+          <Link href="/experience">
             <Button variant="default" size="sm" className="text-xs md:text-sm px-3 md:px-4">
               <span className="hidden sm:inline">Resume</span>
               <span className="sm:hidden">CV</span>

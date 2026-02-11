@@ -35,7 +35,7 @@ export function Hero() {
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
           </Link>
-          <Link href="/resume.pdf" target="_blank">
+          <Link href="/Resume_Isaac_Daniel_Sudakar.pdf" download target="_blank">
             <Button variant="outline" size="lg" className="group w-full sm:w-auto">
               Download Resume
               <FileText className="ml-2 h-4 w-4 transition-transform group-hover:-rotate-12" />
