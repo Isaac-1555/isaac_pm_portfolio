@@ -2,6 +2,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Brain, Utensils, Briefcase, Bot, Gamepad2, Map, Mic, Zap, Layout } from "lucide-react";
 
 const flagshipProjects = [
@@ -15,6 +16,7 @@ const flagshipProjects = [
     tags: ["AI/ML", "Product Strategy", "Dashboard"],
     href: "/case-studies/satbrain",
     gradient: "from-blue-900 to-indigo-900",
+    image: "/Satbrain_Home.png",
     icon: Brain,
   },
   {
@@ -27,6 +29,7 @@ const flagshipProjects = [
     tags: ["SaaS", "0-1", "MVP Scope"],
     href: "/case-studies/restostar",
     gradient: "from-emerald-900 to-teal-900",
+    image: "/Restostar_Dashboard.png",
     icon: Utensils,
   },
   {
@@ -39,6 +42,7 @@ const flagshipProjects = [
     tags: ["GenAI", "Technical PM", "React"],
     href: "/case-studies/pocket-resume",
     gradient: "from-orange-900 to-red-900",
+    image: "/PocketResume_UI.png",
     icon: Bot,
   },
 ];
@@ -123,9 +127,23 @@ export default function WorkPage() {
             return (
               <Card key={project.id} className="group h-full flex flex-col hover:border-cta transition-colors">
                 <div className={`h-48 w-full bg-gradient-to-br ${project.gradient} relative overflow-hidden flex items-center justify-center`}>
-                  <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
-                  <Icon className="h-16 w-16 text-white/20 group-hover:text-white/40 transition-colors transform group-hover:scale-110 duration-500" />
-                  <Badge variant="outline" className="absolute top-4 right-4 bg-black/50 backdrop-blur text-white border-white/20">
+                  {project.image ? (
+                    <>
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
+                    </>
+                  ) : (
+                    <>
+                      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
+                      <Icon className="h-16 w-16 text-white/20 group-hover:text-white/40 transition-colors transform group-hover:scale-110 duration-500" />
+                    </>
+                  )}
+                  <Badge variant="outline" className="absolute top-4 right-4 bg-black/50 backdrop-blur text-white border-white/20 z-10">
                     {project.company}
                   </Badge>
                 </div>

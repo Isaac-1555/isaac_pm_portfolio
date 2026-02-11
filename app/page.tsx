@@ -1,5 +1,6 @@
 import { Hero } from "@/components/sections/Hero";
 import { FeaturedWork } from "@/components/sections/FeaturedWork";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -34,11 +35,13 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="relative h-64 md:h-96 w-full border-2 border-bg-accent rounded-sm overflow-hidden bg-bg-accent/20 backdrop-blur flex items-center justify-center">
-            {/* Placeholder for Profile Image or abstract graphic */}
-            <div className="text-bg-accent/50 font-industrial text-2xl md:text-4xl font-bold uppercase tracking-widest rotate-12 border-4 border-bg-accent/30 p-4">
-              Profile Visual
-            </div>
+          <div className="relative h-64 md:h-96 w-full border-2 border-bg-accent rounded-sm overflow-hidden bg-bg-accent/20 backdrop-blur">
+            <Image
+              src="/isaac.png"
+              alt="Isaac Daniel Sudakar"
+              fill
+              className="object-cover"
+            />
           </div>
         </div>
       </section>

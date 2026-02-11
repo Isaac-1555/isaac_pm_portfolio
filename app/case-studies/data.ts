@@ -139,9 +139,8 @@ export const caseStudies: CaseStudy[] = [
     websiteUrl: "https://satbrain.vercel.app/",
     repoUrl: "https://github.com/Isaac-1555/project_goldmine",
     screenshots: [
-      "/placeholder-satbrain-1.png",
-      "/placeholder-satbrain-2.png",
-      "/placeholder-satbrain-3.png"
+      "/Satbrain_Home.png",
+      "/Satbrain_Mapview.png"
     ]
   },
   {
@@ -209,8 +208,8 @@ export const caseStudies: CaseStudy[] = [
     websiteUrl: "https://restostar.vercel.app/",
     repoUrl: "https://github.com/Isaac-1555/Restostar",
     screenshots: [
-      "/placeholder-restostar-1.png",
-      "/placeholder-restostar-2.png"
+      "/Restostar_Dashboard.png",
+      "/Restostar_AI.png"
     ]
   },
   {
@@ -279,8 +278,8 @@ export const caseStudies: CaseStudy[] = [
     websiteUrl: "https://chromewebstore.google.com/detail/pocketresume/mdplmgfkpgalajmchilemiamifoaneip?hl=en-US&utm_source=ext_sidebar",
     repoUrl: "https://github.com/Isaac-1555/pocket-resume",
     screenshots: [
-      "/placeholder-pocketresume-1.png",
-      "/placeholder-pocketresume-2.png"
+      "/PocketResume_UI.png",
+      "/PocketResume_Settings.png"
     ]
   }
 ];
