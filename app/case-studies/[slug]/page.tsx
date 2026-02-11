@@ -208,10 +208,18 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
             <SectionHeader icon={Rocket} title="Execution" />
             <div className="space-y-6">
               <div>
-                <h3 className="font-bold text-text-primary mb-2">Roadmap</h3>
-                <p className="text-text-secondary font-mono text-sm border-l-2 border-divider pl-4">
-                  {project.execution.roadmap}
-                </p>
+                <h3 className="font-bold text-text-primary mb-4">Roadmap</h3>
+                <div className="relative border-l-2 border-divider ml-2 space-y-8 pl-8 py-2">
+                  {project.execution.roadmap.map((phase, i) => (
+                    <div key={i} className="relative">
+                      <div className="absolute -left-[39px] top-1 h-5 w-5 rounded-full bg-bg-base border-2 border-cta flex items-center justify-center">
+                        <div className="h-2 w-2 rounded-full bg-cta" />
+                      </div>
+                      <h4 className="text-sm font-bold text-cta uppercase tracking-widest mb-1">{phase.label}</h4>
+                      <p className="text-text-secondary text-sm leading-relaxed">{phase.description}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
               <div>
                 <h3 className="font-bold text-text-primary mb-2">Challenges Overcome</h3>

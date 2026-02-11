@@ -48,7 +48,7 @@ export interface CaseStudy {
   
   // Section 7: Execution
   execution: {
-    roadmap: string;
+    roadmap: { label: string; description: string }[];
     challenges: string[];
   };
   
@@ -115,7 +115,11 @@ export const caseStudies: CaseStudy[] = [
     },
     
     execution: {
-      roadmap: "Phase 1: Doc upload & Summary. Phase 2: Quiz & Flashcards. Phase 3: Visual Charts & Audio.",
+      roadmap: [
+        { label: "Phase 1", description: "Doc upload & Summary" },
+        { label: "Phase 2", description: "Quiz & Flashcards" },
+        { label: "Phase 3", description: "Visual Charts & Audio" }
+      ],
       challenges: ["Handling large PDF files (chunking strategy).", "Ensuring consistent JSON output from LLM for charts (implemented robust validation middleware)."]
     },
     
@@ -181,7 +185,11 @@ export const caseStudies: CaseStudy[] = [
     },
     
     execution: {
-      roadmap: "Week 1-2: Core Routing Logic. Week 3-4: Dashboard & Analytics. Week 5-6: Beta Test.",
+      roadmap: [
+        { label: "Week 1-2", description: "Core Routing Logic" },
+        { label: "Week 3-4", description: "Dashboard & Analytics" },
+        { label: "Week 5-6", description: "Beta Test" }
+      ],
       challenges: ["Email deliverability for alerts (Solved with transactional email service).", "preventing spam submissions (Added rate limiting)."]
     },
     
@@ -246,7 +254,12 @@ export const caseStudies: CaseStudy[] = [
     },
     
     execution: {
-      roadmap: "Week 1: Manifest V3 setup & DOM scraping. Week 2: AI Prompt Tuning. Week 3: PDF Generation. Week 4: Store listing.",
+      roadmap: [
+        { label: "Week 1", description: "Manifest V3 setup & DOM scraping" },
+        { label: "Week 2", description: "AI Prompt Tuning" },
+        { label: "Week 3", description: "PDF Generation" },
+        { label: "Week 4", description: "Store listing" }
+      ],
       challenges: ["Scraping dynamic SPAs (LinkedIn/Indeed) required robust DOM observers.", "PDF generation in-browser is tricky (fonts/layout)."]
     },
     

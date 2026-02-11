@@ -24,8 +24,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Product Manager Portfolio | NASA Punk Edition",
+  title: "Isaac PM Portfolio",
   description: "A futuristic portfolio for a Product Manager, inspired by NASA Punk aesthetics.",
+  icons: {
+    icon: "/IDS.ico",
+  },
 };
 
 export default function RootLayout({
