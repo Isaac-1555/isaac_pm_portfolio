@@ -9,7 +9,7 @@ import { Rocket } from "lucide-react";
 
 const navigation = [
   { name: "Home", href: "/" },
-  { name: "Work", href: "/work" },
+  { name: "Works", href: "/work" },
   { name: "BLOG", href: "/blog" },
 ];
 

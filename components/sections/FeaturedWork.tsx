@@ -58,7 +58,7 @@ export function FeaturedWork() {
               Selected Case Studies
             </Badge>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-industrial font-bold uppercase tracking-wide md:tracking-widest text-text-primary">
-              Featured <span className="text-cta">Work</span>
+              Featured <span className="text-cta">Works</span>
             </h2>
           </div>
           <Link href="/work" className="hidden md:block">

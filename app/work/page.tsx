@@ -109,7 +109,7 @@ export default function WorkPage() {
     <div className="container mx-auto px-4 py-24">
       <div className="mb-16">
         <h1 className="text-4xl md:text-6xl font-industrial font-bold uppercase tracking-widest text-text-primary mb-4">
-          Selected <span className="text-cta">Work</span>
+          Selected <span className="text-cta">Works</span>
         </h1>
         <p className="text-text-secondary max-w-2xl text-lg leading-relaxed">
           A collection of product initiatives, from enterprise workflow transformations to AI-powered prototypes.

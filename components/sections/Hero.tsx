@@ -31,7 +31,7 @@ export function Hero() {
         <div className="flex flex-col sm:flex-row gap-4 mt-4 md:mt-8 w-full sm:w-auto">
           <Link href="/work">
             <Button size="lg" className="group w-full sm:w-auto">
-              View Work
+              View Works
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
           </Link>
