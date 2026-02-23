@@ -30,13 +30,13 @@ const experience = [
   {
     role: "Technology Product Consultant",
     company: "The Blessed Life",
-    period: "2023 - Present",
+    period: "2025 - 2026",
     description: "Owning end-to-end product delivery for B2B workflow initiatives. Leading customer discovery, problem framing, and roadmap prioritization. Achieved ~25% improvement in workflow completion rates and ~30% increase in feature adoption.",
   },
   {
     role: "Product Operations Specialist",
     company: "Calgary Coop",
-    period: "2023",
+    period: "2024 - Present",
     description: "Implemented workflow improvements that boosted team efficiency by 20%. Reduced file retrieval time 35% through optimized categorization. Streamlined documentation processedd supporting internal porduct tracking.",
   },
   {
