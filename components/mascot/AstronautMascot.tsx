@@ -65,7 +65,7 @@ const PM_QUIPS = [
 ];
 
 const FUNNY_QUIPS = [
-  "I hope I get hired\u2026",
+  "I\u2019m not a real astronaut!",
   "Why am I T-posing\u2026",
 ];
 
