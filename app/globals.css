@@ -73,3 +73,79 @@
     @apply font-tech text-text-secondary uppercase tracking-widest text-xs;
   }
 }
+
+/* ── Mascot animations ── */
+
+.mascot-arm-l,
+.mascot-arm-r,
+.mascot-leg-l,
+.mascot-leg-r {
+  transform-box: fill-box;
+  transition: transform 0.3s ease;
+}
+
+.mascot-arm-l { transform-origin: 100% 50%; }
+.mascot-arm-r { transform-origin: 0% 50%; }
+.mascot-leg-l,
+.mascot-leg-r { transform-origin: 50% 0%; }
+
+/* Idle: gentle float */
+.mascot-idle {
+  animation: mascot-float 2.5s ease-in-out infinite;
+}
+
+/* Running: body bounce + limb swing */
+.mascot-running {
+  animation: mascot-bounce 0.35s ease-in-out infinite;
+}
+.mascot-running .mascot-arm-l,
+.mascot-running .mascot-leg-r {
+  animation: mascot-limb-fwd 0.35s ease-in-out infinite;
+}
+.mascot-running .mascot-arm-r,
+.mascot-running .mascot-leg-l {
+  animation: mascot-limb-bwd 0.35s ease-in-out infinite;
+}
+
+/* Presenting: slow float + right arm raised */
+.mascot-presenting {
+  animation: mascot-float 3s ease-in-out infinite;
+}
+.mascot-presenting .mascot-arm-r {
+  transform: rotate(-60deg);
+}
+
+@keyframes mascot-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px); }
+}
+
+@keyframes mascot-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-2px); }
+}
+
+@keyframes mascot-limb-fwd {
+  0%, 100% { transform: rotate(-20deg); }
+  50%      { transform: rotate(20deg); }
+}
+
+@keyframes mascot-limb-bwd {
+  0%, 100% { transform: rotate(20deg); }
+  50%      { transform: rotate(-20deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mascot-idle,
+  .mascot-running,
+  .mascot-presenting,
+  .mascot-running .mascot-arm-l,
+  .mascot-running .mascot-arm-r,
+  .mascot-running .mascot-leg-l,
+  .mascot-running .mascot-leg-r {
+    animation: none;
+  }
+  .mascot-presenting .mascot-arm-r {
+    transform: none;
+  }
+}

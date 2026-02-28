@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Brain, Utensils, Briefcase, Bot } from "lucide-react";
+import { ArrowRight, Brain, Utensils, Bot } from "lucide-react";
 
 const projects = [
   {
@@ -49,7 +49,7 @@ const projects = [
 
 export function FeaturedWork() {
   return (
-    <section className="py-16 md:py-24 bg-bg-base/50">
+    <section id="mission-home-featured" className="py-16 md:py-24 bg-bg-base/50">
       <div className="container mx-auto px-6 md:px-8">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-12 gap-4">

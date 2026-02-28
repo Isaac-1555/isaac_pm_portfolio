@@ -3,6 +3,7 @@ import { Orbitron, Rajdhani, Inter } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { MascotMount } from "@/components/mascot/MascotMount";
 
 const orbitron = Orbitron({
   subsets: ["latin"],
@@ -45,6 +46,7 @@ export default function RootLayout({
         <main className="flex-grow">
           {children}
         </main>
+        <MascotMount />
         <Footer />
       </body>
     </html>

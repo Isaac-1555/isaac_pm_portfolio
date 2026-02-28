@@ -9,7 +9,10 @@ export default function Home() {
       <FeaturedWork />
       
       {/* Quick About Section */}
-      <section className="py-16 md:py-24 bg-bg-dark text-bg-base relative overflow-hidden">
+      <section
+        id="mission-home-about"
+        className="py-16 md:py-24 bg-bg-dark text-bg-base relative overflow-hidden"
+      >
         {/* Decorative background */}
         <div className="absolute inset-0 z-0 diagonal-stripes opacity-5 pointer-events-none" />
         

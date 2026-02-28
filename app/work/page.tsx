@@ -107,7 +107,7 @@ const technicalProjects = [
 export default function WorkPage() {
   return (
     <div className="container mx-auto px-4 py-24">
-      <div className="mb-16">
+      <div id="mission-work-header" className="mb-16">
         <h1 className="text-4xl md:text-6xl font-industrial font-bold uppercase tracking-widest text-text-primary mb-4">
           Selected <span className="text-cta">Works</span>
         </h1>
@@ -117,7 +117,7 @@ export default function WorkPage() {
       </div>
 
       {/* Flagship Section */}
-      <section className="mb-24">
+      <section id="mission-work-flagship" className="mb-24">
         <h2 className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 flex items-center gap-2">
           <Briefcase className="h-5 w-5 text-cta" /> Flagship Case Studies
         </h2>
@@ -194,7 +194,7 @@ export default function WorkPage() {
       </section>
 
       {/* Technical Projects Section */}
-      <section>
+      <section id="mission-work-technical">
         <h2 className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 flex items-center gap-2">
           <Zap className="h-5 w-5 text-cta" /> Technical Prototypes & Labs
         </h2>

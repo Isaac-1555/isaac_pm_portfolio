@@ -5,7 +5,10 @@ import { Badge } from "@/components/ui/badge";
 
 export function Hero() {
   return (
-    <section className="relative w-full min-h-[80vh] flex items-center bg-bg-base overflow-hidden py-16 md:py-24">
+    <section
+      id="mission-home-hero"
+      className="relative w-full min-h-[80vh] flex items-center bg-bg-base overflow-hidden py-16 md:py-24"
+    >
       {/* Background Pattern */}
       <div className="absolute inset-0 z-0 diagonal-stripes pointer-events-none" />
       
