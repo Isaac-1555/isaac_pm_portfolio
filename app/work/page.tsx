@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Brain, Utensils, Briefcase, Bot, Gamepad2, Map, Mic, Zap, Layout } from "lucide-react";
+import { ArrowRight, Brain, Utensils, Briefcase, Bot, Gamepad2, Map, Mic, Zap, Layout, Youtube, Layers, Globe } from "lucide-react";
 
 const flagshipProjects = [
   {
@@ -101,6 +101,33 @@ const technicalProjects = [
     tags: ["Frontend", "Marketing"],
     href: "https://github.com/Isaac-1555/MAM",
     icon: Layout,
+  },
+  {
+    id: "betteryt",
+    title: "BetterYT",
+    role: "Developer",
+    description: "Chrome extension for curated YouTube feeds with AI-powered recommendations and custom category chips.",
+    tags: ["Chrome Extension", "AI", "React"],
+    href: "https://github.com/Isaac-1555/BetterYT",
+    icon: Youtube,
+  },
+  {
+    id: "resume-tower",
+    title: "ResumeTower",
+    role: "Developer",
+    description: "Job application organizer that polls Gmail for opportunities and manages resumes and cover letters.",
+    tags: ["Full Stack", "Supabase", "React"],
+    href: "https://github.com/Isaac-1555/ResumeTower",
+    icon: Layers,
+  },
+  {
+    id: "portfolio",
+    title: "Portfolio Site",
+    role: "Developer",
+    description: "This portfolio — a Next.js App Router site with dynamic case studies and an interactive mascot.",
+    tags: ["Next.js", "TypeScript", "Tailwind"],
+    href: "https://github.com/Isaac-1555/isaac_pm_portfolio",
+    icon: Globe,
   },
 ];
 
