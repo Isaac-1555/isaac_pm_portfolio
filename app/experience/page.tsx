@@ -81,7 +81,7 @@ export default function AboutPage() {
             Strong background in customer research, problem framing, and cross functional execution across engineering, design, and business stakeholders. Proven ability to translate complex operational workflows into scalable product solutions, define success metrics, and continuously improve adoption and outcomes.
           </p>
           <div className="mt-8">
-            <Link href="/Resume_Isaac_Daniel_Sudakar.pdf" download target="_blank">
+<Link href="/Isaac_Daniel_Sudakar_Resume.pdf" download target="_blank">
               <Button variant="outline" className="gap-2">
                 <FileText className="h-4 w-4" />
                 Download Resume
