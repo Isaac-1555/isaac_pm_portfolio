@@ -1,4 +1,4 @@
-import { Brain, Utensils, Bot, LucideIcon } from "lucide-react";
+import { Brain, Utensils, Bot, ScanBarcode, LucideIcon } from "lucide-react";
 
 export interface CaseStudy {
   id: string;
@@ -144,72 +144,71 @@ export const caseStudies: CaseStudy[] = [
     ]
   },
   {
-    id: "restostar",
-    title: "Restostar",
-    subtitle: "Turning restaurant feedback into 5-star reviews while managing critical issues privately.",
-    company: "SaaS Product",
-    role: "Product Manager & Systems Architect",
-    timeline: "2 Months",
+    id: "barcode-lists",
+    title: "Barcode Lists",
+    subtitle: "Internal Chrome Extension for Calgary Coop that streamlines barcode management with shared access and AI-powered extraction.",
+    company: "Calgary Coop (Internal Tool)",
+    role: "Product Manager & Developer",
+    timeline: "2 Weeks",
     team: "Solo Dev",
-    status: "MVP Launch",
+    status: "Live in Chrome Web Store",
     
-    context: "New restaurant owners often fail because one bad public review can tank their reputation. Restostar provides a buffer, funnelling happy guests to Google/TripAdvisor and unhappy ones to a private resolution channel.",
+    context: "Calgary Coop store personnel scan barcodes every Monday as part of inventory operations. Previously, these barcodes were tracked manually or lost between shifts, causing repeated work and data inconsistency across staff members. Barcode Lists was built as an internal Chrome Extension to centralize barcode storage, enable shared access across all store personnel, and use AI to handle complex image and spreadsheet extraction.",
     
     problem: {
-      statement: "Restaurants have no control over whether a guest complains privately or publicly. Public complaints cause permanent brand damage.",
-      importance: "A half-star increase in rating can lead to a 19% increase in bookings during peak hours.",
-      constraints: ["Must be extremely simple for non-tech savvy guests (QR code only).", "Mobile-first experience is non-negotiable."]
+      statement: "Store personnel had no centralized system to save and reuse scanned barcodes. Data was siloed per individual, leading to duplicate scans, lost records, and wasted operational time.",
+      importance: "Accurate barcode tracking is critical for inventory management at scale. Errors cascade into stock discrepancies, ordering issues, and wasted labor hours across multiple store locations.",
+      constraints: ["Must work within Chrome browser (no native app install).", "Shared data access requires authentication to protect store data.", "Must handle noisy inputs: invoice numbers, extra spaces, and complex image formats."]
     },
     
     goals: {
-      objectives: ["Increase the volume of positive public reviews.", "Decrease the ratio of negative public reviews.", "Provide owners with actionable operational data."],
-      kpis: ["Conversion rate (Scan to Review)", "NPS Score", "Private vs Public feedback ratio"]
+      objectives: ["Provide a shared, persistent barcode storage system accessible by all authorized personnel.", "Automate barcode extraction from images and spreadsheets using AI/OCR.", "Eliminate manual cleanup by intelligently filtering invoice numbers and whitespace."],
+      kpis: ["Time saved per scanning session", "Data accuracy (clean barcodes vs raw input)", "User adoption across store personnel"]
     },
     
     research: {
-      methods: ["Market analysis of reputation management tools (often too expensive for small biz).", "Interviews with 5 local restaurant owners."],
-      insights: ["Owners are busy; they need 'set and forget' tools.", "Guests are willing to leave feedback if it takes less than 30 seconds."]
+      methods: ["On-site observation of Monday scanning workflows at Calgary Coop.", "Interviews with store personnel about pain points in barcode tracking.", "Analysis of existing barcode data formats (images, spreadsheets, handwritten lists)."],
+      insights: ["Personnel often re-scan barcodes that were already captured by a colleague on a different shift.", "Images from scanners often contain invoice numbers mixed with barcodes, causing manual sorting.", "A shared login system was the top-requested feature to enable cross-shift collaboration."]
     },
     
     approach: {
-      strategy: "The 'Feedback Funnel': A binary psychological choice (Good vs Bad) that routes the user flow accordingly.",
-      frameworks: ["Hook Model (Trigger -> Action -> Reward)", "Mobile-First Design"],
-      collaboration: "Iterated on the UI with a local café partner."
+      strategy: "Build a lightweight Chrome Extension with cloud-synced storage and AI-powered OCR to handle the full pipeline: capture, clean, store, and share barcodes.",
+      frameworks: ["Chrome Extension Manifest V3", "OCR + AI Image Processing", "Shared State Architecture"],
+      collaboration: "Direct feedback loop with Calgary Coop store staff during development and testing."
     },
     
     solution: {
-      description: "A web-based QR landing page system. 'Good' experience? One-tap link to Google Maps review. 'Bad' experience? A simple form that emails the owner immediately.",
-      features: ["Smart Routing Algorithm", "Instant Owner Alerts", "Review Template Generation", "Feedback Analytics Dashboard"],
-      rationale: "Web-based (no app download) reduces friction to near zero, essential for casual dining contexts."
+      description: "A Chrome Extension that allows store personnel to save, manage, and share barcode lists. Users log in to access a shared database, so barcodes saved by one person are instantly available to all authorized staff. AI-powered OCR reads complex images and spreadsheets to extract barcode numbers, automatically removing invoice numbers and cleaning whitespace.",
+      features: ["Shared Barcode Database with Login Authentication", "AI-Powered Image & Spreadsheet OCR", "Intelligent Barcode Cleaning (removes invoice numbers & spaces)", "Persistent Cloud Storage with Real-Time Sync", "Simple List Management (add, delete, search)"],
+      rationale: "Chrome Extension was chosen because all store operations already happen in the browser. No app install friction, and Manifest V3 ensures security and performance."
     },
     
     execution: {
       roadmap: [
-        { label: "Week 1-2", description: "Core Routing Logic" },
-        { label: "Week 3-4", description: "Dashboard & Analytics" },
-        { label: "Week 5-6", description: "Beta Test" }
+        { label: "Week 1", description: "Core extension setup, barcode CRUD, and authentication system" },
+        { label: "Week 2", description: "AI/OCR integration for image & spreadsheet extraction, Chrome Web Store deployment" }
       ],
-      challenges: ["Email deliverability for alerts (Solved with transactional email service).", "preventing spam submissions (Added rate limiting)."]
+      challenges: ["Extracting clean barcodes from noisy images that mix invoice numbers with actual barcodes (Solved with AI refinement pipeline).", "Ensuring real-time data sync across multiple users logged into the same store account."]
     },
     
     outcome: {
-      quantifiable: ["MVP deployed to local pilot location", "Captured 15+ critical feedback items privately in first month", "Zero negative public reviews during pilot"],
-      qualitative: ["Owner reported feeling 'more in control' of their reputation.", "Staff used feedback to correct service issues same-day."]
+      quantifiable: ["Live on Chrome Web Store (v3.2)", "4 active users across Calgary Coop locations", "Eliminated duplicate scanning across shifts"],
+      qualitative: ["Store staff reported significant time savings on Monday scanning workflows.", "AI extraction reduced manual barcode cleanup to near zero."]
     },
     
     learnings: {
-      takeaways: ["Speed is everything in feedback.", "Negative feedback is actually valuable data if captured privately."],
-      nextSteps: ["Multi-location support for chains", "SMS follow-ups", "POS integration"]
+      takeaways: ["Internal tools don't need to be complex — they need to be reliable and fit the existing workflow.", "AI-powered data cleaning is a massive force multiplier for operational tools."],
+      nextSteps: ["Multi-store rollout across more Calgary Coop locations", "Batch export functionality for inventory systems", "Offline mode for areas with poor connectivity"]
     },
 
-    icon: Utensils,
-    gradient: "from-emerald-900 to-teal-900",
-    tags: ["SaaS", "B2B", "Reputation Mgmt"],
-    websiteUrl: "https://restostar.vercel.app/",
-    repoUrl: "https://github.com/Isaac-1555/Restostar",
+    icon: ScanBarcode,
+    gradient: "from-violet-900 to-purple-900",
+    tags: ["Chrome Extension", "AI/OCR", "Internal Tool", "B2B"],
+    websiteUrl: "https://chromewebstore.google.com/detail/barcode-lists/colpoghjdbjnmciefnipaefbdflgjifg",
+    repoUrl: "https://github.com/Isaac-1555/Barcode-Lists",
     screenshots: [
-      "/Restostar_Dashboard.png",
-      "/Restostar_AI.png"
+      "/BarcodeLists_1.png",
+      "/BarcodeLists_2.png"
     ]
   },
   {

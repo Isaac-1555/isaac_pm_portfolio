@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Brain, Utensils, Briefcase, Bot, Gamepad2, Map, Mic, Zap, Layout, Youtube, Layers, Globe } from "lucide-react";
+import { ArrowRight, Brain, ScanBarcode, Briefcase, Bot, Gamepad2, Map, Mic, Zap, Layout, Youtube, Layers, Globe, Terminal, Send } from "lucide-react";
 
 const flagshipProjects = [
   {
@@ -20,17 +20,17 @@ const flagshipProjects = [
     icon: Brain,
   },
   {
-    id: "restostar",
-    title: "Restostar",
-    company: "SaaS Product",
-    role: "PM & Systems Dev",
-    description: "Defined 0-1 MVP strategy for restaurant reputation management. Conducted market research to prioritize high-impact features.",
-    metrics: ["MVP Launch", "User Research"],
-    tags: ["SaaS", "0-1", "MVP Scope"],
-    href: "/case-studies/restostar",
-    gradient: "from-emerald-900 to-teal-900",
-    image: "/Restostar_Dashboard.png",
-    icon: Utensils,
+    id: "barcode-lists",
+    title: "Barcode Lists",
+    company: "Calgary Coop (Internal)",
+    role: "PM & Developer",
+    description: "Internal Chrome Extension for Calgary Coop. AI-powered barcode extraction with shared access across store personnel.",
+    metrics: ["Live in Store", "AI/OCR"],
+    tags: ["Chrome Ext", "AI", "Internal Tool"],
+    href: "/case-studies/barcode-lists",
+    gradient: "from-violet-900 to-purple-900",
+    image: "/BarcodeLists_1.png",
+    icon: ScanBarcode,
   },
   {
     id: "pocket-resume",
@@ -48,6 +48,24 @@ const flagshipProjects = [
 ];
 
 const technicalProjects = [
+  {
+    id: "nano-mux",
+    title: "nano-mux",
+    role: "Developer",
+    description: "An optimized IDE/Terminal for agentic work that uses CLI tools. Built for efficient multi-pane workflows.",
+    tags: ["TypeScript", "IDE", "Agentic AI"],
+    href: "https://github.com/Isaac-1555/nano-mux",
+    icon: Terminal,
+  },
+  {
+    id: "pigeon",
+    title: "Pigeon",
+    role: "Developer",
+    description: "Helps small business owners keep customers updated about their jobs with automated notifications.",
+    tags: ["TypeScript", "B2B", "Notifications"],
+    href: "https://github.com/Isaac-1555/Pigeon",
+    icon: Send,
+  },
   {
     id: "pocket-resume",
     title: "Pocket Resume",

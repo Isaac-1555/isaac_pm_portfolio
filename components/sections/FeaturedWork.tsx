@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Brain, Utensils, Bot } from "lucide-react";
+import { ArrowRight, Brain, ScanBarcode, Bot } from "lucide-react";
 
 const projects = [
   {
@@ -20,17 +20,17 @@ const projects = [
     icon: Brain,
   },
   {
-    id: "restostar",
-    title: "Restostar",
-    company: "SaaS Product",
-    role: "PM & Systems Dev",
-    description: "Defined 0-1 MVP strategy for restaurant reputation management. Conducted market research to prioritize high-impact features.",
-    metrics: ["MVP Launch", "User Research"],
-    tags: ["SaaS", "0-1", "MVP Scope"],
-    href: "/case-studies/restostar",
-    gradient: "from-emerald-900 to-teal-900",
-    image: "/Restostar_Dashboard.png",
-    icon: Utensils,
+    id: "barcode-lists",
+    title: "Barcode Lists",
+    company: "Calgary Coop (Internal)",
+    role: "PM & Developer",
+    description: "Internal Chrome Extension for Calgary Coop. AI-powered barcode extraction with shared access across store personnel.",
+    metrics: ["Live in Store", "AI/OCR"],
+    tags: ["Chrome Ext", "AI", "Internal Tool"],
+    href: "/case-studies/barcode-lists",
+    gradient: "from-violet-900 to-purple-900",
+    image: "/BarcodeLists_1.png",
+    icon: ScanBarcode,
   },
   {
     id: "pocket-resume",
