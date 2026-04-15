@@ -36,6 +36,12 @@
   .nasa-punk-card {
     @apply bg-card border-2 border-bg-dark rounded p-8 shadow-lg relative overflow-hidden;
   }
+
+  /* Card icon hover animation */
+  .group:hover .card-hover-target .hover-target {
+    transform: scale(1.1);
+    color: rgba(255, 255, 255, 0.4);
+  }
   
   /* Diagonal Stripes Background */
   .diagonal-stripes {

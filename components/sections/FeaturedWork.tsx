@@ -3,7 +3,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Brain, ScanBarcode, Bot } from "lucide-react";
+import RightChevron from "@/components/icons/right-chevron";
+import BrainCircuitIcon from "@/components/icons/brain-circuit-icon";
+import ScanBarcodeIcon from "@/components/icons/scan-barcode-icon";
+import FileDescriptionIcon from "@/components/icons/file-description-icon";
+import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 
 const projects = [
   {
@@ -17,7 +21,7 @@ const projects = [
     href: "/case-studies/satbrain",
     gradient: "from-blue-900 to-indigo-900",
     image: "/Satbrain_Home.png",
-    icon: Brain,
+    icon: BrainCircuitIcon,
   },
   {
     id: "barcode-lists",
@@ -30,7 +34,7 @@ const projects = [
     href: "/case-studies/barcode-lists",
     gradient: "from-violet-900 to-purple-900",
     image: "/BarcodeLists_1.png",
-    icon: ScanBarcode,
+    icon: ScanBarcodeIcon,
   },
   {
     id: "pocket-resume",
@@ -43,7 +47,7 @@ const projects = [
     href: "/case-studies/pocket-resume",
     gradient: "from-orange-900 to-red-900",
     image: "/PocketResume_UI.png",
-    icon: Bot,
+    icon: FileDescriptionIcon,
   },
 ];
 
@@ -62,8 +66,11 @@ export function FeaturedWork() {
             </h2>
           </div>
           <Link href="/work" className="hidden md:block">
-            <Button variant="outline">
-              View Full Portfolio <ArrowRight className="ml-2 h-4 w-4" />
+            <Button variant="outline" data-icon-hover-trigger>
+              View Full Portfolio
+              <IconHoverWrapper hoverTrigger="closest">
+                <RightChevron size={16} className="ml-2" />
+              </IconHoverWrapper>
             </Button>
           </Link>
         </div>
@@ -73,7 +80,11 @@ export function FeaturedWork() {
           {projects.map((project) => {
             const Icon = project.icon;
             return (
-              <Card key={project.id} className="group h-full flex flex-col hover:border-cta transition-colors">
+              <Card
+                key={project.id}
+                data-icon-hover-trigger
+                className="group h-full flex flex-col hover:border-cta transition-colors"
+              >
                 {/* Card Image Header */}
                 <div className={`h-40 w-full bg-gradient-to-br ${project.gradient} relative overflow-hidden flex items-center justify-center`}>
                   {project.image ? (
@@ -89,7 +100,12 @@ export function FeaturedWork() {
                   ) : (
                     <>
                       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
-                      <Icon className="h-12 w-12 text-white/20 group-hover:text-white/40 transition-colors transform group-hover:scale-110 duration-500" />
+                      <IconHoverWrapper
+                        hoverTrigger="closest"
+                        className="transition-transform group-hover:scale-110 [&_svg]:transition-colors group-hover:[&_svg]:text-white/40"
+                      >
+                        <Icon size={48} color="rgba(255,255,255,0.2)" />
+                      </IconHoverWrapper>
                     </>
                   )}
                   <Badge variant="outline" className="absolute top-3 right-3 bg-black/50 backdrop-blur text-white border-white/20 text-xs z-10">
@@ -134,10 +150,17 @@ export function FeaturedWork() {
                 
                 {/* Card Footer */}
                 <CardFooter className="mt-auto pt-4 border-t border-divider/50">
-                  <Link href={project.href} className="w-full" target={project.href.startsWith("http") ? "_blank" : "_self"}>
+                  <Link
+                    href={project.href}
+                    data-icon-hover-trigger
+                    className="w-full"
+                    target={project.href.startsWith("http") ? "_blank" : "_self"}
+                  >
                     <Button variant="ghost" className="w-full text-sm group-hover:bg-cta group-hover:text-white transition-all">
                       View Details
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                      <IconHoverWrapper hoverTrigger="closest">
+                        <RightChevron size={16} className="ml-2" />
+                      </IconHoverWrapper>
                     </Button>
                   </Link>
                 </CardFooter>
@@ -149,8 +172,11 @@ export function FeaturedWork() {
         {/* Mobile CTA */}
         <div className="mt-8 text-center md:hidden">
           <Link href="/work">
-            <Button variant="outline" className="w-full">
-              View Full Portfolio <ArrowRight className="ml-2 h-4 w-4" />
+            <Button variant="outline" className="w-full" data-icon-hover-trigger>
+              View Full Portfolio
+              <IconHoverWrapper hoverTrigger="closest">
+                <RightChevron size={16} className="ml-2" />
+              </IconHoverWrapper>
             </Button>
           </Link>
         </div>

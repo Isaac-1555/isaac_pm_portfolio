@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { AlertTriangle } from "lucide-react";
+import TriangleAlertIcon from "@/components/icons/triangle-alert-icon";
 
 export default function NotFound() {
   return (
     <div className="flex h-[calc(100vh-80px)] flex-col items-center justify-center bg-bg-base text-center px-4">
       <div className="bg-bg-accent/10 p-12 rounded-sm border-2 border-dashed border-warning mb-8">
-        <AlertTriangle className="h-16 w-16 text-warning mx-auto mb-6 animate-pulse" />
+        <TriangleAlertIcon size={64} color="var(--color-warning)" className="mx-auto mb-6 animate-pulse" />
         <h1 className="text-6xl md:text-8xl font-industrial font-bold text-bg-dark mb-4 tracking-widest">
           404
         </h1>

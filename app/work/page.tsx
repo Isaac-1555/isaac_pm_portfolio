@@ -3,7 +3,22 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Brain, ScanBarcode, Briefcase, Bot, Gamepad2, Map, Mic, Zap, Layout, Youtube, Layers, Globe, Terminal, Send } from "lucide-react";
+import RightChevron from "@/components/icons/right-chevron";
+import BrainCircuitIcon from "@/components/icons/brain-circuit-icon";
+import ScanBarcodeIcon from "@/components/icons/scan-barcode-icon";
+import TravelBag from "@/components/icons/travel-bag";
+import FileDescriptionIcon from "@/components/icons/file-description-icon";
+import GamepadIcon from "@/components/icons/gamepad-icon";
+import MapPinIcon from "@/components/icons/map-pin-icon";
+import RadioIcon from "@/components/icons/radio-icon";
+import SparklesIcon from "@/components/icons/sparkles-icon";
+import LayoutDashboardIcon from "@/components/icons/layout-dashboard-icon";
+import YoutubeIcon from "@/components/icons/youtube-icon";
+import LayersIcon from "@/components/icons/layers-icon";
+import GlobeIcon from "@/components/icons/globe-icon";
+import TerminalIcon from "@/components/icons/terminal-icon";
+import SendIcon from "@/components/icons/send-icon";
+import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 
 const flagshipProjects = [
   {
@@ -17,7 +32,7 @@ const flagshipProjects = [
     href: "/case-studies/satbrain",
     gradient: "from-blue-900 to-indigo-900",
     image: "/Satbrain_Home.png",
-    icon: Brain,
+    icon: BrainCircuitIcon,
   },
   {
     id: "barcode-lists",
@@ -30,7 +45,7 @@ const flagshipProjects = [
     href: "/case-studies/barcode-lists",
     gradient: "from-violet-900 to-purple-900",
     image: "/BarcodeLists_1.png",
-    icon: ScanBarcode,
+    icon: ScanBarcodeIcon,
   },
   {
     id: "pocket-resume",
@@ -43,7 +58,7 @@ const flagshipProjects = [
     href: "/case-studies/pocket-resume",
     gradient: "from-orange-900 to-red-900",
     image: "/PocketResume_UI.png",
-    icon: Bot,
+    icon: FileDescriptionIcon,
   },
 ];
 
@@ -55,7 +70,7 @@ const technicalProjects = [
     description: "An optimized IDE/Terminal for agentic work that uses CLI tools. Built for efficient multi-pane workflows.",
     tags: ["TypeScript", "IDE", "Agentic AI"],
     href: "https://github.com/Isaac-1555/nano-mux",
-    icon: Terminal,
+    icon: TerminalIcon,
   },
   {
     id: "pigeon",
@@ -64,7 +79,7 @@ const technicalProjects = [
     description: "Helps small business owners keep customers updated about their jobs with automated notifications.",
     tags: ["TypeScript", "B2B", "Notifications"],
     href: "https://github.com/Isaac-1555/Pigeon",
-    icon: Send,
+    icon: SendIcon,
   },
   {
     id: "pocket-resume",
@@ -73,7 +88,7 @@ const technicalProjects = [
     description: "AI-powered tool that tailors resumes to job descriptions. Demonstrates rapid prototyping and LLM integration.",
     tags: ["GenAI", "React", "Prototype"],
     href: "https://github.com/Isaac-1555/pocket-resume",
-    icon: Bot,
+    icon: FileDescriptionIcon,
   },
   {
     id: "coachgg",
@@ -82,7 +97,7 @@ const technicalProjects = [
     description: "Esports coaching platform helping amateur players reach pro level. Team management and analytics features.",
     tags: ["Esports", "Platform", "Community"],
     href: "https://github.com/Isaac-1555/coachgg",
-    icon: Gamepad2,
+    icon: GamepadIcon,
   },
   {
     id: "project-goldmine",
@@ -91,7 +106,7 @@ const technicalProjects = [
     description: "Knowledge map generator that summarizes notes and visualizes connections.",
     tags: ["Visualization", "Knowledge Mgmt"],
     href: "https://github.com/Isaac-1555/project_goldmine",
-    icon: Map,
+    icon: MapPinIcon,
   },
   {
     id: "summarease",
@@ -100,7 +115,7 @@ const technicalProjects = [
     description: "Audio summarization tool transforming conversations into structured formats.",
     tags: ["Audio Processing", "AI"],
     href: "https://github.com/Isaac-1555/summarease_v1",
-    icon: Mic,
+    icon: RadioIcon,
   },
   {
     id: "edhelper",
@@ -109,7 +124,7 @@ const technicalProjects = [
     description: "Deck building assistant for Magic: The Gathering Commander players.",
     tags: ["Gaming", "Utility"],
     href: "https://github.com/Isaac-1555/EDHelper",
-    icon: Zap,
+    icon: SparklesIcon,
   },
   {
     id: "mam",
@@ -118,7 +133,7 @@ const technicalProjects = [
     description: "Lead generation and landing page development for a client.",
     tags: ["Frontend", "Marketing"],
     href: "https://github.com/Isaac-1555/MAM",
-    icon: Layout,
+    icon: LayoutDashboardIcon,
   },
   {
     id: "betteryt",
@@ -127,7 +142,7 @@ const technicalProjects = [
     description: "Chrome extension for curated YouTube feeds with AI-powered recommendations and custom category chips.",
     tags: ["Chrome Extension", "AI", "React"],
     href: "https://github.com/Isaac-1555/BetterYT",
-    icon: Youtube,
+    icon: YoutubeIcon,
   },
   {
     id: "resume-tower",
@@ -136,7 +151,7 @@ const technicalProjects = [
     description: "Job application organizer that polls Gmail for opportunities and manages resumes and cover letters.",
     tags: ["Full Stack", "Supabase", "React"],
     href: "https://github.com/Isaac-1555/ResumeTower",
-    icon: Layers,
+    icon: LayersIcon,
   },
   {
     id: "portfolio",
@@ -145,7 +160,7 @@ const technicalProjects = [
     description: "This portfolio — a Next.js App Router site with dynamic case studies and an interactive mascot.",
     tags: ["Next.js", "TypeScript", "Tailwind"],
     href: "https://github.com/Isaac-1555/isaac_pm_portfolio",
-    icon: Globe,
+    icon: GlobeIcon,
   },
 ];
 
@@ -164,13 +179,17 @@ export default function WorkPage() {
       {/* Flagship Section */}
       <section id="mission-work-flagship" className="mb-24">
         <h2 className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 flex items-center gap-2">
-          <Briefcase className="h-5 w-5 text-cta" /> Flagship Case Studies
+          <TravelBag size={20} className="text-cta" /> Flagship Case Studies
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {flagshipProjects.map((project) => {
             const Icon = project.icon;
             return (
-              <Card key={project.id} className="group h-full flex flex-col hover:border-cta transition-colors">
+              <Card
+                key={project.id}
+                data-icon-hover-trigger
+                className="group h-full flex flex-col hover:border-cta transition-colors"
+              >
                 <div className={`h-48 w-full bg-gradient-to-br ${project.gradient} relative overflow-hidden flex items-center justify-center`}>
                   {project.image ? (
                     <>
@@ -185,7 +204,12 @@ export default function WorkPage() {
                   ) : (
                     <>
                       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
-                      <Icon className="h-16 w-16 text-white/20 group-hover:text-white/40 transition-colors transform group-hover:scale-110 duration-500" />
+                      <IconHoverWrapper
+                        hoverTrigger="closest"
+                        className="transition-transform group-hover:scale-110 [&_svg]:transition-colors group-hover:[&_svg]:text-white/40"
+                      >
+                        <Icon size={64} color="rgba(255,255,255,0.2)" />
+                      </IconHoverWrapper>
                     </>
                   )}
                   <Badge variant="outline" className="absolute top-4 right-4 bg-black/50 backdrop-blur text-white border-white/20 z-10">
@@ -225,10 +249,17 @@ export default function WorkPage() {
                 </CardContent>
                 
                 <CardFooter className="mt-auto pt-6 border-t border-divider/50">
-                  <Link href={project.href} className="w-full" target={project.href.startsWith("http") ? "_blank" : "_self"}>
+                  <Link
+                    href={project.href}
+                    data-icon-hover-trigger
+                    className="w-full"
+                    target={project.href.startsWith("http") ? "_blank" : "_self"}
+                  >
                     <Button variant="ghost" className="w-full group-hover:bg-cta group-hover:text-white transition-all">
                       View Project
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                      <IconHoverWrapper hoverTrigger="closest">
+                        <RightChevron size={16} className="ml-2" />
+                      </IconHoverWrapper>
                     </Button>
                   </Link>
                 </CardFooter>
@@ -241,14 +272,17 @@ export default function WorkPage() {
       {/* Technical Projects Section */}
       <section id="mission-work-technical">
         <h2 className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 flex items-center gap-2">
-          <Zap className="h-5 w-5 text-cta" /> Technical Prototypes & Labs
+          <SparklesIcon size={20} className="text-cta" /> Technical Prototypes & Labs
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {technicalProjects.map((project) => {
             const Icon = project.icon;
             return (
               <a key={project.id} href={project.href} target="_blank" rel="noopener noreferrer" className="block h-full">
-                <Card className="group h-full flex flex-col hover:border-cta transition-colors bg-bg-accent/5">
+                <Card
+                  data-icon-hover-trigger
+                  className="group h-full flex flex-col hover:border-cta transition-colors bg-bg-accent/5"
+                >
                   <CardHeader className="pb-2 flex flex-row items-start justify-between gap-4">
                     <div>
                       <CardTitle className="text-lg group-hover:text-cta transition-colors">
@@ -258,7 +292,9 @@ export default function WorkPage() {
                         {project.role}
                       </div>
                     </div>
-                    <Icon className="h-6 w-6 text-text-secondary group-hover:text-cta transition-colors" />
+                    <IconHoverWrapper hoverTrigger="closest">
+                      <Icon size={24} className="text-text-secondary transition-colors group-hover:text-cta" />
+                    </IconHoverWrapper>
                   </CardHeader>
                   
                   <CardContent className="flex-grow pt-2">

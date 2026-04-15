@@ -1,9 +1,33 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink, Github, CheckCircle2, Zap, Users, BarChart3, Target, Search, Settings, Code, Rocket, Lightbulb, TrendingUp, Brain } from "lucide-react";
+import Image from "next/image";
+import ArrowBackIcon from "@/components/icons/arrow-back-icon";
+import ExternalLinkIcon from "@/components/icons/external-link-icon";
+import GithubIcon from "@/components/icons/github-icon";
+import CheckedIcon from "@/components/icons/checked-icon";
+import SparklesIcon from "@/components/icons/sparkles-icon";
+import ChartBarIcon from "@/components/icons/chart-bar-icon";
+import TargetIcon from "@/components/icons/target-icon";
+import MagnifierIcon from "@/components/icons/magnifier-icon";
+import GearIcon from "@/components/icons/gear-icon";
+import CodeIcon from "@/components/icons/code-icon";
+import RocketIcon from "@/components/icons/rocket-icon";
+import BulbSvg from "@/components/icons/bulb-svg";
+import ChartLineIcon from "@/components/icons/chart-line-icon";
+import BrainCircuitIcon from "@/components/icons/brain-circuit-icon";
+import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 import { caseStudies } from "../data";
 import { notFound } from "next/navigation";
+import type { AnimatedIconProps } from "@/components/icons/types";
+
+function SectionHeader({ icon: Icon, title }: { icon: React.ComponentType<AnimatedIconProps>, title: string }) {
+  return (
+    <h2 className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 flex items-center gap-3">
+      <Icon size={24} className="text-cta" /> {title}
+    </h2>
+  );
+}
 
 export default async function CaseStudyDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -13,13 +37,6 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
     notFound();
   }
 
-  // Helper for section headers to keep code DRY
-  const SectionHeader = ({ icon: Icon, title }: { icon: any, title: string }) => (
-    <h2 className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 flex items-center gap-3">
-      <Icon className="h-6 w-6 text-cta" /> {title}
-    </h2>
-  );
-
   return (
     <article className="min-h-screen pb-24 bg-bg-base">
       {/* Header */}
@@ -28,8 +45,15 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
         <div className="absolute inset-0 z-0 diagonal-stripes opacity-10 pointer-events-none" />
         
         <div className="container mx-auto px-6 md:px-8 relative z-10">
-          <Link href="/work" className="inline-flex items-center text-text-secondary hover:text-cta mb-8 transition-colors uppercase tracking-widest text-sm font-tech">
-            <ArrowLeft className="mr-2 h-4 w-4" /> Return to Mission Control
+          <Link
+            href="/work"
+            data-icon-hover-trigger
+            className="inline-flex items-center text-text-secondary hover:text-cta mb-8 transition-colors uppercase tracking-widest text-sm font-tech"
+          >
+            <IconHoverWrapper hoverTrigger="closest">
+              <ArrowBackIcon size={16} className="mr-2" />
+            </IconHoverWrapper>
+            Return to Mission Control
           </Link>
           
           <div className="flex flex-wrap gap-2 mb-6">
@@ -60,7 +84,7 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
           
           {/* 2. Context / Overview */}
           <section>
-            <SectionHeader icon={Target} title="Context & Overview" />
+            <SectionHeader icon={TargetIcon} title="Context & Overview" />
             <p className="text-lg leading-relaxed text-text-primary">
               {project.context}
             </p>
@@ -68,7 +92,7 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
 
           {/* 3. Problem / Challenge */}
           <section>
-            <SectionHeader icon={Zap} title="The Challenge" />
+            <SectionHeader icon={SparklesIcon} title="The Challenge" />
             <div className="bg-bg-accent/5 p-8 border-l-4 border-cta rounded-r-sm space-y-6">
               <div>
                 <h3 className="font-bold text-lg mb-2 text-text-primary">Problem Statement</h3>
@@ -91,14 +115,14 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
 
           {/* 4. Goal / Success Metrics */}
           <section>
-            <SectionHeader icon={Target} title="Goals & Metrics" />
+            <SectionHeader icon={TargetIcon} title="Goals & Metrics" />
             <div className="grid md:grid-cols-2 gap-8">
               <div>
                 <h3 className="font-industrial uppercase tracking-wide text-gold mb-4">Objectives</h3>
                 <ul className="space-y-3">
                   {project.goals.objectives.map((obj, i) => (
                     <li key={i} className="flex items-start gap-2">
-                      <CheckCircle2 className="h-5 w-5 text-cta shrink-0 mt-0.5" />
+                      <CheckedIcon size={20} className="text-cta shrink-0 mt-0.5" />
                       <span className="text-text-secondary">{obj}</span>
                     </li>
                   ))}
@@ -109,7 +133,7 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
                 <ul className="space-y-3">
                   {project.goals.kpis.map((kpi, i) => (
                     <li key={i} className="flex items-start gap-2">
-                      <BarChart3 className="h-5 w-5 text-cta shrink-0 mt-0.5" />
+                      <ChartBarIcon size={20} className="text-cta shrink-0 mt-0.5" />
                       <span className="text-text-secondary">{kpi}</span>
                     </li>
                   ))}
@@ -120,7 +144,7 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
 
           {/* 5. Research & Discovery */}
           <section>
-            <SectionHeader icon={Search} title="Research & Discovery" />
+            <SectionHeader icon={MagnifierIcon} title="Research & Discovery" />
             <div className="space-y-6">
               <div>
                 <h3 className="font-bold text-text-primary mb-2">Methodology</h3>
@@ -135,7 +159,7 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
                 <ul className="space-y-3">
                   {project.research.insights.map((insight, i) => (
                     <li key={i} className="flex gap-3 text-text-secondary">
-                      <Lightbulb className="h-5 w-5 text-gold shrink-0" />
+                      <BulbSvg size={20} className="text-gold shrink-0" />
                       {insight}
                     </li>
                   ))}
@@ -146,7 +170,7 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
 
           {/* 6. Approach / Process */}
           <section>
-            <SectionHeader icon={Settings} title="Approach & Strategy" />
+            <SectionHeader icon={GearIcon} title="Approach & Strategy" />
             <p className="text-text-secondary mb-6 leading-relaxed">
               {project.approach.strategy}
             </p>
@@ -164,7 +188,7 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
 
           {/* 7. Solution (With Carousel) */}
           <section>
-            <SectionHeader icon={Code} title="The Solution" />
+            <SectionHeader icon={CodeIcon} title="The Solution" />
             <p className="text-lg text-text-primary mb-6">{project.solution.description}</p>
             
             {/* Features Grid */}
@@ -190,7 +214,13 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
                          Screenshot Placeholder
                        </div>
                      ) : (
-                       <img src={src} alt={`Screenshot ${i + 1}`} className="object-cover w-full h-full" />
+                       <Image
+                         src={src}
+                         alt={`Screenshot ${i + 1}`}
+                         fill
+                         sizes="(max-width: 768px) 85vw, 600px"
+                         className="object-cover"
+                       />
                      )}
                   </div>
                 ))}
@@ -205,7 +235,7 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
 
           {/* 8. Execution */}
           <section>
-            <SectionHeader icon={Rocket} title="Execution" />
+            <SectionHeader icon={RocketIcon} title="Execution" />
             <div className="space-y-6">
               <div>
                 <h3 className="font-bold text-text-primary mb-4">Roadmap</h3>
@@ -236,7 +266,7 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
 
           {/* 9. Outcome */}
           <section>
-            <SectionHeader icon={TrendingUp} title="Outcomes & Impact" />
+            <SectionHeader icon={ChartLineIcon} title="Outcomes & Impact" />
             <div className="grid md:grid-cols-2 gap-8">
               <div className="bg-bg-accent/5 p-6 rounded-sm">
                 <h3 className="font-industrial uppercase tracking-wide text-success mb-4">Quantifiable Results</h3>
@@ -254,7 +284,7 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
                 <div className="space-y-4">
                   {project.outcome.qualitative.map((quote, i) => (
                     <blockquote key={i} className="border-l-4 border-divider pl-4 italic text-text-secondary text-sm">
-                      "{quote}"
+                      &ldquo;{quote}&rdquo;
                     </blockquote>
                   ))}
                 </div>
@@ -264,7 +294,7 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
 
           {/* 10. Learnings */}
           <section>
-            <SectionHeader icon={Brain} title="Learnings & Future" />
+            <SectionHeader icon={BrainCircuitIcon} title="Learnings & Future" />
             <div className="grid md:grid-cols-2 gap-8">
               <div>
                 <h3 className="font-bold text-text-primary mb-3">Key Takeaways</h3>
@@ -291,15 +321,21 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
             </h3>
             
             <div className="space-y-4">
-              <Link href={project.websiteUrl} target="_blank" className="block">
+              <Link href={project.websiteUrl} target="_blank" data-icon-hover-trigger className="block">
                 <Button className="w-full gap-2 h-12 text-lg font-bold uppercase tracking-widest" size="lg">
-                  Visit Website <ExternalLink className="h-4 w-4" />
+                  Visit Website
+                  <IconHoverWrapper hoverTrigger="closest">
+                    <ExternalLinkIcon size={16} />
+                  </IconHoverWrapper>
                 </Button>
               </Link>
               
-              <Link href={project.repoUrl} target="_blank" className="block">
+              <Link href={project.repoUrl} target="_blank" data-icon-hover-trigger className="block">
                 <Button variant="outline" className="w-full gap-2 border-bg-dark text-bg-dark hover:bg-bg-dark hover:text-white">
-                  View Source Code <Github className="h-4 w-4" />
+                  View Source Code
+                  <IconHoverWrapper hoverTrigger="closest">
+                    <GithubIcon size={16} />
+                  </IconHoverWrapper>
                 </Button>
               </Link>
             </div>

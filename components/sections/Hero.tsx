@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, FileText } from "lucide-react";
+import RightChevron from "@/components/icons/right-chevron";
+import FileDescriptionIcon from "@/components/icons/file-description-icon";
+import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 
@@ -7,7 +9,7 @@ export function Hero() {
   return (
     <section
       id="mission-home-hero"
-      className="relative w-full min-h-[80vh] flex items-center bg-bg-base overflow-hidden py-16 md:py-24"
+      className="relative w-full min-h-[calc(100dvh-3.5rem)] md:min-h-[calc(100dvh-4rem)] flex items-center bg-bg-base overflow-hidden py-16 md:py-24"
     >
       {/* Background Pattern */}
       <div className="absolute inset-0 z-0 diagonal-stripes pointer-events-none" />
@@ -32,16 +34,20 @@ export function Hero() {
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 mt-4 md:mt-8 w-full sm:w-auto">
-          <Link href="/work">
+          <Link href="/work" data-icon-hover-trigger>
             <Button size="lg" className="group w-full sm:w-auto">
               View Works
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <IconHoverWrapper hoverTrigger="closest">
+                <RightChevron size={16} className="ml-2 transition-transform group-hover:translate-x-1" />
+              </IconHoverWrapper>
             </Button>
           </Link>
-<Link href="/Isaac_Daniel_Sudakar_Resume.pdf" download target="_blank">
+<Link href="/Isaac_Daniel_Sudakar_Resume.pdf" download target="_blank" data-icon-hover-trigger>
             <Button variant="outline" size="lg" className="group w-full sm:w-auto">
               Download Resume
-              <FileText className="ml-2 h-4 w-4 transition-transform group-hover:-rotate-12" />
+              <IconHoverWrapper hoverTrigger="closest">
+                <FileDescriptionIcon size={16} className="ml-2 transition-transform group-hover:-rotate-12" />
+              </IconHoverWrapper>
             </Button>
           </Link>
         </div>

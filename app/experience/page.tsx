@@ -1,28 +1,34 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Rocket, Shield, Database, Users, GraduationCap, FileText } from "lucide-react";
+import RocketIcon from "@/components/icons/rocket-icon";
+import ShieldCheck from "@/components/icons/shield-check";
+import StackIcon from "@/components/icons/stack-icon";
+import UsersIcon from "@/components/icons/users-icon";
+import TrophyIcon from "@/components/icons/trophy-icon";
+import FileDescriptionIcon from "@/components/icons/file-description-icon";
+import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 
 const skills = [
   { 
     category: "Product Strategy", 
     items: ["Roadmapping", "Prioritization", "OKRs", "Competitive Analysis", "GTM Strategy"], 
-    icon: Rocket 
+    icon: RocketIcon 
   },
   { 
     category: "User-Centric Design", 
     items: ["Workflow Mapping", "User Testing", "Wireframing", "Journey Mapping", "Figma"], 
-    icon: Users 
+    icon: UsersIcon 
   },
   { 
     category: "Technical", 
     items: ["SQL", "APIs", "React/Next.js", "AI Tools", "System Architecture"], 
-    icon: Database 
+    icon: StackIcon 
   },
   { 
     category: "Leadership", 
     items: ["Stakeholder Management", "Agile/Scrum", "Change Management", "Sprint Planning"], 
-    icon: Shield 
+    icon: ShieldCheck 
   },
 ];
 
@@ -81,9 +87,11 @@ export default function AboutPage() {
             Strong background in customer research, problem framing, and cross functional execution across engineering, design, and business stakeholders. Proven ability to translate complex operational workflows into scalable product solutions, define success metrics, and continuously improve adoption and outcomes.
           </p>
           <div className="mt-8">
-<Link href="/Isaac_Daniel_Sudakar_Resume.pdf" download target="_blank">
+<Link href="/Isaac_Daniel_Sudakar_Resume.pdf" download target="_blank" data-icon-hover-trigger>
               <Button variant="outline" className="gap-2">
-                <FileText className="h-4 w-4" />
+                <IconHoverWrapper hoverTrigger="closest">
+                  <FileDescriptionIcon size={16} />
+                </IconHoverWrapper>
                 Download Resume
               </Button>
             </Link>
@@ -98,9 +106,11 @@ export default function AboutPage() {
             {skills.map((skill) => {
               const Icon = skill.icon;
               return (
-                <div key={skill.category} className="group">
+                <div key={skill.category} data-icon-hover-trigger className="group">
                   <div className="flex items-center gap-3 mb-4">
-                    <Icon className="h-6 w-6 text-cta group-hover:scale-110 transition-transform" />
+                    <IconHoverWrapper hoverTrigger="closest">
+                      <Icon size={24} className="text-cta transition-transform group-hover:scale-110" />
+                    </IconHoverWrapper>
                     <h3 className="text-xl font-industrial uppercase tracking-widest text-text-primary">
                       {skill.category}
                     </h3>
@@ -150,7 +160,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {education.map((edu, index) => (
               <div key={index} className="flex items-start gap-4 p-4 border border-divider/50 rounded-sm bg-bg-accent/5">
-                <GraduationCap className="h-6 w-6 text-text-secondary mt-1" />
+                <TrophyIcon size={24} className="text-text-secondary mt-1" />
                 <div>
                   <h3 className="font-bold text-text-primary">{edu.degree}</h3>
                   <div className="text-sm text-text-secondary">{edu.school}</div>

@@ -2,26 +2,24 @@ import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  ArrowLeft,
-  ArrowRight,
-  Calendar,
-  Clock,
-  User,
-  Utensils,
-  Lightbulb,
-  Target,
-  Zap,
-  Code2,
-  TrendingUp,
-  Rocket,
-  AlertTriangle,
-  CheckCircle2,
-  MessageSquare,
-  Star,
-  Shield,
-  BarChart3,
-} from "lucide-react";
+import ArrowBackIcon from "@/components/icons/arrow-back-icon";
+import RightChevron from "@/components/icons/right-chevron";
+import ClockIcon from "@/components/icons/clock-icon";
+import UserIcon from "@/components/icons/user-icon";
+import SoupIcon from "@/components/icons/soup-icon";
+import BulbSvg from "@/components/icons/bulb-svg";
+import TargetIcon from "@/components/icons/target-icon";
+import SparklesIcon from "@/components/icons/sparkles-icon";
+import CodeXmlIcon from "@/components/icons/code-xml-icon";
+import ChartLineIcon from "@/components/icons/chart-line-icon";
+import RocketIcon from "@/components/icons/rocket-icon";
+import TriangleAlertIcon from "@/components/icons/triangle-alert-icon";
+import CheckedIcon from "@/components/icons/checked-icon";
+import MessageCircleIcon from "@/components/icons/message-circle-icon";
+import StarIcon from "@/components/icons/star-icon";
+import ShieldCheck from "@/components/icons/shield-check";
+import ChartBarIcon from "@/components/icons/chart-bar-icon";
+import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 
 export const metadata = {
   title: "Restostar: Building a Reputation Engine for Restaurants | Isaac PM Blog",
@@ -56,22 +54,25 @@ export default function RestostarArticle() {
           {/* Back link */}
           <Link
             href="/blog"
+            data-icon-hover-trigger
             className="inline-flex items-center gap-1.5 text-white/60 hover:text-white text-sm font-tech uppercase tracking-widest mb-8 transition-colors"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <IconHoverWrapper hoverTrigger="closest">
+              <ArrowBackIcon size={16} />
+            </IconHoverWrapper>
             Back to Blog
           </Link>
 
           {/* Meta row */}
           <div className="flex flex-wrap items-center gap-4 text-white/70 text-sm font-tech mb-6">
             <span className="flex items-center gap-1.5">
-              <User className="h-3.5 w-3.5" /> Isaac
+              <UserIcon size={14} /> Isaac
             </span>
             <span className="flex items-center gap-1.5">
-              <Calendar className="h-3.5 w-3.5" /> April 2026
+              <ClockIcon size={14} /> April 2026
             </span>
             <span className="flex items-center gap-1.5">
-              <Clock className="h-3.5 w-3.5" /> 8 min read
+              <ClockIcon size={14} /> 8 min read
             </span>
           </div>
 
@@ -130,17 +131,24 @@ export default function RestostarArticle() {
 
               {/* Quick links */}
               <div className="mt-10 space-y-3">
-                <Link href="https://restostar.vercel.app/" target="_blank">
+                <Link href="https://restostar.vercel.app/" target="_blank" data-icon-hover-trigger>
                   <Button variant="default" className="w-full text-xs">
-                    Live Demo <ArrowRight className="ml-2 h-3.5 w-3.5" />
+                    Live Demo
+                    <IconHoverWrapper hoverTrigger="closest">
+                      <RightChevron size={14} className="ml-2" />
+                    </IconHoverWrapper>
                   </Button>
                 </Link>
                 <Link
                   href="https://github.com/Isaac-1555/Restostar"
                   target="_blank"
+                  data-icon-hover-trigger
                 >
                   <Button variant="outline" className="w-full text-xs mt-3">
-                    Source Code <ArrowRight className="ml-2 h-3.5 w-3.5" />
+                    Source Code
+                    <IconHoverWrapper hoverTrigger="closest">
+                      <RightChevron size={14} className="ml-2" />
+                    </IconHoverWrapper>
                   </Button>
                 </Link>
               </div>
@@ -172,7 +180,7 @@ export default function RestostarArticle() {
             {/*  1. PROBLEM STATEMENT                         */}
             {/* ────────────────────────────────────────────── */}
             <section id="problem" className="mb-16 scroll-mt-24">
-              <SectionHeading icon={AlertTriangle} title="The Problem" />
+              <SectionHeading icon={TriangleAlertIcon} title="The Problem" />
 
               <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-6">
                 Walk into any restaurant and ask the owner what keeps them up at
@@ -212,7 +220,7 @@ export default function RestostarArticle() {
             {/*  2. SOLUTION OVERVIEW                         */}
             {/* ────────────────────────────────────────────── */}
             <section id="solution" className="mb-16 scroll-mt-24">
-              <SectionHeading icon={Lightbulb} title="The Solution" />
+              <SectionHeading icon={BulbSvg} title="The Solution" />
 
               <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-6">
                 Restostar is a <strong className="text-text-primary">sentiment-aware feedback funnel</strong>{" "}
@@ -224,7 +232,7 @@ export default function RestostarArticle() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
                 <div className="bg-success/10 border border-success/30 rounded-sm p-5">
                   <div className="flex items-center gap-2 mb-2">
-                    <Star className="h-5 w-5 text-success" />
+                    <StarIcon size={20} className="text-success" />
                     <h4 className="font-industrial uppercase tracking-widest text-sm text-success">
                       Happy Guest
                     </h4>
@@ -238,7 +246,7 @@ export default function RestostarArticle() {
                 </div>
                 <div className="bg-cta/10 border border-cta/30 rounded-sm p-5">
                   <div className="flex items-center gap-2 mb-2">
-                    <Shield className="h-5 w-5 text-cta" />
+                    <ShieldCheck size={20} className="text-cta" />
                     <h4 className="font-industrial uppercase tracking-widest text-sm text-cta">
                       Unhappy Guest
                     </h4>
@@ -285,7 +293,7 @@ export default function RestostarArticle() {
             {/*  3. FEATURES & HIGHLIGHTS                     */}
             {/* ────────────────────────────────────────────── */}
             <section id="features" className="mb-16 scroll-mt-24">
-              <SectionHeading icon={Zap} title="Features & Highlights" />
+              <SectionHeading icon={SparklesIcon} title="Features & Highlights" />
 
               <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-8">
                 The MVP was scoped around four capabilities that directly
@@ -295,22 +303,22 @@ export default function RestostarArticle() {
 
               <div className="space-y-6">
                 <FeatureBlock
-                  icon={<Target className="h-5 w-5 text-cta" />}
+                  icon={<TargetIcon size={20} className="text-cta" />}
                   title="Smart Sentiment Routing"
                   description="A lightweight questionnaire gauges guest satisfaction in under 10 seconds. Positive sentiment triggers a public review prompt; negative sentiment opens a private channel. The routing logic is configurable per restaurant."
                 />
                 <FeatureBlock
-                  icon={<MessageSquare className="h-5 w-5 text-cta" />}
+                  icon={<MessageCircleIcon size={20} className="text-cta" />}
                   title="Instant Owner Alerts"
                   description="When critical feedback arrives — low ratings or specific keywords like 'food poisoning' or 'rude' — the owner gets an immediate notification via email and in-dashboard alert. Response time drops from days to minutes."
                 />
                 <FeatureBlock
-                  icon={<BarChart3 className="h-5 w-5 text-cta" />}
+                  icon={<ChartBarIcon size={20} className="text-cta" />}
                   title="Analytics Dashboard"
                   description="Tracks feedback volume, sentiment trends over time, resolution rate, and public review conversion. Owners can see which shifts, menu items, or staff interactions correlate with negative feedback."
                 />
                 <FeatureBlock
-                  icon={<Shield className="h-5 w-5 text-cta" />}
+                  icon={<ShieldCheck size={20} className="text-cta" />}
                   title="Zero Negative Public Reviews (Pilot)"
                   description="During the initial pilot period, every piece of negative feedback was captured privately. Zero negative reviews made it to public platforms — not because they were suppressed, but because they were resolved first."
                 />
@@ -344,7 +352,7 @@ export default function RestostarArticle() {
             {/*  4. TECH STACK & ARCHITECTURE                 */}
             {/* ────────────────────────────────────────────── */}
             <section id="tech" className="mb-16 scroll-mt-24">
-              <SectionHeading icon={Code2} title="Tech Stack & Architecture" />
+              <SectionHeading icon={CodeXmlIcon} title="Tech Stack & Architecture" />
 
               <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-6">
                 The architecture was designed for speed-to-market. As a solo
@@ -369,7 +377,7 @@ export default function RestostarArticle() {
                         key={item}
                         className="flex items-start gap-2 text-sm text-text-secondary"
                       >
-                        <CheckCircle2 className="h-4 w-4 text-success mt-0.5 shrink-0" />
+                        <CheckedIcon size={16} className="text-success mt-0.5 shrink-0" />
                         {item}
                       </li>
                     ))}
@@ -390,7 +398,7 @@ export default function RestostarArticle() {
                         key={item}
                         className="flex items-start gap-2 text-sm text-text-secondary"
                       >
-                        <CheckCircle2 className="h-4 w-4 text-success mt-0.5 shrink-0" />
+                        <CheckedIcon size={16} className="text-success mt-0.5 shrink-0" />
                         {item}
                       </li>
                     ))}
@@ -430,7 +438,7 @@ export default function RestostarArticle() {
             {/*  5. CHALLENGES & LEARNINGS                    */}
             {/* ────────────────────────────────────────────── */}
             <section id="learnings" className="mb-16 scroll-mt-24">
-              <SectionHeading icon={TrendingUp} title="Challenges & Learnings" />
+              <SectionHeading icon={ChartLineIcon} title="Challenges & Learnings" />
 
               <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-8">
                 Building Restostar from zero to a working pilot taught me more
@@ -471,7 +479,7 @@ export default function RestostarArticle() {
             {/*  6. FUTURE ROADMAP                            */}
             {/* ────────────────────────────────────────────── */}
             <section id="roadmap" className="mb-16 scroll-mt-24">
-              <SectionHeading icon={Rocket} title="What's Next" />
+              <SectionHeading icon={RocketIcon} title="What's Next" />
 
               <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-8">
                 Restostar started as a hypothesis. The pilot validated the core
@@ -510,7 +518,7 @@ export default function RestostarArticle() {
             <section className="mt-16 bg-gradient-to-br from-emerald-900 to-teal-900 rounded-sm p-8 md:p-12 relative overflow-hidden">
               <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10" />
               <div className="relative z-10">
-                <Utensils className="h-10 w-10 text-emerald-300 mb-4" />
+                <SoupIcon size={40} className="text-emerald-300 mb-4" />
                 <h3 className="text-2xl md:text-3xl font-industrial font-bold uppercase tracking-wider text-white mb-4">
                   Try Restostar
                 </h3>
@@ -519,22 +527,27 @@ export default function RestostarArticle() {
                   is an open project — feedback and contributions are welcome.
                 </p>
                 <div className="flex flex-wrap gap-3">
-                  <Link href="https://restostar.vercel.app/" target="_blank">
+                  <Link href="https://restostar.vercel.app/" target="_blank" data-icon-hover-trigger>
                     <Button className="bg-white text-emerald-900 hover:bg-emerald-100 border-white">
                       Visit Live Demo
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                      <IconHoverWrapper hoverTrigger="closest">
+                        <RightChevron size={16} className="ml-2" />
+                      </IconHoverWrapper>
                     </Button>
                   </Link>
                   <Link
                     href="https://github.com/Isaac-1555/Restostar"
                     target="_blank"
+                    data-icon-hover-trigger
                   >
                     <Button
                       variant="outline"
                       className="text-white border-white/40 hover:bg-white/10 hover:text-white"
                     >
                       View Source Code
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                      <IconHoverWrapper hoverTrigger="closest">
+                        <RightChevron size={16} className="ml-2" />
+                      </IconHoverWrapper>
                     </Button>
                   </Link>
                 </div>
@@ -545,9 +558,12 @@ export default function RestostarArticle() {
             <div className="mt-12 pt-8 border-t border-divider">
               <Link
                 href="/blog"
+                data-icon-hover-trigger
                 className="inline-flex items-center gap-2 text-sm font-tech uppercase tracking-widest text-text-secondary hover:text-cta transition-colors"
               >
-                <ArrowLeft className="h-4 w-4" />
+                <IconHoverWrapper hoverTrigger="closest">
+                  <ArrowBackIcon size={16} />
+                </IconHoverWrapper>
                 Back to all posts
               </Link>
             </div>

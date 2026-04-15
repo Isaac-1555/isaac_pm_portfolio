@@ -1,4 +1,8 @@
-import { Brain, Utensils, Bot, ScanBarcode, LucideIcon } from "lucide-react";
+import React from "react";
+import BrainCircuitIcon from "@/components/icons/brain-circuit-icon";
+import FileDescriptionIcon from "@/components/icons/file-description-icon";
+import ScanBarcodeIcon from "@/components/icons/scan-barcode-icon";
+import type { AnimatedIconProps } from "@/components/icons/types";
 
 export interface CaseStudy {
   id: string;
@@ -65,7 +69,7 @@ export interface CaseStudy {
   };
 
   // Metadata
-  icon: LucideIcon;
+  icon: React.ComponentType<AnimatedIconProps>;
   gradient: string;
   tags: string[];
   websiteUrl: string;
@@ -133,7 +137,7 @@ export const caseStudies: CaseStudy[] = [
       nextSteps: ["Mobile app development", "Collaborative study groups", "Integration with Canvas/LMS"]
     },
 
-    icon: Brain,
+    icon: BrainCircuitIcon,
     gradient: "from-blue-900 to-indigo-900",
     tags: ["AI/ML", "EdTech", "Full Stack"],
     websiteUrl: "https://satbrain.vercel.app/",
@@ -201,7 +205,7 @@ export const caseStudies: CaseStudy[] = [
       nextSteps: ["Multi-store rollout across more Calgary Coop locations", "Batch export functionality for inventory systems", "Offline mode for areas with poor connectivity"]
     },
 
-    icon: ScanBarcode,
+    icon: ScanBarcodeIcon,
     gradient: "from-violet-900 to-purple-900",
     tags: ["Chrome Extension", "AI/OCR", "Internal Tool", "B2B"],
     websiteUrl: "https://chromewebstore.google.com/detail/barcode-lists/colpoghjdbjnmciefnipaefbdflgjifg",
@@ -271,7 +275,7 @@ export const caseStudies: CaseStudy[] = [
       nextSteps: ["Add 'Apply' automation", "Resume score analysis", "History tracking"]
     },
 
-    icon: Bot,
+    icon: FileDescriptionIcon,
     gradient: "from-orange-900 to-red-900",
     tags: ["GenAI", "Chrome Ext", "Productivity"],
     websiteUrl: "https://chromewebstore.google.com/detail/pocketresume/mdplmgfkpgalajmchilemiamifoaneip?hl=en-US&utm_source=ext_sidebar",

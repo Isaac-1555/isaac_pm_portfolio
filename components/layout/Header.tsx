@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Rocket } from "lucide-react";
+import RocketIcon from "@/components/icons/rocket-icon";
+import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -20,8 +21,14 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b-2 border-bg-dark bg-bg-base/95 backdrop-blur supports-[backdrop-filter]:bg-bg-base/80">
       <div className="container mx-auto flex h-14 md:h-16 items-center justify-between px-4 md:px-6">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 font-industrial text-lg md:text-xl font-bold tracking-wide md:tracking-widest text-text-primary hover:text-cta transition-colors shrink-0">
-          <Rocket className="h-5 w-5 md:h-6 md:w-6" />
+        <Link
+          href="/"
+          data-icon-hover-trigger
+          className="flex items-center gap-2 font-industrial text-lg md:text-xl font-bold tracking-wide md:tracking-widest text-text-primary hover:text-cta transition-colors shrink-0"
+        >
+          <IconHoverWrapper hoverTrigger="closest">
+            <RocketIcon size={20} className="md:!w-6 md:!h-6" />
+          </IconHoverWrapper>
           <span className="hidden sm:inline">IDS.PM</span>
           <span className="sm:hidden">IDS</span>
         </Link>

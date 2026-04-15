@@ -1,7 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, BookOpen, Calendar, Clock, User } from "lucide-react";
+import RightChevron from "@/components/icons/right-chevron";
+import BookIcon from "@/components/icons/book-icon";
+import ClockIcon from "@/components/icons/clock-icon";
+import UserIcon from "@/components/icons/user-icon";
+import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 
 const posts = [
   {
@@ -35,7 +39,7 @@ export default function BlogPage() {
       {/* Post list */}
       <section id="mission-blog-projects" className="mb-24">
         <h2 className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 flex items-center gap-2">
-          <BookOpen className="h-5 w-5 text-cta" /> All Posts
+          <BookIcon size={20} className="text-cta" /> All Posts
         </h2>
 
         <div className="space-y-10">
@@ -43,6 +47,7 @@ export default function BlogPage() {
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
+              data-icon-hover-trigger
               className="group block"
             >
               <article className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 items-start">
@@ -62,15 +67,15 @@ export default function BlogPage() {
                   {/* Meta */}
                   <div className="flex flex-wrap items-center gap-4 text-xs font-tech text-text-secondary uppercase tracking-widest mb-3">
                     <span className="flex items-center gap-1.5">
-                      <User className="h-3.5 w-3.5" />
+                      <UserIcon size={14} />
                       {post.author}
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <Calendar className="h-3.5 w-3.5" />
+                      <ClockIcon size={14} />
                       {post.date}
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <Clock className="h-3.5 w-3.5" />
+                      <ClockIcon size={14} />
                       {post.readTime}
                     </span>
                   </div>
@@ -97,7 +102,9 @@ export default function BlogPage() {
                   {/* Read more */}
                   <div className="flex items-center gap-1.5 text-sm font-tech uppercase tracking-widest text-cta group-hover:gap-3 transition-all">
                     Read Article
-                    <ArrowRight className="h-4 w-4" />
+                    <IconHoverWrapper hoverTrigger="closest">
+                      <RightChevron size={16} />
+                    </IconHoverWrapper>
                   </div>
                 </div>
               </article>

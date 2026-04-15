@@ -33,7 +33,7 @@ export default function Home() {
                 <div className="text-xs md:text-sm font-industrial text-text-secondary uppercase tracking-wide">Years Exp</div>
               </div>
               <div className="border-l-2 border-cta pl-4">
-                <div className="text-3xl md:text-4xl font-industrial font-bold text-white">126</div>
+                <div className="text-3xl md:text-4xl font-industrial font-bold text-white">100+</div>
                 <div className="text-xs md:text-sm font-industrial text-text-secondary uppercase tracking-wide">Products Shipped</div>
               </div>
             </div>

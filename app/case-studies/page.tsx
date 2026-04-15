@@ -1,8 +1,12 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowRight, BarChart2, Briefcase, Rocket, Shield } from "lucide-react";
+import RightChevron from "@/components/icons/right-chevron";
+import RocketIcon from "@/components/icons/rocket-icon";
+import ShieldCheck from "@/components/icons/shield-check";
+import TravelBag from "@/components/icons/travel-bag";
+import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 
 const projects = [
   {
@@ -15,7 +19,7 @@ const projects = [
     tags: ["Data Vis", "Real-time", "UX/UI"],
     href: "/case-studies/project-orion",
     gradient: "from-blue-900 to-slate-900",
-    icon: Rocket,
+    icon: RocketIcon,
   },
   {
     id: "aegis",
@@ -27,7 +31,7 @@ const projects = [
     tags: ["AI/ML", "Security", "Big Data"],
     href: "/case-studies/aegis-system",
     gradient: "from-emerald-900 to-teal-900",
-    icon: Shield,
+    icon: ShieldCheck,
   },
   {
     id: "nexus",
@@ -39,7 +43,7 @@ const projects = [
     tags: ["Web3", "Strategy", "Growth"],
     href: "/case-studies/nexus-protocol",
     gradient: "from-purple-900 to-indigo-900",
-    icon: Briefcase,
+    icon: TravelBag,
   },
 ];
 
@@ -59,10 +63,19 @@ export default function CaseStudiesPage() {
         {projects.map((project) => {
             const Icon = project.icon;
             return (
-            <Card key={project.id} className="group h-full flex flex-col hover:border-cta transition-colors">
+            <Card
+              key={project.id}
+              data-icon-hover-trigger
+              className="group h-full flex flex-col hover:border-cta transition-colors"
+            >
               <div className={`h-48 w-full bg-gradient-to-br ${project.gradient} relative overflow-hidden flex items-center justify-center`}>
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
-                <Icon className="h-16 w-16 text-white/20 group-hover:text-white/40 transition-colors transform group-hover:scale-110 duration-500" />
+                <IconHoverWrapper
+                  hoverTrigger="closest"
+                  className="transition-transform group-hover:scale-110 [&_svg]:transition-colors group-hover:[&_svg]:text-white/40"
+                >
+                  <Icon size={64} color="rgba(255,255,255,0.2)" />
+                </IconHoverWrapper>
                 <Badge variant="outline" className="absolute top-4 right-4 bg-black/50 backdrop-blur text-white border-white/20">
                   {project.company}
                 </Badge>
@@ -100,10 +113,12 @@ export default function CaseStudiesPage() {
               </CardContent>
               
               <CardFooter className="mt-auto pt-6 border-t border-divider/50">
-                <Link href={project.href} className="w-full">
+                <Link href={project.href} data-icon-hover-trigger className="w-full">
                   <Button variant="ghost" className="w-full group-hover:bg-cta group-hover:text-white transition-all">
                     Initialize Protocol
-                    <ArrowRight className="ml-2 h-4 w-4" />
+                    <IconHoverWrapper hoverTrigger="closest">
+                      <RightChevron size={16} className="ml-2" />
+                    </IconHoverWrapper>
                   </Button>
                 </Link>
               </CardFooter>
