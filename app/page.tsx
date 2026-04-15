@@ -25,11 +25,11 @@ export default function Home() {
               Engineering <span className="text-cta">Impact</span>
             </h2>
             <p className="text-text-secondary leading-relaxed mb-8 max-w-lg font-sans text-sm md:text-base">
-              With over 8 years of experience in product management and systems architecture, I specialize in transforming ambiguous problems into scalable, user-centric solutions. My approach combines rigorous data analysis with intuitive design principles.
+              With over 5 years of experience in product management and systems architecture, I specialize in transforming ambiguous problems into scalable, user-centric solutions. My approach combines rigorous data analysis with intuitive design principles.
             </p>
             <div className="grid grid-cols-2 gap-6 mb-8">
               <div className="border-l-2 border-cta pl-4">
-                <div className="text-3xl md:text-4xl font-industrial font-bold text-white">8+</div>
+                <div className="text-3xl md:text-4xl font-industrial font-bold text-white">5+</div>
                 <div className="text-xs md:text-sm font-industrial text-text-secondary uppercase tracking-wide">Years Exp</div>
               </div>
               <div className="border-l-2 border-cta pl-4">
