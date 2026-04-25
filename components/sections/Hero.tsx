@@ -1,11 +1,27 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
+import { AnimatedText } from "@/components/ui/split-flap";
 import RightChevron from "@/components/icons/right-chevron";
 import FileDescriptionIcon from "@/components/icons/file-description-icon";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
+
+const ROLES = [
+  { title: "Product Manager", subtitle: "B2B SaaS & Internal Tools" },
+  { title: "AI Engineer", subtitle: "AI Powered Automations" },
+  { title: "Software Developer", subtitle: "Web and mobile apps" },
+] as const;
 
 export function Hero() {
+  const [roleIndex, setRoleIndex] = useState(0);
+  const currentRole = ROLES[roleIndex];
+
+  const handleClick = () => {
+    setRoleIndex((i) => (i + 1) % ROLES.length);
+  };
   return (
     <section
       id="mission-home-hero"
@@ -22,10 +38,15 @@ export function Hero() {
           OPEN TO WORK
         </Badge>
         
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-industrial uppercase font-bold tracking-wide md:tracking-widest text-text-primary leading-none">
-          <span className="block">Product <span className="text-cta">Manager</span></span>
+        <h1
+          onClick={handleClick}
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-industrial uppercase font-bold tracking-wide md:tracking-widest text-text-primary leading-none cursor-pointer select-none hover:opacity-90 transition-opacity"
+        >
+          <span className="block">
+            <AnimatedText text={currentRole.title} />
+          </span>
           <span className="block mt-2 text-2xl sm:text-3xl md:text-4xl lg:text-5xl normal-case tracking-normal font-sans text-text-secondary">
-            B2B SaaS & Internal Tools
+            <AnimatedText text={currentRole.subtitle} />
           </span>
         </h1>
         

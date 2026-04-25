@@ -1,0 +1,215 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "IDS.PM" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e5]:
+          - img
+        - generic [ref=e6]: IDS.PM
+      - navigation [ref=e7]:
+        - link "Home" [ref=e8] [cursor=pointer]:
+          - /url: /
+          - text: Home
+        - link "Works" [ref=e10] [cursor=pointer]:
+          - /url: /work
+        - link "BLOG" [ref=e11] [cursor=pointer]:
+          - /url: /blog
+      - generic [ref=e12]:
+        - link "Contact" [ref=e13] [cursor=pointer]:
+          - /url: https://www.linkedin.com/in/isaac-daniel-sudakar-182792375
+        - link "Resume" [ref=e14] [cursor=pointer]:
+          - /url: /experience
+          - button "Resume" [ref=e15]:
+            - generic [ref=e16]: Resume
+  - main [ref=e17]:
+    - generic [ref=e19]:
+      - generic [ref=e20]: OPEN TO WORK
+      - heading "A I E n g i n e e r A I a s s i s t e d A u t o m a t i o n s" [level=1] [ref=e205] [cursor=pointer]:
+        - generic [ref=e206]:
+          - generic [ref=e207]: A
+          - generic [ref=e208]: I
+          - generic [ref=e210]: E
+          - generic [ref=e211]: "n"
+          - generic [ref=e212]: g
+          - generic [ref=e213]: i
+          - generic [ref=e214]: "n"
+          - generic [ref=e215]: e
+          - generic [ref=e216]: e
+          - generic [ref=e217]: r
+        - generic [ref=e218]:
+          - generic [ref=e219]: A
+          - generic [ref=e220]: I
+          - generic [ref=e222]: a
+          - generic [ref=e223]: s
+          - generic [ref=e224]: s
+          - generic [ref=e225]: i
+          - generic [ref=e226]: s
+          - generic [ref=e227]: t
+          - generic [ref=e228]: e
+          - generic [ref=e229]: d
+          - generic [ref=e231]: A
+          - generic [ref=e232]: u
+          - generic [ref=e233]: t
+          - generic [ref=e234]: o
+          - generic [ref=e235]: m
+          - generic [ref=e236]: a
+          - generic [ref=e237]: t
+          - generic [ref=e238]: i
+          - generic [ref=e239]: o
+          - generic [ref=e240]: "n"
+          - generic [ref=e241]: s
+      - paragraph [ref=e24]: Transforming ambiguous problems into scalable, user-centric solutions. 5+ years driving adoption and workflow efficiency through data-driven strategy.
+      - generic [ref=e25]:
+        - link "View Works" [ref=e26] [cursor=pointer]:
+          - /url: /work
+          - button "View Works" [ref=e27]:
+            - text: View Works
+            - generic [ref=e28]:
+              - generic:
+                - img
+        - link "Download Resume" [ref=e29] [cursor=pointer]:
+          - /url: /Isaac_Daniel_Sudakar_Resume.pdf
+          - button "Download Resume" [ref=e30]:
+            - text: Download Resume
+            - generic [ref=e31]:
+              - img
+      - generic [ref=e32]:
+        - generic [ref=e33]: "STATUS: AVAILABLE"
+        - generic [ref=e34]: "LOC: CALGARY, AB"
+    - generic [ref=e36]:
+      - generic [ref=e37]:
+        - generic [ref=e38]:
+          - generic [ref=e39]: Selected Case Studies
+          - heading "Featured Works" [level=2] [ref=e40]
+        - link "View Full Portfolio" [ref=e41] [cursor=pointer]:
+          - /url: /work
+          - button "View Full Portfolio" [ref=e42]:
+            - text: View Full Portfolio
+            - generic [ref=e43]:
+              - generic:
+                - img
+      - generic [ref=e44]:
+        - generic [ref=e45]:
+          - generic [ref=e46]:
+            - img "SatBrain" [ref=e47]
+            - generic [ref=e49]: AI Study Platform
+          - generic [ref=e50]:
+            - heading "SatBrain" [level=3] [ref=e51]
+            - generic [ref=e52]: Product Manager
+          - generic [ref=e53]:
+            - paragraph [ref=e54]: Led product strategy for a data-centric decision-support platform. Synthesized quantitative data into actionable insights for users.
+            - generic [ref=e55]:
+              - generic [ref=e56]: AI/ML
+              - generic [ref=e57]: Product Strategy
+              - generic [ref=e58]: Dashboard
+            - generic [ref=e59]:
+              - generic [ref=e61]: +30% Adoption
+              - generic [ref=e63]: Data-Driven
+          - link "View Details" [ref=e65] [cursor=pointer]:
+            - /url: /case-studies/satbrain
+            - button "View Details" [ref=e66]:
+              - text: View Details
+              - generic [ref=e67]:
+                - generic:
+                  - img
+        - generic [ref=e68]:
+          - generic [ref=e69]:
+            - img "Barcode Lists" [ref=e70]
+            - generic [ref=e72]: Calgary Coop (Internal)
+          - generic [ref=e73]:
+            - heading "Barcode Lists" [level=3] [ref=e74]
+            - generic [ref=e75]: PM & Developer
+          - generic [ref=e76]:
+            - paragraph [ref=e77]: Internal Chrome Extension for Calgary Coop. AI-powered barcode extraction with shared access across store personnel.
+            - generic [ref=e78]:
+              - generic [ref=e79]: Chrome Ext
+              - generic [ref=e80]: AI
+              - generic [ref=e81]: Internal Tool
+            - generic [ref=e82]:
+              - generic [ref=e84]: Live in Store
+              - generic [ref=e86]: AI/OCR
+          - link "View Details" [ref=e88] [cursor=pointer]:
+            - /url: /case-studies/barcode-lists
+            - button "View Details" [ref=e89]:
+              - text: View Details
+              - generic [ref=e90]:
+                - generic:
+                  - img
+        - generic [ref=e91]:
+          - generic [ref=e92]:
+            - img "Pocket Resume" [ref=e93]
+            - generic [ref=e95]: Consumer Tool
+          - generic [ref=e96]:
+            - heading "Pocket Resume" [level=3] [ref=e97]
+            - generic [ref=e98]: Technical PM
+          - generic [ref=e99]:
+            - paragraph [ref=e100]: AI-powered tool that tailors resumes to job descriptions. Demonstrates rapid prototyping and LLM integration skills.
+            - generic [ref=e101]:
+              - generic [ref=e102]: GenAI
+              - generic [ref=e103]: Technical PM
+              - generic [ref=e104]: React
+            - generic [ref=e105]:
+              - generic [ref=e107]: AI Engineering
+              - generic [ref=e109]: Prototype
+          - link "View Details" [ref=e111] [cursor=pointer]:
+            - /url: /case-studies/pocket-resume
+            - button "View Details" [ref=e112]:
+              - text: View Details
+              - generic [ref=e113]:
+                - generic:
+                  - img
+    - generic [ref=e115]:
+      - generic [ref=e116]:
+        - generic [ref=e117]: Profile Summary
+        - heading "Engineering Impact" [level=2] [ref=e118]
+        - paragraph [ref=e119]: With over 5 years of experience in product management and systems architecture, I specialize in transforming ambiguous problems into scalable, user-centric solutions. My approach combines rigorous data analysis with intuitive design principles.
+        - generic [ref=e120]:
+          - generic [ref=e121]:
+            - generic [ref=e122]: 5+
+            - generic [ref=e123]: Years Exp
+          - generic [ref=e124]:
+            - generic [ref=e125]: 30+
+            - generic [ref=e126]: Products Shipped
+      - img "Isaac Daniel Sudakar" [ref=e128]
+  - button "Astronaut guide — click to tour sections" [ref=e168] [cursor=pointer]:
+    - img [ref=e169]
+  - contentinfo [ref=e129]:
+    - generic [ref=e130]:
+      - generic [ref=e131]:
+        - generic [ref=e132]:
+          - link "IDS.PM" [ref=e133] [cursor=pointer]:
+            - /url: /
+          - paragraph [ref=e134]:
+            - text: Product Manager | B2B SaaS & Internal Tools.
+            - text: Based in Calgary, AB.
+        - generic [ref=e135]:
+          - heading "Connect" [level=4] [ref=e136]
+          - list [ref=e137]:
+            - listitem [ref=e138]:
+              - link "LinkedIn" [ref=e139] [cursor=pointer]:
+                - /url: https://www.linkedin.com/in/isaac-daniel-sudakar-182792375
+                - generic [ref=e140]:
+                  - img
+                - generic [ref=e141]: LinkedIn
+            - listitem [ref=e142]:
+              - link "GitHub" [ref=e143] [cursor=pointer]:
+                - /url: https://github.com/Isaac-1555
+                - generic [ref=e144]:
+                  - img
+                - generic [ref=e145]: GitHub
+            - listitem [ref=e146]:
+              - link "Email" [ref=e147] [cursor=pointer]:
+                - /url: mailto:benisaac1892@gmail.com
+                - generic [ref=e148]:
+                  - img
+                - generic [ref=e149]: Email
+        - generic [ref=e150]:
+          - heading "Status" [level=4] [ref=e151]
+          - list [ref=e152]:
+            - listitem [ref=e153]:
+              - generic [ref=e155]: Open to Work
+            - listitem [ref=e156]: "Updated: Apr 2026"
+      - generic [ref=e157]: © 2026 Isaac Daniel Sudakar. All rights reserved.
+  - button "Open Next.js Dev Tools" [ref=e163] [cursor=pointer]:
+    - img [ref=e164]
+  - alert [ref=e204]
