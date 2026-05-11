@@ -64,13 +64,22 @@ const flagshipProjects = [
 
 const technicalProjects = [
   {
-    id: "nano-mux",
-    title: "nano-mux",
+    id: "lite-mux",
+    title: "Lite-Mux",
     role: "Developer",
-    description: "An optimized IDE/Terminal for agentic work that uses CLI tools. Built for efficient multi-pane workflows.",
-    tags: ["TypeScript", "IDE", "Agentic AI"],
-    href: "https://github.com/Isaac-1555/nano-mux",
+    description: "Light-weight Rust based IDE with multi session terminal.",
+    tags: ["Rust", "IDE", "Terminal"],
+    href: "https://github.com/Isaac-1555/Lite-Mux",
     icon: TerminalIcon,
+  },
+  {
+    id: "phone-barcode",
+    title: "Phone-Barcode-scanner",
+    role: "Developer",
+    description: "Helps scan barcodes and send them to Barcode-Lists extension.",
+    tags: ["React Native", "Mobile", "Barcode"],
+    href: "https://github.com/Isaac-1555/Phone-Barcode-scanner",
+    icon: ScanBarcodeIcon,
   },
   {
     id: "pigeon",
