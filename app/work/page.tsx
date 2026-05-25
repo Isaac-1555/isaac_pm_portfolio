@@ -14,7 +14,7 @@ import RadioIcon from "@/components/icons/radio-icon";
 import SparklesIcon from "@/components/icons/sparkles-icon";
 import LayoutDashboardIcon from "@/components/icons/layout-dashboard-icon";
 import YoutubeIcon from "@/components/icons/youtube-icon";
-import LayersIcon from "@/components/icons/layers-icon";
+import CodeIcon from "@/components/icons/code-icon";
 import GlobeIcon from "@/components/icons/globe-icon";
 import TerminalIcon from "@/components/icons/terminal-icon";
 import SendIcon from "@/components/icons/send-icon";
@@ -154,13 +154,13 @@ const technicalProjects = [
     icon: YoutubeIcon,
   },
   {
-    id: "resume-tower",
-    title: "ResumeTower",
+    id: "d4c",
+    title: "D4C",
     role: "Developer",
-    description: "Job application organizer that polls Gmail for opportunities and manages resumes and cover letters.",
-    tags: ["Full Stack", "Supabase", "React"],
-    href: "https://github.com/Isaac-1555/ResumeTower",
-    icon: LayersIcon,
+    description: "Personal coding agent built from pi coding agent with customizations for personal coding preferences and workflow.",
+    tags: ["AI", "Coding Agent", "Dev Tool"],
+    href: "https://github.com/Isaac-1555/D4C",
+    icon: CodeIcon,
   },
   {
     id: "portfolio",
