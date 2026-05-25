@@ -2,23 +2,22 @@ import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import RightChevron from "@/components/icons/right-chevron";
-import BookIcon from "@/components/icons/book-icon";
 import ClockIcon from "@/components/icons/clock-icon";
 import UserIcon from "@/components/icons/user-icon";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 
 const posts = [
   {
-    slug: "restostar",
-    title: "Restostar: Turning Unhappy Diners into Private Conversations",
+    slug: "d4c",
+    title: "D4C: Building a Personalized Coding Agent on Top of Pi",
     subtitle:
-      "The story behind a startup idea that rethinks restaurant reputation management — routing feedback by sentiment so that every review works for the restaurant, not against it.",
-    date: "April 2026",
+      "How I forked the pi coding agent and added plan/build modes, permanent MCP servers, and an /update skill that preserves customizations across upstream syncs.",
+    date: "May 2026",
     readTime: "8 min",
     author: "Isaac",
-    tags: ["SaaS", "0 to 1", "MVP", "Reputation Management"],
-    image: "/Restostar_Dashboard.png",
-    gradient: "from-emerald-900 to-teal-900",
+    tags: ["AI", "Dev Tools", "Open Source", "Agent"],
+    image: "/D4C_Thumbnail.png",
+    gradient: "from-indigo-900 to-purple-900",
   },
 ];
 
@@ -38,10 +37,6 @@ export default function BlogPage() {
 
       {/* Post list */}
       <section id="mission-blog-projects" className="mb-24">
-        <h2 className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 flex items-center gap-2">
-          <BookIcon size={20} className="text-cta" /> All Posts
-        </h2>
-
         <div className="space-y-10">
           {posts.map((post) => (
             <Link
