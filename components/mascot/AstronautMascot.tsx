@@ -62,6 +62,7 @@ const PM_QUIPS = [
   "I found my ideal customer!",
   "Let\u2019s build the MVP",
   "What\u2019s the GTM strategy?",
+  "Click on the Job title",
 ];
 
 const FUNNY_QUIPS = [

@@ -10,9 +10,10 @@ import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 
 const ROLES = [
+  { title: "Software Developer", subtitle: "Web and mobile apps" },
   { title: "Product Manager", subtitle: "B2B SaaS & Internal Tools" },
   { title: "AI Engineer", subtitle: "AI Powered Automations" },
-  { title: "Software Developer", subtitle: "Web and mobile apps" },
+  
 ] as const;
 
 export function Hero() {
