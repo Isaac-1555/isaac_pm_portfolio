@@ -25,10 +25,19 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Isaac PM Portfolio",
+  title: "Isaac Portfolio",
   description: "A futuristic portfolio for a Product Manager, inspired by NASA Punk aesthetics.",
   icons: {
     icon: "/IDS.ico",
+  },
+  openGraph: {
+    title: "Isaac Portfolio",
+    description: "A futuristic portfolio for a Product Manager, inspired by NASA Punk aesthetics.",
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
 };
 
