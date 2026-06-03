@@ -25,14 +25,14 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Isaac Portfolio",
-  description: "A futuristic portfolio for a Product Manager, inspired by NASA Punk aesthetics.",
+  title: "Isaac Daniel Sudakar | AI Engineer & Creative Technologist",
+  description: "AI Engineer building intelligent products across AI strategy, creative technology, and systems engineering. Portfolio exploring the intersection of product thinking, design, and code.",
   icons: {
     icon: "/IDS.ico",
   },
   openGraph: {
-    title: "Isaac Portfolio",
-    description: "A futuristic portfolio for a Product Manager, inspired by NASA Punk aesthetics.",
+    title: "Isaac Daniel Sudakar | AI Engineer & Creative Technologist",
+    description: "AI Engineer building intelligent products across AI strategy, creative technology, and systems engineering. Portfolio exploring the intersection of product thinking, design, and code.",
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
