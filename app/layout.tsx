@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MascotMount } from "@/components/mascot/MascotMount";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const orbitron = Orbitron({
   subsets: ["latin"],
@@ -66,6 +67,7 @@ export default function RootLayout({
         </main>
         <MascotMount />
         <Footer />
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
       </body>
     </html>
   );
