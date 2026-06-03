@@ -12,10 +12,10 @@ export function Footer() {
           {/* Brand Section */}
           <div className="sm:col-span-2 lg:col-span-2">
             <Link href="/" className="font-industrial text-xl md:text-2xl font-bold tracking-widest text-cta mb-4 block uppercase">
-              IDS.PM
+              Isaac Daniel
             </Link>
             <p className="text-text-secondary text-sm leading-relaxed max-w-sm font-sans">
-              Product Manager | B2B SaaS & Internal Tools. <br />
+              Software Developer & Technical Product Manager | B2B SaaS & Internal Tools. <br />
               Based in Calgary, AB.
             </p>
           </div>

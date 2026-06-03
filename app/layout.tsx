@@ -27,17 +27,17 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://isaacdani.ca"),
-  title: "Isaac Daniel Sudakar | AI Engineer & Creative Technologist",
-  description: "AI Engineer building intelligent products across AI strategy, creative technology, and systems engineering. Portfolio exploring the intersection of product thinking, design, and code.",
+  title: "Isaac Daniel Sudakar | Software Developer & Technical Product Manager",
+  description: "Software Developer & Technical Product Manager building AI-powered products across web, mobile, and intelligent automation. Portfolio exploring the intersection of AI engineering, product strategy, and full-stack development.",
   icons: {
-    icon: "/IDS.ico",
+    icon: "/logo.png",
   },
   openGraph: {
     type: "website",
     url: "https://isaacdani.ca",
     siteName: "Isaac Daniel Sudakar",
-    title: "Isaac Daniel Sudakar | AI Engineer & Creative Technologist",
-    description: "AI Engineer building intelligent products across AI strategy, creative technology, and systems engineering. Portfolio exploring the intersection of product thinking, design, and code.",
+    title: "Isaac Daniel Sudakar | Software Developer & Technical Product Manager",
+    description: "Software Developer & Technical Product Manager building AI-powered products across web, mobile, and intelligent automation. Portfolio exploring the intersection of AI engineering, product strategy, and full-stack development.",
     images: [{
       url: "/og-image.png",
       width: 1200,

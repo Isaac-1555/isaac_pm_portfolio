@@ -6,6 +6,7 @@ import ShieldCheck from "@/components/icons/shield-check";
 import StackIcon from "@/components/icons/stack-icon";
 import UsersIcon from "@/components/icons/users-icon";
 import TrophyIcon from "@/components/icons/trophy-icon";
+import CodeIcon from "@/components/icons/code-icon";
 import FileDescriptionIcon from "@/components/icons/file-description-icon";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 
@@ -22,7 +23,7 @@ const skills = [
   },
   { 
     category: "Technical", 
-    items: ["SQL", "APIs", "React/Next.js", "AI Tools", "System Architecture"], 
+    items: ["APIs", "React/Next.js", "AI Coding Agents", "System Architecture", "DevOps", "MCP"], 
     icon: StackIcon 
   },
   { 
@@ -30,17 +31,22 @@ const skills = [
     items: ["Stakeholder Management", "Agile/Scrum", "Change Management", "Sprint Planning"], 
     icon: ShieldCheck 
   },
+  { 
+    category: "Languages", 
+    items: ["TypeScript", "Python", "Rust", "SQL", "Kotlin", "Swift", "React"], 
+    icon: CodeIcon 
+  },
 ];
 
 const experience = [
   {
-    role: "Technology Product Consultant",
+    role: "Full Stack Developer",
     company: "The Blessed Life",
     period: "2025 - 2026",
     description: "Owning end-to-end product delivery for B2B workflow initiatives. Leading customer discovery, problem framing, and roadmap prioritization. Achieved ~25% improvement in workflow completion rates and ~30% increase in feature adoption.",
   },
   {
-    role: "Product Operations Specialist",
+    role: "IT Operations Specialist",
     company: "Calgary Coop",
     period: "2024 - Present",
     description: "Implemented workflow improvements that boosted team efficiency by 20%. Reduced file retrieval time 35% through optimized categorization. Streamlined documentation processedd supporting internal porduct tracking.",
@@ -55,12 +61,12 @@ const experience = [
 
 const education = [
   {
-    degree: "Product Management Program (Distinction)",
+    degree: "Product Management Program",
     school: "Southern Alberta Institute of Technology",
     year: "2025",
   },
   {
-    degree: "Project Management Program (Distinction)",
+    degree: "Project Management Program",
     school: "Southern Alberta Institute of Technology",
     year: "2024",
   },
@@ -81,10 +87,10 @@ export default function AboutPage() {
 
         <div className="prose prose-invert max-w-none mb-16">
           <p className="text-xl text-text-secondary leading-relaxed">
-            Customer centric Product Manager with 5+ years of experience owning and delivering workflow heavy B2B software products from discovery through launch and iteration.
+            Software Developer and Product Manager with 5+ years of experience designing, building, and shipping AI-enhanced, workflow-heavy B2B software products from discovery through launch and iteration.
           </p>
           <p className="text-lg text-text-secondary leading-relaxed mt-4">
-            Strong background in customer research, problem framing, and cross functional execution across engineering, design, and business stakeholders. Proven ability to translate complex operational workflows into scalable product solutions, define success metrics, and continuously improve adoption and outcomes.
+            Strong background in full-stack development, AI tooling integration, customer research, and cross-functional execution across engineering, design, and business stakeholders. Proven ability to translate complex operational workflows into scalable product solutions, define success metrics, and continuously improve adoption and outcomes.
           </p>
           <div className="mt-8">
 <Link href="/Isaac_Daniel_Sudakar_Resume.pdf" download target="_blank" data-icon-hover-trigger>
@@ -167,6 +173,19 @@ export default function AboutPage() {
                   <div className="text-xs font-mono text-cta mt-1">{edu.year}</div>
                 </div>
               </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-24">
+          <h2 className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4">
+            Certifications
+          </h2>
+          <div className="flex flex-wrap gap-3">
+            {["Agile & Scrum", "Prompt Engineering", "Context Engineering"].map((cert) => (
+              <Badge key={cert} variant="outline" className="text-sm px-4 py-2 border-cta/50 text-text-secondary">
+                {cert}
+              </Badge>
             ))}
           </div>
         </section>

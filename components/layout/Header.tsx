@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
-import RocketIcon from "@/components/icons/rocket-icon";
+import { motion, AnimatePresence } from "framer-motion";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
+import HamburgerIcon from "@/components/icons/hamburger-icon";
+import { useState, useEffect } from "react";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -16,6 +18,19 @@ const navigation = [
 
 export function Header() {
   const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 80);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b-2 border-bg-dark bg-bg-base/95 backdrop-blur supports-[backdrop-filter]:bg-bg-base/80">
@@ -23,14 +38,22 @@ export function Header() {
         {/* Logo */}
         <Link
           href="/"
-          data-icon-hover-trigger
           className="flex items-center gap-2 font-industrial text-lg md:text-xl font-bold tracking-wide md:tracking-widest text-text-primary hover:text-cta transition-colors shrink-0"
         >
-          <IconHoverWrapper hoverTrigger="closest">
-            <RocketIcon size={20} className="md:!w-6 md:!h-6" />
-          </IconHoverWrapper>
-          <span className="hidden sm:inline">IDS.PM</span>
-          <span className="sm:hidden">IDS</span>
+          <Image
+            src="/logo.png"
+            alt="Isaac Daniel"
+            width={28}
+            height={28}
+            priority
+            className="w-6 h-6 md:w-7 md:h-7 object-contain"
+          />
+          <motion.span
+            layout
+            className="overflow-hidden whitespace-nowrap"
+          >
+            {isScrolled ? "ID" : "Isaac Daniel"}
+          </motion.span>
         </Link>
         
         {/* Desktop Navigation */}
@@ -61,9 +84,13 @@ export function Header() {
           })}
         </nav>
 
-        {/* CTA Button */}
+        {/* CTA + Mobile Hamburger */}
         <div className="flex items-center gap-4">
-          <Link href="https://www.linkedin.com/in/isaac-daniel-sudakar-182792375" target="_blank" className="hidden md:block text-sm font-medium text-text-secondary hover:text-cta transition-colors uppercase tracking-wide">
+          <Link
+            href="https://www.linkedin.com/in/isaac-daniel-sudakar-182792375"
+            target="_blank"
+            className="hidden md:block text-sm font-medium text-text-secondary hover:text-cta transition-colors uppercase tracking-wide"
+          >
             Contact
           </Link>
           <Link href="/experience">
@@ -72,8 +99,50 @@ export function Header() {
               <span className="sm:hidden">CV</span>
             </Button>
           </Link>
+          <div
+            className="md:hidden cursor-pointer"
+            onClick={() => setMobileOpen((prev) => !prev)}
+          >
+            <IconHoverWrapper>
+              <HamburgerIcon size={24} isOpen={mobileOpen} />
+            </IconHoverWrapper>
+          </div>
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ maxHeight: 0, opacity: 0 }}
+            animate={{ maxHeight: 300, opacity: 1 }}
+            exit={{ maxHeight: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="md:hidden overflow-hidden border-t-2 border-bg-dark bg-bg-base/95 backdrop-blur"
+          >
+            <nav className="flex flex-col px-4 py-4 space-y-1">
+              {navigation.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      "block px-4 py-3 text-sm font-medium uppercase tracking-wide rounded transition-colors",
+                      isActive
+                        ? "text-bg-dark font-bold bg-bg-accent/10"
+                        : "text-text-secondary hover:text-cta hover:bg-bg-accent/5"
+                    )}
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                );
+              })}
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
