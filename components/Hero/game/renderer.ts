@@ -14,6 +14,7 @@ import {
   Enemy,
   GenericEnemy,
   LootItem,
+  PowerUp,
   Star,
   ScorePopup,
 } from './entities';
@@ -276,13 +277,138 @@ export function drawEnemy(ctx: CanvasRenderingContext2D, enemy: Enemy): void {
 export function drawBullet(ctx: CanvasRenderingContext2D, bullet: Bullet): void {
   if (!bullet.active) return;
   ctx.save();
-  ctx.fillStyle = COLORS.cta;
-  ctx.shadowColor = COLORS.cta;
-  ctx.shadowBlur = 6;
-  ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+  let color: string = COLORS.cta;
+  let blur = 6;
+  let w = bullet.width;
+  const h = bullet.height;
+  if (bullet.type === 'flame') {
+    color = COLORS.warning;
+    blur = 4;
+    w = Math.max(2, bullet.width - 1);
+  } else if (bullet.type === 'chain') {
+    color = COLORS.tech;
+    blur = 10;
+  } else if (bullet.type === 'strong') {
+    color = COLORS.gold;
+    blur = 8;
+  }
+  ctx.fillStyle = color;
+  ctx.shadowColor = color;
+  ctx.shadowBlur = blur;
+  ctx.fillRect(bullet.x, bullet.y, w, h);
   ctx.shadowBlur = 0;
   ctx.fillStyle = 'rgba(255,255,255,0.6)';
-  ctx.fillRect(bullet.x + 0.5, bullet.y - 1, bullet.width - 1, 3);
+  ctx.fillRect(bullet.x + 0.5, bullet.y - 1, w - 1, Math.min(3, h - 1));
+  ctx.restore();
+}
+
+export function drawPowerUp(
+  ctx: CanvasRenderingContext2D,
+  powerUp: PowerUp
+): void {
+  if (!powerUp.active) return;
+  const cx = powerUp.x + powerUp.width / 2;
+  const cy = powerUp.y + powerUp.height / 2;
+  const s = powerUp.width / 2;
+  const pulse = 0.85 + 0.15 * Math.sin(powerUp.animPhase * 4);
+
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.scale(pulse, pulse);
+
+  ctx.fillStyle = powerUp.color;
+  ctx.shadowColor = powerUp.color;
+  ctx.shadowBlur = 10;
+  ctx.beginPath();
+  for (let j = 0; j < 6; j++) {
+    const a = (j * Math.PI) / 3 - Math.PI / 6;
+    const px = s * Math.cos(a);
+    const py = s * Math.sin(a);
+    if (j === 0) ctx.moveTo(px, py);
+    else ctx.lineTo(px, py);
+  }
+  ctx.closePath();
+  ctx.fill();
+  ctx.shadowBlur = 0;
+
+  ctx.strokeStyle = COLORS.bgDark;
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  ctx.fillStyle = COLORS.textPrimary;
+  ctx.font = 'bold 7px ui-monospace, monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(powerUp.label, 0, 0);
+
+  ctx.restore();
+}
+
+export function drawShield(
+  ctx: CanvasRenderingContext2D,
+  player: Player,
+  shieldTimer: number,
+  time: number
+): void {
+  if (shieldTimer <= 0) return;
+  const pulse = 0.7 + 0.3 * Math.sin(time * 8);
+  ctx.save();
+  ctx.globalAlpha = pulse * 0.7;
+  ctx.strokeStyle = COLORS.success;
+  ctx.lineWidth = 2;
+  ctx.shadowColor = COLORS.success;
+  ctx.shadowBlur = 6;
+  ctx.beginPath();
+  ctx.arc(player.x, player.y, 26, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.restore();
+}
+
+export function drawPowerUpIndicators(
+  ctx: CanvasRenderingContext2D,
+  state: GameState
+): void {
+  const x = 8;
+  let y = 50;
+  const items: { label: string; color: string; timer?: number; maxTimer?: number }[] = [];
+  if (state.attackSpeedLevel > 0) {
+    items.push({ label: `AS L${state.attackSpeedLevel}`, color: COLORS.tech });
+  }
+  if (state.multiShotLevel > 0) {
+    items.push({ label: `MS L${state.multiShotLevel}`, color: COLORS.warning });
+  }
+  if (state.bulletDamage > 1) {
+    items.push({ label: `DMG ${state.bulletDamage}`, color: COLORS.gold });
+  }
+  if (state.tempWeapon) {
+    items.push({
+      label: state.tempWeapon.type.replace('_', ' ').toUpperCase(),
+      color: COLORS.cta,
+      timer: state.tempWeapon.timeLeft,
+      maxTimer: 8,
+    });
+  }
+  if (state.shieldTimer > 0) {
+    items.push({
+      label: 'SHD',
+      color: COLORS.success,
+      timer: state.shieldTimer,
+      maxTimer: 6,
+    });
+  }
+  if (items.length === 0) return;
+  ctx.save();
+  ctx.font = 'bold 8px ui-monospace, monospace';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+    ctx.fillStyle = item.color;
+    ctx.fillRect(x, y + 1, 4, 4);
+    ctx.fillStyle = COLORS.textSecondary;
+    ctx.fillText(item.label, x + 8, y);
+    y += 12;
+  }
   ctx.restore();
 }
 
@@ -570,18 +696,24 @@ export function render(
     drawLootItem(ctx, state.lootItems[i], time);
   }
 
+  for (let i = 0; i < state.powerUps.length; i++) {
+    drawPowerUp(ctx, state.powerUps[i]);
+  }
+
   for (let i = 0; i < state.bullets.length; i++) {
     drawBullet(ctx, state.bullets[i]);
   }
 
   if (state.phase !== 'start' && state.lives > 0) {
     drawPlayer(ctx, state.player, state.invulnerableTimer, time);
+    drawShield(ctx, state.player, state.shieldTimer, time);
   }
   drawParticles(ctx, state.particles);
 
   if (state.phase === 'playing') {
     drawScore(ctx, state.score, state.highScore);
     drawLives(ctx, state.lives);
+    drawPowerUpIndicators(ctx, state);
     drawScorePopups(ctx, state.scorePopups);
     if (state.waveTextTimer > 0) {
       drawWaveAnnouncement(ctx, state.lastWaveNumber, state.waveTextTimer);

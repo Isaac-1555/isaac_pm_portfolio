@@ -205,3 +205,109 @@ export function getMaxConcurrentProjectEnemies(waveNumber: number): number {
     PROJECT_MAX_CONCURRENT_BASE + Math.floor((waveNumber - 1) / 2)
   );
 }
+
+export const POWERUP_SIZE = 18;
+export const POWERUP_SPEED = 80;
+export const POWERUP_SPAWN_BASE = 14;
+export const POWERUP_SPAWN_PER_WAVE = 0.6;
+export const POWERUP_SPAWN_MIN = 5;
+export const POWERUP_DROP_CHANCE_BASE = 0.12;
+export const POWERUP_DROP_CHANCE_PER_WAVE = 0.015;
+export const POWERUP_DROP_CHANCE_MAX = 0.35;
+export const SHIELD_DURATION = 6;
+export const TEMP_WEAPON_DURATION = 8;
+export const FLAME_CONE_COUNT = 5;
+export const FLAME_CONE_SPREAD = 0.35;
+export const CHAIN_RANGE = 140;
+export const BULLET_DAMAGE_PER_LEVEL = 1;
+export const ATTACK_SPEED_FACTOR_PER_LEVEL = 0.18;
+export const MULTI_SHOT_EXTRA_PER_LEVEL = 1;
+
+export const POWERUP_DEFS = {
+  attack_speed: {
+    type: 'attack_speed',
+    color: COLORS.tech,
+    label: 'AS',
+    permanent: true,
+  },
+  multi_shot: {
+    type: 'multi_shot',
+    color: COLORS.warning,
+    label: 'MS',
+    permanent: true,
+  },
+  stronger_bullets: {
+    type: 'stronger_bullets',
+    color: COLORS.gold,
+    label: 'DMG',
+    permanent: true,
+  },
+  extra_life: {
+    type: 'extra_life',
+    color: COLORS.success,
+    label: '+1',
+    permanent: true,
+  },
+  double_shot: {
+    type: 'double_shot',
+    color: COLORS.cta,
+    label: '2X',
+    permanent: false,
+  },
+  flame_thrower: {
+    type: 'flame_thrower',
+    color: COLORS.cta,
+    label: 'FLM',
+    permanent: false,
+  },
+  chain_bullets: {
+    type: 'chain_bullets',
+    color: COLORS.tech,
+    label: 'CHN',
+    permanent: false,
+  },
+  shield: {
+    type: 'shield',
+    color: COLORS.success,
+    label: 'SHD',
+    permanent: false,
+  },
+} as const;
+
+export type PowerUpType = keyof typeof POWERUP_DEFS;
+
+export const POWERUP_KEYS: PowerUpType[] = [
+  'attack_speed',
+  'multi_shot',
+  'stronger_bullets',
+  'extra_life',
+  'double_shot',
+  'flame_thrower',
+  'chain_bullets',
+  'shield',
+];
+
+export const PERMANENT_POWERUPS: PowerUpType[] = [
+  'attack_speed',
+  'multi_shot',
+  'stronger_bullets',
+  'extra_life',
+];
+
+export function getPowerUpSpawnInterval(waveNumber: number): number {
+  return Math.max(
+    POWERUP_SPAWN_MIN,
+    POWERUP_SPAWN_BASE - (waveNumber - 1) * POWERUP_SPAWN_PER_WAVE
+  );
+}
+
+export function getPowerUpDropChance(waveNumber: number): number {
+  return Math.min(
+    POWERUP_DROP_CHANCE_MAX,
+    POWERUP_DROP_CHANCE_BASE + (waveNumber - 1) * POWERUP_DROP_CHANCE_PER_WAVE
+  );
+}
+
+export function rollPowerUpType(): PowerUpType {
+  return POWERUP_KEYS[Math.floor(Math.random() * POWERUP_KEYS.length)];
+}

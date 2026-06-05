@@ -18,7 +18,6 @@ import {
   updatePlayer,
   updateBullets,
   updateStars,
-  deactivateBullet,
   hitGenericEnemy,
   calculateGenericScore,
   updateWave,
@@ -31,6 +30,13 @@ import {
   addScorePopup,
   checkPlayerDamage,
   announceWave,
+  updatePowerUps,
+  updatePowerUpSpawner,
+  tryDropPowerUp,
+  checkPowerUpCollection,
+  updateTempWeapon,
+  updateShield,
+  findNearestEnemy,
 } from './game/physics';
 import {
   findBulletGenericCollisions,
@@ -47,6 +53,7 @@ import {
   HIGH_SCORE_KEY,
   LOOT_CLICK_THRESHOLD,
   INITIAL_LIVES,
+  CHAIN_RANGE,
   COLORS,
   getWaveInterval,
 } from './game/constants';
@@ -93,6 +100,13 @@ function createInitialGameState(): GameState {
     waveTextTimer: 0,
     lastWaveNumber: 0,
     elapsedTime: 0,
+    powerUps: [],
+    powerUpSpawnTimer: 8,
+    attackSpeedLevel: 0,
+    multiShotLevel: 0,
+    bulletDamage: 1,
+    tempWeapon: null,
+    shieldTimer: 0,
   };
 }
 
@@ -114,6 +128,13 @@ function startGame(state: GameState): void {
   state.waveReached = 1;
   state.waveTextTimer = 1.8;
   state.lastWaveNumber = 1;
+  state.powerUps = [];
+  state.powerUpSpawnTimer = 8;
+  state.attackSpeedLevel = 0;
+  state.multiShotLevel = 0;
+  state.bulletDamage = 1;
+  state.tempWeapon = null;
+  state.shieldTimer = 0;
   announceWave(state, 1);
 }
 
@@ -259,6 +280,10 @@ export default function InteractivePortfolioGame() {
         processInput(state, dt, left, right, kbShoot || touchShoot);
         updatePlayer(state.player, dt);
         updateBullets(state.bullets, dt);
+        updatePowerUps(state, dt);
+        updatePowerUpSpawner(state, dt);
+        updateTempWeapon(state, dt);
+        updateShield(state, dt);
         updateWave(state, dt);
         updateProjectEnemies(state, dt);
         updateLootItems(state, dt);
@@ -270,6 +295,7 @@ export default function InteractivePortfolioGame() {
         updateWaveText(state, dt);
 
         checkPlayerDamage(state);
+        checkPowerUpCollection(state);
 
         const genericCollision = findBulletGenericCollisions(
           state.bullets,
@@ -277,8 +303,8 @@ export default function InteractivePortfolioGame() {
         );
         if (genericCollision) {
           const { bulletIndex, enemyIndex } = genericCollision;
+          const bullet = state.bullets[bulletIndex];
           const enemy = state.genericEnemies[enemyIndex];
-          deactivateBullet(state.bullets, bulletIndex);
           if (enemy.active) {
             spawnExplosionFromPool(
               state.particles,
@@ -291,7 +317,8 @@ export default function InteractivePortfolioGame() {
               y: enemy.y + enemy.height / 2,
               time: 0,
             });
-            const killed = hitGenericEnemy(state.genericEnemies, enemyIndex);
+            const damage = bullet?.damage ?? 1;
+            const killed = hitGenericEnemy(state.genericEnemies, enemyIndex, damage);
             if (killed) {
               const points = calculateGenericScore(enemy.type);
               state.score += points;
@@ -302,6 +329,33 @@ export default function InteractivePortfolioGame() {
                 points,
                 enemy.type === 'tough' ? COLORS.gold : COLORS.cta
               );
+              tryDropPowerUp(
+                state,
+                enemy.x + enemy.width / 2,
+                enemy.y + enemy.height / 2
+              );
+            }
+          }
+          if (bullet && bullet.active) {
+            bullet.active = false;
+            if (bullet.type === 'chain' && bullet.chainHits > 0) {
+              const sx = enemy.x + enemy.width / 2;
+              const sy = enemy.y + enemy.height / 2;
+              const target = findNearestEnemy(state, sx, sy, CHAIN_RANGE);
+              if (target) {
+                const tx = target.enemy.x + target.enemy.width / 2;
+                const ty = target.enemy.y + target.enemy.height / 2;
+                const dx = tx - sx;
+                const dy = ty - sy;
+                const dist = Math.hypot(dx, dy) || 1;
+                const speed = 520;
+                bullet.x = sx - bullet.width / 2;
+                bullet.y = sy;
+                bullet.vx = (dx / dist) * speed;
+                bullet.vy = (dy / dist) * speed;
+                bullet.chainHits -= 1;
+                bullet.active = true;
+              }
             }
           }
         }
@@ -312,8 +366,9 @@ export default function InteractivePortfolioGame() {
         );
         if (projectCollision) {
           const { bulletIndex, enemyIndex } = projectCollision;
+          const bullet = state.bullets[bulletIndex];
           const enemy = state.projectEnemies[enemyIndex];
-          deactivateBullet(state.bullets, bulletIndex);
+          if (bullet) bullet.active = false;
           if (enemy.active) {
             spawnExplosionFromPool(
               state.particles,
@@ -345,6 +400,11 @@ export default function InteractivePortfolioGame() {
               enemy.y,
               SCORE_PROJECT,
               COLORS.gold
+            );
+            tryDropPowerUp(
+              state,
+              enemy.x + enemy.width / 2,
+              enemy.y + enemy.height / 2
             );
           }
         }

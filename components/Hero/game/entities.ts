@@ -13,8 +13,13 @@ import {
   PARTICLE_SPEED_MAX,
   STAR_COUNT,
   BASE_WIDTH,
+  POWERUP_SIZE,
+  POWERUP_DEFS,
+  PowerUpType,
   getWaveInterval,
 } from './constants';
+
+export type { PowerUpType };
 
 export interface Player {
   x: number;
@@ -30,6 +35,12 @@ export interface Bullet {
   width: number;
   height: number;
   active: boolean;
+  vx: number;
+  vy: number;
+  type: 'normal' | 'flame' | 'chain' | 'strong';
+  damage: number;
+  chainHits: number;
+  age: number;
 }
 
 export interface Enemy {
@@ -97,6 +108,25 @@ export interface Star {
   alpha: number;
 }
 
+export interface PowerUp {
+  type: PowerUpType;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  vy: number;
+  color: string;
+  label: string;
+  permanent: boolean;
+  active: boolean;
+  animPhase: number;
+}
+
+export interface TempWeapon {
+  type: PowerUpType;
+  timeLeft: number;
+}
+
 export type GamePhase = 'start' | 'playing' | 'gameOver';
 
 export interface ScorePopup {
@@ -132,6 +162,13 @@ export interface GameState {
   waveTextTimer: number;
   lastWaveNumber: number;
   elapsedTime: number;
+  powerUps: PowerUp[];
+  powerUpSpawnTimer: number;
+  attackSpeedLevel: number;
+  multiShotLevel: number;
+  bulletDamage: number;
+  tempWeapon: TempWeapon | null;
+  shieldTimer: number;
 }
 
 export function createPlayer(width: number, height: number): Player {
@@ -144,13 +181,29 @@ export function createPlayer(width: number, height: number): Player {
   };
 }
 
-export function createBullet(x: number, y: number): Bullet {
+export function createBullet(
+  x: number,
+  y: number,
+  options: {
+    vx?: number;
+    vy?: number;
+    type?: 'normal' | 'flame' | 'chain' | 'strong';
+    damage?: number;
+    chainHits?: number;
+  } = {}
+): Bullet {
   return {
     x: x - BULLET_WIDTH / 2,
     y,
     width: BULLET_WIDTH,
     height: BULLET_HEIGHT,
     active: true,
+    vx: options.vx ?? 0,
+    vy: options.vy ?? 0,
+    type: options.type ?? 'normal',
+    damage: options.damage ?? 1,
+    chainHits: options.chainHits ?? 0,
+    age: 0,
   };
 }
 
@@ -333,5 +386,27 @@ export function createScorePopup(
     color,
     life: maxLife,
     maxLife,
+  };
+}
+
+export function createPowerUp(
+  type: PowerUpType,
+  x: number,
+  y: number,
+  vy: number
+): PowerUp {
+  const def = POWERUP_DEFS[type];
+  return {
+    type,
+    x,
+    y,
+    width: POWERUP_SIZE,
+    height: POWERUP_SIZE,
+    vy,
+    color: def.color,
+    label: def.label,
+    permanent: def.permanent,
+    active: true,
+    animPhase: 0,
   };
 }

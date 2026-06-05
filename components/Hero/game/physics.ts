@@ -16,13 +16,23 @@ import {
   SCORE_POPUP_LIFETIME,
   WAVE_TEXT_DURATION,
   INVULNERABLE_TIME,
+  SHIELD_DURATION,
+  TEMP_WEAPON_DURATION,
+  FLAME_CONE_COUNT,
+  FLAME_CONE_SPREAD,
+  BULLET_DAMAGE_PER_LEVEL,
+  ATTACK_SPEED_FACTOR_PER_LEVEL,
+  MULTI_SHOT_EXTRA_PER_LEVEL,
+  POWERUP_SPEED,
   COLORS,
-  getWaveInterval,
   getWaveSideStep,
   getWaveDescendStep,
   getProjectSpawnInterval,
   getProjectSpeed,
   getMaxConcurrentProjectEnemies,
+  getPowerUpSpawnInterval,
+  getPowerUpDropChance,
+  rollPowerUpType,
 } from './constants';
 import {
   GameState,
@@ -30,15 +40,49 @@ import {
   Bullet,
   Star,
   GenericEnemy,
+  Enemy,
+  PowerUp,
   createBullet,
   createEnemy,
-  createWaveGrid,
   createScorePopup,
+  createPowerUp,
 } from './entities';
 import {
   findPlayerGenericCollision,
   findPlayerProjectCollision,
 } from './collision';
+
+const SHOOT_COOLDOWN_MIN = 0.06;
+const MULTI_SHOT_SPREAD = 0.1;
+const DOUBLE_SHOT_OFFSET_X = 8;
+const DOUBLE_SHOT_VX = 60;
+const FLAME_BULLET_SPEED = 360;
+const FLAME_VERTICAL_VARIANCE = 0.3;
+const MAX_LIVES = 5;
+
+function getEffectiveShootCooldown(state: GameState): number {
+  const factor = 1 - state.attackSpeedLevel * ATTACK_SPEED_FACTOR_PER_LEVEL;
+  return Math.max(SHOOT_COOLDOWN_MIN, SHOOT_COOLDOWN * factor);
+}
+
+function spawnBullet(
+  state: GameState,
+  x: number,
+  y: number,
+  options: {
+    vx?: number;
+    vy?: number;
+    type?: 'normal' | 'flame' | 'chain' | 'strong';
+    damage?: number;
+    chainHits?: number;
+  } = {}
+): void {
+  const damage = options.damage ?? state.bulletDamage;
+  const type = options.type ?? (state.bulletDamage > 1 ? 'strong' : 'normal');
+  state.bullets.push(
+    createBullet(x, y, { ...options, damage, type })
+  );
+}
 
 export function processInput(
   state: GameState,
@@ -58,11 +102,55 @@ export function processInput(
   }
 
   state.shootCooldown = Math.max(0, state.shootCooldown - dt);
-  if (shootPressed && state.shootCooldown <= 0) {
-    state.bullets.push(
-      createBullet(player.x + player.width / 2, player.y - player.height / 2)
-    );
-    state.shootCooldown = SHOOT_COOLDOWN;
+  if (!shootPressed || state.shootCooldown > 0) return;
+
+  const cooldown = getEffectiveShootCooldown(state);
+  state.shootCooldown = cooldown;
+
+  const tipY = player.y - player.height / 2;
+  const temp = state.tempWeapon;
+
+  if (temp?.type === 'flame_thrower') {
+    for (let i = 0; i < FLAME_CONE_COUNT; i++) {
+      const t = i / (FLAME_CONE_COUNT - 1) - 0.5;
+      const angle = t * FLAME_CONE_SPREAD;
+      const vx = Math.sin(angle) * FLAME_BULLET_SPEED;
+      const vy = -Math.cos(angle) * FLAME_BULLET_SPEED * (1 - FLAME_VERTICAL_VARIANCE * Math.abs(t));
+      spawnBullet(state, player.x, tipY, { vx, vy, type: 'flame', damage: 0 });
+    }
+    return;
+  }
+
+  if (temp?.type === 'double_shot') {
+    spawnBullet(state, player.x - DOUBLE_SHOT_OFFSET_X, tipY, {
+      vx: -DOUBLE_SHOT_VX,
+      vy: -BULLET_SPEED,
+    });
+    spawnBullet(state, player.x + DOUBLE_SHOT_OFFSET_X, tipY, {
+      vx: DOUBLE_SHOT_VX,
+      vy: -BULLET_SPEED,
+    });
+    return;
+  }
+
+  if (temp?.type === 'chain_bullets') {
+    spawnBullet(state, player.x, tipY, {
+      vx: 0,
+      vy: -BULLET_SPEED,
+      type: 'chain',
+      chainHits: 3,
+    });
+    return;
+  }
+
+  const extraShots = state.multiShotLevel * MULTI_SHOT_EXTRA_PER_LEVEL;
+  const total = 1 + extraShots;
+  for (let i = 0; i < total; i++) {
+    const t = total === 1 ? 0 : i / (total - 1) - 0.5;
+    const angle = t * MULTI_SHOT_SPREAD * (total - 1);
+    const vx = Math.sin(angle) * BULLET_SPEED;
+    const vy = -Math.cos(angle) * BULLET_SPEED;
+    spawnBullet(state, player.x, tipY, { vx, vy });
   }
 }
 
@@ -76,8 +164,15 @@ export function updateBullets(bullets: Bullet[], dt: number): void {
   for (let i = bullets.length - 1; i >= 0; i--) {
     const b = bullets[i];
     if (!b.active) continue;
-    b.y -= BULLET_SPEED * dt;
-    if (b.y + b.height < 0) bullets.splice(i, 1);
+    b.x += (b.vx ?? 0) * dt;
+    b.y += (b.vy ?? 0) * dt;
+    b.age += dt;
+    const outOfBounds =
+      b.y + b.height < 0 ||
+      b.y > BASE_HEIGHT + 20 ||
+      b.x + b.width < 0 ||
+      b.x > BASE_WIDTH + 20;
+    if (outOfBounds) bullets.splice(i, 1);
   }
 }
 
@@ -121,14 +216,10 @@ export function updateWave(state: GameState, dt: number): void {
   for (let i = 0; i < enemies.length; i++) {
     const e = enemies[i];
     if (!e.active) continue;
-    if (e.y + e.height > BASE_HEIGHT - 40) {
-      damagePlayer(state, COLORS.gold);
-      state.genericEnemies = createWaveGrid(wave.waveNumber + 1);
-      wave.waveNumber++;
-      wave.moveInterval = getWaveInterval(wave.waveNumber);
-      wave.direction = 1;
-      wave.moveTimer = 0;
-      announceWave(state, wave.waveNumber);
+    if (e.y + e.height > BASE_HEIGHT - 20) {
+      state.phase = 'gameOver';
+      state.shakeAmount = 12;
+      spawnExplosionAt(state, e.x + e.width / 2, e.y + e.height / 2, COLORS.gold);
       return;
     }
   }
@@ -187,6 +278,139 @@ export function updateLootItems(state: GameState, dt: number): void {
   }
 }
 
+export function updatePowerUps(state: GameState, dt: number): void {
+  for (let i = state.powerUps.length - 1; i >= 0; i--) {
+    const p = state.powerUps[i];
+    if (!p.active) {
+      state.powerUps.splice(i, 1);
+      continue;
+    }
+    p.y += p.vy * dt;
+    p.animPhase += dt;
+    if (p.y > BASE_HEIGHT + 30) {
+      state.powerUps.splice(i, 1);
+    }
+  }
+}
+
+export function updatePowerUpSpawner(state: GameState, dt: number): void {
+  state.powerUpSpawnTimer -= dt;
+  if (state.powerUpSpawnTimer > 0) return;
+  const interval = getPowerUpSpawnInterval(state.wave.waveNumber);
+  state.powerUpSpawnTimer = interval;
+  const x = 20 + Math.random() * (BASE_WIDTH - 40);
+  const type = rollPowerUpType();
+  state.powerUps.push(createPowerUp(type, x, -20, POWERUP_SPEED));
+}
+
+export function tryDropPowerUp(
+  state: GameState,
+  x: number,
+  y: number
+): boolean {
+  const chance = getPowerUpDropChance(state.wave.waveNumber);
+  if (Math.random() > chance) return false;
+  const type = rollPowerUpType();
+  state.powerUps.push(createPowerUp(type, x, y, POWERUP_SPEED));
+  return true;
+}
+
+export function checkPowerUpCollection(state: GameState): void {
+  const player = state.player;
+  const pw = player.width;
+  const ph = player.height;
+  const pcx = player.x;
+  const pcy = player.y;
+  for (let i = state.powerUps.length - 1; i >= 0; i--) {
+    const p = state.powerUps[i];
+    if (!p.active) continue;
+    const pcx2 = p.x + p.width / 2;
+    const pcy2 = p.y + p.height / 2;
+    const halfW = pw / 2;
+    const halfH = ph / 2;
+    const overlap =
+      Math.abs(pcx - pcx2) < halfW + p.width / 2 &&
+      Math.abs(pcy - pcy2) < halfH + p.height / 2;
+    if (overlap) {
+      applyPowerUp(state, p.type);
+      p.active = false;
+      state.powerUps.splice(i, 1);
+    }
+  }
+}
+
+export function applyPowerUp(state: GameState, type: PowerUp['type']): void {
+  switch (type) {
+    case 'attack_speed':
+      state.attackSpeedLevel = Math.min(5, state.attackSpeedLevel + 1);
+      break;
+    case 'multi_shot':
+      state.multiShotLevel = Math.min(3, state.multiShotLevel + 1);
+      break;
+    case 'stronger_bullets':
+      state.bulletDamage = 1 + Math.min(4, state.bulletDamage) * BULLET_DAMAGE_PER_LEVEL;
+      break;
+    case 'extra_life':
+      state.lives = Math.min(MAX_LIVES, state.lives + 1);
+      break;
+    case 'shield':
+      state.shieldTimer = SHIELD_DURATION;
+      break;
+    case 'double_shot':
+    case 'flame_thrower':
+    case 'chain_bullets':
+      state.tempWeapon = { type, timeLeft: TEMP_WEAPON_DURATION };
+      break;
+  }
+}
+
+export function updateTempWeapon(state: GameState, dt: number): void {
+  if (!state.tempWeapon) return;
+  state.tempWeapon.timeLeft -= dt;
+  if (state.tempWeapon.timeLeft <= 0) {
+    state.tempWeapon = null;
+  }
+}
+
+export function updateShield(state: GameState, dt: number): void {
+  if (state.shieldTimer > 0) {
+    state.shieldTimer = Math.max(0, state.shieldTimer - dt);
+  }
+}
+
+export function findNearestEnemy(
+  state: GameState,
+  x: number,
+  y: number,
+  range: number
+): { enemy: GenericEnemy; index: number } | { enemy: Enemy; index: number } | null {
+  let bestDistSq = range * range;
+  let bestTarget: { enemy: GenericEnemy; index: number } | { enemy: Enemy; index: number } | null = null;
+  for (let i = 0; i < state.genericEnemies.length; i++) {
+    const e = state.genericEnemies[i];
+    if (!e.active) continue;
+    const dx = e.x + e.width / 2 - x;
+    const dy = e.y + e.height / 2 - y;
+    const d2 = dx * dx + dy * dy;
+    if (d2 < bestDistSq) {
+      bestDistSq = d2;
+      bestTarget = { enemy: e, index: i };
+    }
+  }
+  for (let i = 0; i < state.projectEnemies.length; i++) {
+    const e = state.projectEnemies[i];
+    if (!e.active) continue;
+    const dx = e.x + e.width / 2 - x;
+    const dy = e.y + e.height / 2 - y;
+    const d2 = dx * dx + dy * dy;
+    if (d2 < bestDistSq) {
+      bestDistSq = d2;
+      bestTarget = { enemy: e, index: i };
+    }
+  }
+  return bestTarget;
+}
+
 export function updateStars(stars: Star[], dt: number, width: number, height: number): void {
   for (let i = 0; i < stars.length; i++) {
     const s = stars[i];
@@ -204,10 +428,10 @@ export function deactivateBullet(bullets: Bullet[], index: number): void {
   b.active = false;
 }
 
-export function hitGenericEnemy(enemies: GenericEnemy[], index: number): number {
+export function hitGenericEnemy(enemies: GenericEnemy[], index: number, damage: number = 1): number {
   const e = enemies[index];
   if (!e || !e.active) return 0;
-  e.hits--;
+  e.hits -= damage;
   if (e.hits <= 0) {
     e.active = false;
     return 1;
@@ -261,6 +485,11 @@ export function addScorePopup(
 }
 
 export function damagePlayer(state: GameState, sourceColor: string = COLORS.cta): void {
+  if (state.shieldTimer > 0) {
+    state.shieldTimer = 0;
+    spawnExplosionAt(state, state.player.x, state.player.y, COLORS.success);
+    return;
+  }
   if (state.invulnerableTimer > 0) return;
   state.lives -= 1;
   state.invulnerableTimer = INVULNERABLE_TIME;
