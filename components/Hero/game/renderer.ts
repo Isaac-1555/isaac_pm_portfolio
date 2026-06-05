@@ -566,9 +566,9 @@ export function drawStartScreen(
   ctx.font = '10px ui-monospace, monospace';
   const lineY = 260;
   const lines = [
-    '[A/D] or [<-/->]  MOVE',
-    '[SPACE]            SHOOT',
-    '[CLICK LOOT]       EXPLORE',
+    '[A/D] or [<-/->]      MOVE',
+    '[SPACE]               SHOOT',
+    '[CLICK LOOT]          EXPLORE',
   ];
   for (let i = 0; i < lines.length; i++) {
     ctx.textAlign = 'left';
