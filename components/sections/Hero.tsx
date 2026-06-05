@@ -65,7 +65,7 @@ export function Hero() {
               <AnimatedText text={word} />
             </span>
           ))}
-          <span className="block mt-2 text-2xl sm:text-3xl md:text-4xl lg:text-5xl normal-case tracking-normal font-sans text-text-secondary">
+          <span className="block mt-2 text-xs sm:text-sm md:text-base lg:text-lg leading-none overflow-hidden normal-case tracking-normal font-sans text-text-secondary">
             <AnimatedText text={currentRole.subtitle} />
           </span>
         </h1>
