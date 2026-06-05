@@ -7,7 +7,7 @@ import FileDescriptionIcon from "@/components/icons/file-description-icon";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const ROLES = [
   { title: "Software Developer", subtitle: "Web and mobile apps" },
@@ -18,14 +18,34 @@ const ROLES = [
 
 export function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
   const currentRole = ROLES[roleIndex];
+  const isHoveredRef = useRef(false);
 
-  const handleClick = () => {
-    setRoleIndex((i) => (i + 1) % ROLES.length);
-  };
+  useEffect(() => {
+    isHoveredRef.current = isHovered;
+  }, [isHovered]);
+
+  useEffect(() => {
+    let lastUpdate = performance.now();
+    let rafId: number;
+
+    const tick = (now: number) => {
+      if (!isHoveredRef.current && now - lastUpdate >= 5000) {
+        setRoleIndex((i) => (i + 1) % ROLES.length);
+        lastUpdate = now;
+      }
+      rafId = requestAnimationFrame(tick);
+    };
+
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
+  }, []);
   return (
     <section
       id="mission-home-hero"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       className="relative w-full min-h-[calc(100dvh-3.5rem)] md:min-h-[calc(100dvh-4rem)] flex items-center bg-bg-base overflow-hidden py-16 md:py-24"
     >
       {/* Background Pattern */}
@@ -39,13 +59,12 @@ export function Hero() {
           OPEN TO WORK
         </Badge>
         
-        <h1
-          onClick={handleClick}
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-industrial uppercase font-bold tracking-wide md:tracking-widest text-text-primary leading-none cursor-pointer select-none hover:opacity-90 transition-opacity"
-        >
-          <span className="block">
-            <AnimatedText text={currentRole.title} />
-          </span>
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-industrial uppercase font-bold tracking-wide md:tracking-widest text-text-primary leading-none select-none">
+          {currentRole.title.split(" ").map((word, i) => (
+            <span key={i} className="block">
+              <AnimatedText text={word} />
+            </span>
+          ))}
           <span className="block mt-2 text-2xl sm:text-3xl md:text-4xl lg:text-5xl normal-case tracking-normal font-sans text-text-secondary">
             <AnimatedText text={currentRole.subtitle} />
           </span>

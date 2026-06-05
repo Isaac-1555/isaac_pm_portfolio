@@ -32,9 +32,9 @@ export function AnimatedText({ text }: AnimatedTextProps) {
           return;
         }
         
-        const scrambled = chars.map((targetChar) => {
-          const progress = step / maxSteps;
-          if (Math.random() < progress) {
+        const scrambled = chars.map((targetChar, i) => {
+          const charProgress = i / chars.length;
+          if (step / maxSteps > charProgress) {
             return targetChar;
           }
           return SCRAMBLE_LETTERS[Math.floor(Math.random() * SCRAMBLE_LETTERS.length)];
@@ -43,7 +43,7 @@ export function AnimatedText({ text }: AnimatedTextProps) {
         setDisplayText(scrambled);
       };
       
-      const intervalId = setInterval(tick, 70);
+      const intervalId = setInterval(tick, 110);
       tick();
       
       return () => clearInterval(intervalId);
@@ -51,7 +51,7 @@ export function AnimatedText({ text }: AnimatedTextProps) {
   }, [text]);
 
   return (
-    <span className={isAnimating ? "animate-pulse font-mono" : ""}>
+    <span className={isAnimating ? "animate-pulse" : ""}>
       {displayText}
     </span>
   );
