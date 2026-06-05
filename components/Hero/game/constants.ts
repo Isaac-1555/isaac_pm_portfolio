@@ -64,6 +64,14 @@ export const SCORE_PROJECT = 50;
 
 export const HIGH_SCORE_KEY = 'portfolio-game-hs';
 
+export const INITIAL_LIVES = 3;
+export const INVULNERABLE_TIME = 2;
+export const SHAKE_INTENSITY = 6;
+export const SHAKE_DECAY = 8;
+export const SCORE_POPUP_LIFETIME = 0.8;
+export const WAVE_TEXT_DURATION = 1.8;
+export const PLAYER_BLINK_RATE = 14;
+
 export interface GameProject {
   id: string;
   title: string;

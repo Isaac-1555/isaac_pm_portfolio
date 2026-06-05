@@ -24,6 +24,13 @@ import {
   updateWave,
   updateProjectEnemies,
   updateLootItems,
+  updateInvulnerability,
+  updateScreenShake,
+  updateScorePopups,
+  updateWaveText,
+  addScorePopup,
+  checkPlayerDamage,
+  announceWave,
 } from './game/physics';
 import {
   findBulletGenericCollisions,
@@ -39,6 +46,8 @@ import {
   SCORE_PROJECT,
   HIGH_SCORE_KEY,
   LOOT_CLICK_THRESHOLD,
+  INITIAL_LIVES,
+  COLORS,
 } from './game/constants';
 import ProjectPreviewCard from './ProjectPreviewCard';
 import type { GameProject } from './game/constants';
@@ -60,13 +69,14 @@ function loadHighScore(): number {
 
 function createInitialGameState(): GameState {
   return {
+    phase: 'start',
     player: createPlayer(BASE_WIDTH, BASE_HEIGHT),
     bullets: [],
-    genericEnemies: createWaveGrid(1),
+    genericEnemies: [],
     projectEnemies: [],
     wave: createWaveState(1),
     lootItems: [],
-    particles: createParticlePool(200),
+    particles: createParticlePool(300),
     stars: createStars(BASE_WIDTH, BASE_HEIGHT),
     shootCooldown: 0,
     projectSpawnTimer: 5,
@@ -74,7 +84,36 @@ function createInitialGameState(): GameState {
     highScore: loadHighScore(),
     paused: false,
     reducedMotion: false,
+    lives: INITIAL_LIVES,
+    invulnerableTimer: 0,
+    shakeAmount: 0,
+    scorePopups: [],
+    waveReached: 0,
+    waveTextTimer: 0,
+    lastWaveNumber: 0,
+    elapsedTime: 0,
   };
+}
+
+function startGame(state: GameState): void {
+  state.phase = 'playing';
+  state.player = createPlayer(BASE_WIDTH, BASE_HEIGHT);
+  state.bullets = [];
+  state.genericEnemies = createWaveGrid(1);
+  state.projectEnemies = [];
+  state.wave = createWaveState(1);
+  state.lootItems = [];
+  state.shootCooldown = 0;
+  state.projectSpawnTimer = 5;
+  state.score = 0;
+  state.lives = INITIAL_LIVES;
+  state.invulnerableTimer = 0;
+  state.shakeAmount = 0;
+  state.scorePopups = [];
+  state.waveReached = 1;
+  state.waveTextTimer = 1.8;
+  state.lastWaveNumber = 1;
+  announceWave(state, 1);
 }
 
 export default function InteractivePortfolioGame() {
@@ -85,6 +124,8 @@ export default function InteractivePortfolioGame() {
   const scaleRef = useRef({ x: 1, y: 1 });
   const hitEffectsRef = useRef<HitEffect[]>([]);
   const timeRef = useRef(0);
+  const spacePressedRef = useRef(false);
+  const tapPendingRef = useRef(false);
 
   const touchStartXRef = useRef(0);
   const touchHasMovedRef = useRef(false);
@@ -137,6 +178,19 @@ export default function InteractivePortfolioGame() {
   }, []);
 
   useEffect(() => {
+    canvasRef.current?.focus();
+  }, []);
+
+  const drawFrame = useCallback((state: GameState, time: number) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const scale = scaleRef.current;
+    render(ctx, state, scale.x, scale.y, hitEffectsRef.current, time);
+  }, []);
+
+  useEffect(() => {
     if (!reducedMotion) return;
     requestAnimationFrame(() => {
       const canvas = canvasRef.current;
@@ -154,14 +208,49 @@ export default function InteractivePortfolioGame() {
     useCallback(
       (dt: number, time: number) => {
         const state = gameStateRef.current;
-        if (state.paused || isCardOpen) return;
-
         timeRef.current = time;
+        state.elapsedTime += dt;
 
         const keys = keysRef.current;
+        const isSpaceDown = keys.has(' ') || keys.has('Space');
+        const spaceJustPressed = isSpaceDown && !spacePressedRef.current;
+        spacePressedRef.current = isSpaceDown;
+
+        const tapJustPressed = tapPendingRef.current;
+        tapPendingRef.current = false;
+
+        const advance = spaceJustPressed || tapJustPressed;
+
+        if (state.paused && state.phase === 'playing') {
+          updateStars(state.stars, dt, BASE_WIDTH, BASE_HEIGHT);
+          updateScreenShake(state, dt);
+          drawFrame(state, timeRef.current);
+          return;
+        }
+
+        if (state.phase === 'start' || state.phase === 'gameOver') {
+          if (advance) {
+            startGame(state);
+            spacePressedRef.current = isSpaceDown;
+            drawFrame(state, timeRef.current);
+            return;
+          }
+          updateStars(state.stars, dt, BASE_WIDTH, BASE_HEIGHT);
+          updateScreenShake(state, dt);
+          drawFrame(state, timeRef.current);
+          return;
+        }
+
+        if (isCardOpen) {
+          updateStars(state.stars, dt, BASE_WIDTH, BASE_HEIGHT);
+          updateScreenShake(state, dt);
+          drawFrame(state, timeRef.current);
+          return;
+        }
+
         const left = keys.has('ArrowLeft') || keys.has('a') || keys.has('A');
         const right = keys.has('ArrowRight') || keys.has('d') || keys.has('D');
-        const kbShoot = keys.has(' ') || keys.has('Space');
+        const kbShoot = isSpaceDown;
 
         const touchShoot = touchPendingShotRef.current;
         touchPendingShotRef.current = false;
@@ -174,6 +263,12 @@ export default function InteractivePortfolioGame() {
         updateLootItems(state, dt);
         updateStars(state.stars, dt, BASE_WIDTH, BASE_HEIGHT);
         updateParticles(state.particles, dt);
+        updateInvulnerability(state, dt);
+        updateScreenShake(state, dt);
+        updateScorePopups(state, dt);
+        updateWaveText(state, dt);
+
+        checkPlayerDamage(state);
 
         const genericCollision = findBulletGenericCollisions(
           state.bullets,
@@ -188,7 +283,7 @@ export default function InteractivePortfolioGame() {
               state.particles,
               enemy.x + enemy.width / 2,
               enemy.y + enemy.height / 2,
-              enemy.type === 'tough' ? '#E07A5F' : '#4A7C7E'
+              enemy.type === 'tough' ? COLORS.gold : COLORS.tech
             );
             hitEffectsRef.current.push({
               x: enemy.x + enemy.width / 2,
@@ -197,7 +292,15 @@ export default function InteractivePortfolioGame() {
             });
             const killed = hitGenericEnemy(state.genericEnemies, enemyIndex);
             if (killed) {
-              state.score += calculateGenericScore(enemy.type);
+              const points = calculateGenericScore(enemy.type);
+              state.score += points;
+              addScorePopup(
+                state,
+                enemy.x + enemy.width / 2,
+                enemy.y,
+                points,
+                enemy.type === 'tough' ? COLORS.gold : COLORS.cta
+              );
             }
           }
         }
@@ -235,6 +338,13 @@ export default function InteractivePortfolioGame() {
             );
             state.projectEnemies.splice(enemyIndex, 1);
             state.score += SCORE_PROJECT;
+            addScorePopup(
+              state,
+              enemy.x + enemy.width / 2,
+              enemy.y,
+              SCORE_PROJECT,
+              COLORS.gold
+            );
           }
         }
 
@@ -248,7 +358,9 @@ export default function InteractivePortfolioGame() {
           } catch {}
         }
 
-        const allDead = state.genericEnemies.every((e) => !e.active);
+        const allDead =
+          state.genericEnemies.length > 0 &&
+          state.genericEnemies.every((e) => !e.active);
         if (allDead) {
           state.wave.allDeadTimer -= dt;
           if (state.wave.allDeadTimer <= 0) {
@@ -261,6 +373,7 @@ export default function InteractivePortfolioGame() {
             state.wave.moveTimer = 0;
             state.wave.allDeadTimer = 1;
             state.genericEnemies = createWaveGrid(state.wave.waveNumber);
+            announceWave(state, state.wave.waveNumber);
           }
         }
 
@@ -271,14 +384,9 @@ export default function InteractivePortfolioGame() {
           }
         }
 
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-        const scale = scaleRef.current;
-        render(ctx, state, scale.x, scale.y, hitEffectsRef.current, timeRef.current);
+        drawFrame(state, timeRef.current);
       },
-      [isCardOpen, keysRef]
+      [isCardOpen, keysRef, drawFrame]
     ),
     !reducedMotion
   );
@@ -305,7 +413,12 @@ export default function InteractivePortfolioGame() {
   const handleTouchEnd = (e: React.TouchEvent) => {
     e.preventDefault();
     if (!touchHasMovedRef.current) {
-      touchPendingShotRef.current = true;
+      const phase = gameStateRef.current.phase;
+      if (phase === 'start' || phase === 'gameOver') {
+        tapPendingRef.current = true;
+      } else {
+        touchPendingShotRef.current = true;
+      }
     }
     suppressClickRef.current = true;
     setTimeout(() => {
@@ -314,6 +427,11 @@ export default function InteractivePortfolioGame() {
   };
 
   const handleClick = (e: React.MouseEvent) => {
+    const phase = gameStateRef.current.phase;
+    if (phase === 'start' || phase === 'gameOver') {
+      tapPendingRef.current = true;
+      return;
+    }
     const canvas = canvasRef.current;
     if (canvas) {
       const rect = canvas.getBoundingClientRect();

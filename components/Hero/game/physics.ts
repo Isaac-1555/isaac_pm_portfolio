@@ -17,6 +17,11 @@ import {
   LOOT_TRAY_GAP,
   LOOT_ANIM_SPEED,
   GAME_PROJECTS,
+  SHAKE_DECAY,
+  SCORE_POPUP_LIFETIME,
+  WAVE_TEXT_DURATION,
+  INVULNERABLE_TIME,
+  COLORS,
 } from './constants';
 import {
   GameState,
@@ -27,7 +32,12 @@ import {
   createBullet,
   createEnemy,
   createWaveGrid,
+  createScorePopup,
 } from './entities';
+import {
+  findPlayerGenericCollision,
+  findPlayerProjectCollision,
+} from './collision';
 
 export function processInput(
   state: GameState,
@@ -107,7 +117,8 @@ export function updateWave(state: GameState, dt: number): void {
   for (let i = 0; i < enemies.length; i++) {
     const e = enemies[i];
     if (!e.active) continue;
-    if (e.y + e.height > BASE_HEIGHT - 70) {
+    if (e.y + e.height > BASE_HEIGHT - 40) {
+      damagePlayer(state, COLORS.gold);
       state.genericEnemies = createWaveGrid(wave.waveNumber + 1);
       wave.waveNumber++;
       wave.moveInterval = Math.max(
@@ -116,6 +127,7 @@ export function updateWave(state: GameState, dt: number): void {
       );
       wave.direction = 1;
       wave.moveTimer = 0;
+      announceWave(state, wave.waveNumber);
       return;
     }
   }
@@ -201,4 +213,113 @@ export function calculateGenericScore(type: 'standard' | 'tough' | 'fast'): numb
   if (type === 'tough') return 25;
   if (type === 'fast') return 15;
   return 10;
+}
+
+export function updateInvulnerability(state: GameState, dt: number): void {
+  if (state.invulnerableTimer > 0) {
+    state.invulnerableTimer = Math.max(0, state.invulnerableTimer - dt);
+  }
+}
+
+export function updateScreenShake(state: GameState, dt: number): void {
+  if (state.shakeAmount > 0) {
+    state.shakeAmount = Math.max(0, state.shakeAmount - SHAKE_DECAY * dt);
+  }
+}
+
+export function updateScorePopups(state: GameState, dt: number): void {
+  for (let i = state.scorePopups.length - 1; i >= 0; i--) {
+    const p = state.scorePopups[i];
+    p.life -= dt;
+    p.y -= 30 * dt;
+    if (p.life <= 0) {
+      state.scorePopups.splice(i, 1);
+    }
+  }
+}
+
+export function updateWaveText(state: GameState, dt: number): void {
+  if (state.waveTextTimer > 0) {
+    state.waveTextTimer = Math.max(0, state.waveTextTimer - dt);
+  }
+}
+
+export function addScorePopup(
+  state: GameState,
+  x: number,
+  y: number,
+  value: number,
+  color: string
+): void {
+  state.scorePopups.push(createScorePopup(x, y, value, color, SCORE_POPUP_LIFETIME));
+}
+
+export function damagePlayer(state: GameState, sourceColor: string = COLORS.cta): void {
+  if (state.invulnerableTimer > 0) return;
+  state.lives -= 1;
+  state.invulnerableTimer = INVULNERABLE_TIME;
+  state.shakeAmount = 6;
+  spawnExplosionAt(
+    state,
+    state.player.x,
+    state.player.y,
+    sourceColor
+  );
+  if (state.lives <= 0) {
+    state.phase = 'gameOver';
+    state.shakeAmount = 10;
+    spawnExplosionAt(state, state.player.x, state.player.y, COLORS.cta);
+    spawnExplosionAt(state, state.player.x, state.player.y, COLORS.warning);
+  }
+}
+
+export function checkPlayerDamage(state: GameState): void {
+  if (state.phase !== 'playing') return;
+  if (state.invulnerableTimer > 0) return;
+  const generic = findPlayerGenericCollision(state.player, state.genericEnemies);
+  if (generic) {
+    const { enemy } = generic;
+    spawnExplosionAt(state, enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, COLORS.gold);
+    enemy.active = false;
+    damagePlayer(state, COLORS.gold);
+    return;
+  }
+  const project = findPlayerProjectCollision(state.player, state.projectEnemies);
+  if (project) {
+    const { enemy, index } = project;
+    spawnExplosionAt(state, enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, enemy.color);
+    state.projectEnemies.splice(index, 1);
+    damagePlayer(state, enemy.color);
+  }
+}
+
+export function spawnExplosionAt(
+  state: GameState,
+  x: number,
+  y: number,
+  color: string
+): void {
+  for (let i = 0; i < 24; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 60 + Math.random() * 140;
+    const p = state.particles.find((p) => !p.active);
+    if (!p) return;
+    p.x = x;
+    p.y = y;
+    p.vx = Math.cos(angle) * speed;
+    p.vy = Math.sin(angle) * speed;
+    p.life = 0.6 + Math.random() * 0.4;
+    p.maxLife = 1;
+    p.size = 2 + Math.random() * 3;
+    p.color = color;
+    p.active = true;
+  }
+}
+
+export function announceWave(state: GameState, waveNumber: number): void {
+  state.waveTextTimer = WAVE_TEXT_DURATION;
+  state.lastWaveNumber = waveNumber;
+  if (waveNumber > state.waveReached) {
+    state.waveReached = waveNumber;
+  }
 }

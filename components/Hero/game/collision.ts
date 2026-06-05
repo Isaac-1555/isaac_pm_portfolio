@@ -1,4 +1,4 @@
-import { Bullet, Enemy, GenericEnemy, LootItem } from './entities';
+import { Bullet, Enemy, GenericEnemy, LootItem, Player } from './entities';
 
 function rectsOverlap(
   ax: number, ay: number, aw: number, ah: number,
@@ -78,6 +78,56 @@ export function findLootAtPosition(
     const dy = y - loot.y;
     if (Math.sqrt(dx * dx + dy * dy) < threshold) {
       return loot;
+    }
+  }
+  return null;
+}
+
+export function findPlayerGenericCollision(
+  player: Player,
+  enemies: GenericEnemy[]
+): { enemy: GenericEnemy; index: number } | null {
+  for (let i = 0; i < enemies.length; i++) {
+    const e = enemies[i];
+    if (!e.active) continue;
+    if (
+      rectsOverlap(
+        player.x - player.width / 2,
+        player.y - player.height / 2,
+        player.width,
+        player.height,
+        e.x,
+        e.y,
+        e.width,
+        e.height
+      )
+    ) {
+      return { enemy: e, index: i };
+    }
+  }
+  return null;
+}
+
+export function findPlayerProjectCollision(
+  player: Player,
+  enemies: Enemy[]
+): { enemy: Enemy; index: number } | null {
+  for (let i = 0; i < enemies.length; i++) {
+    const e = enemies[i];
+    if (!e.active) continue;
+    if (
+      rectsOverlap(
+        player.x - player.width / 2,
+        player.y - player.height / 2,
+        player.width,
+        player.height,
+        e.x,
+        e.y,
+        e.width,
+        e.height
+      )
+    ) {
+      return { enemy: e, index: i };
     }
   }
   return null;

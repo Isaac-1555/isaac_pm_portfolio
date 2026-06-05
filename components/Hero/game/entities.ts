@@ -96,7 +96,19 @@ export interface Star {
   alpha: number;
 }
 
+export type GamePhase = 'start' | 'playing' | 'gameOver';
+
+export interface ScorePopup {
+  x: number;
+  y: number;
+  value: number;
+  color: string;
+  life: number;
+  maxLife: number;
+}
+
 export interface GameState {
+  phase: GamePhase;
   player: Player;
   bullets: Bullet[];
   genericEnemies: GenericEnemy[];
@@ -111,6 +123,14 @@ export interface GameState {
   highScore: number;
   paused: boolean;
   reducedMotion: boolean;
+  lives: number;
+  invulnerableTimer: number;
+  shakeAmount: number;
+  scorePopups: ScorePopup[];
+  waveReached: number;
+  waveTextTimer: number;
+  lastWaveNumber: number;
+  elapsedTime: number;
 }
 
 export function createPlayer(width: number, height: number): Player {
@@ -299,4 +319,21 @@ export function createStars(width: number, height: number): Star[] {
     speed: 6 + Math.random() * 10,
     alpha: 0.15 + Math.random() * 0.35,
   }));
+}
+
+export function createScorePopup(
+  x: number,
+  y: number,
+  value: number,
+  color: string,
+  maxLife: number
+): ScorePopup {
+  return {
+    x,
+    y,
+    value,
+    color,
+    life: maxLife,
+    maxLife,
+  };
 }
