@@ -48,6 +48,7 @@ import {
   LOOT_CLICK_THRESHOLD,
   INITIAL_LIVES,
   COLORS,
+  getWaveInterval,
 } from './game/constants';
 import ProjectPreviewCard from './ProjectPreviewCard';
 import type { GameProject } from './game/constants';
@@ -365,10 +366,7 @@ export default function InteractivePortfolioGame() {
           state.wave.allDeadTimer -= dt;
           if (state.wave.allDeadTimer <= 0) {
             state.wave.waveNumber++;
-            state.wave.moveInterval = Math.max(
-              0.08,
-              0.5 - (state.wave.waveNumber - 1) * 0.025
-            );
+            state.wave.moveInterval = getWaveInterval(state.wave.waveNumber);
             state.wave.direction = 1;
             state.wave.moveTimer = 0;
             state.wave.allDeadTimer = 1;

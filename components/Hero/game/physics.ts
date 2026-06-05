@@ -5,11 +5,6 @@ import {
   BASE_WIDTH,
   BASE_HEIGHT,
   SHOOT_COOLDOWN,
-  WAVE_SIDE_STEP,
-  WAVE_DESCEND_STEP,
-  PROJECT_ENEMY_SPEED,
-  PROJECT_SPAWN_INTERVAL_MIN,
-  PROJECT_SPAWN_INTERVAL_MAX,
   PROJECT_ENEMY_WIDTH,
   PROJECT_ENEMY_HEIGHT,
   LOOT_TRAY_X,
@@ -22,6 +17,12 @@ import {
   WAVE_TEXT_DURATION,
   INVULNERABLE_TIME,
   COLORS,
+  getWaveInterval,
+  getWaveSideStep,
+  getWaveDescendStep,
+  getProjectSpawnInterval,
+  getProjectSpeed,
+  getMaxConcurrentProjectEnemies,
 } from './constants';
 import {
   GameState,
@@ -87,30 +88,33 @@ export function updateWave(state: GameState, dt: number): void {
   wave.moveTimer = 0;
 
   const enemies = state.genericEnemies;
+  const sideStep = getWaveSideStep(wave.waveNumber);
 
+  let minX = Infinity;
+  let maxX = -Infinity;
   for (let i = 0; i < enemies.length; i++) {
     const e = enemies[i];
     if (!e.active) continue;
-    e.x += WAVE_SIDE_STEP * wave.direction;
+    if (e.x < minX) minX = e.x;
+    if (e.x + e.width > maxX) maxX = e.x + e.width;
   }
 
-  let atEdge = false;
-  for (let i = 0; i < enemies.length; i++) {
-    const e = enemies[i];
-    if (!e.active) continue;
-    if (e.x < 0 || e.x + e.width > BASE_WIDTH) {
-      atEdge = true;
-      break;
-    }
-  }
+  const willHitRight = wave.direction === 1 && maxX + sideStep > BASE_WIDTH;
+  const willHitLeft = wave.direction === -1 && minX - sideStep < 0;
 
-  if (atEdge) {
+  if (willHitRight || willHitLeft) {
     wave.direction = (wave.direction * -1) as 1 | -1;
+    const descendStep = getWaveDescendStep(wave.waveNumber);
     for (let i = 0; i < enemies.length; i++) {
       const e = enemies[i];
       if (!e.active) continue;
-      e.y += WAVE_DESCEND_STEP;
-      e.x = Math.max(2, Math.min(BASE_WIDTH - e.width - 2, e.x));
+      e.y += descendStep;
+    }
+  } else {
+    for (let i = 0; i < enemies.length; i++) {
+      const e = enemies[i];
+      if (!e.active) continue;
+      e.x += sideStep * wave.direction;
     }
   }
 
@@ -121,10 +125,7 @@ export function updateWave(state: GameState, dt: number): void {
       damagePlayer(state, COLORS.gold);
       state.genericEnemies = createWaveGrid(wave.waveNumber + 1);
       wave.waveNumber++;
-      wave.moveInterval = Math.max(
-        0.08,
-        0.5 - (wave.waveNumber - 1) * 0.025
-      );
+      wave.moveInterval = getWaveInterval(wave.waveNumber);
       wave.direction = 1;
       wave.moveTimer = 0;
       announceWave(state, wave.waveNumber);
@@ -134,10 +135,15 @@ export function updateWave(state: GameState, dt: number): void {
 }
 
 export function updateProjectEnemies(state: GameState, dt: number): void {
+  const waveNumber = state.wave.waveNumber;
+  const speed = getProjectSpeed(waveNumber);
+  const spawnInterval = getProjectSpawnInterval(waveNumber);
+  const maxConcurrent = getMaxConcurrentProjectEnemies(waveNumber);
+
   state.projectSpawnTimer -= dt;
   if (state.projectSpawnTimer <= 0) {
-    const hasActive = state.projectEnemies.some((e) => e.active);
-    if (!hasActive) {
+    const activeCount = state.projectEnemies.filter((e) => e.active).length;
+    if (activeCount < maxConcurrent) {
       const project = GAME_PROJECTS[Math.floor(Math.random() * GAME_PROJECTS.length)];
       const x = PROJECT_ENEMY_WIDTH + Math.random() * (BASE_WIDTH - PROJECT_ENEMY_WIDTH * 2);
       state.projectEnemies.push(
@@ -145,8 +151,8 @@ export function updateProjectEnemies(state: GameState, dt: number): void {
       );
     }
     state.projectSpawnTimer =
-      PROJECT_SPAWN_INTERVAL_MIN +
-      Math.random() * (PROJECT_SPAWN_INTERVAL_MAX - PROJECT_SPAWN_INTERVAL_MIN);
+      spawnInterval.min +
+      Math.random() * (spawnInterval.max - spawnInterval.min);
   }
 
   for (let i = state.projectEnemies.length - 1; i >= 0; i--) {
@@ -155,7 +161,7 @@ export function updateProjectEnemies(state: GameState, dt: number): void {
       state.projectEnemies.splice(i, 1);
       continue;
     }
-    e.y += PROJECT_ENEMY_SPEED * dt;
+    e.y += speed * dt;
     if (e.y > BASE_HEIGHT + 50) {
       state.projectEnemies.splice(i, 1);
     }

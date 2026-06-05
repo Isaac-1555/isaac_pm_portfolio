@@ -13,6 +13,7 @@ import {
   PARTICLE_SPEED_MAX,
   STAR_COUNT,
   BASE_WIDTH,
+  getWaveInterval,
 } from './constants';
 
 export interface Player {
@@ -206,10 +207,7 @@ export function createWaveState(waveNumber: number): WaveState {
   return {
     direction: 1,
     moveTimer: 0,
-    moveInterval: Math.max(
-      0.08,
-      0.5 - (waveNumber - 1) * 0.025
-    ),
+    moveInterval: getWaveInterval(waveNumber),
     waveNumber,
     allDeadTimer: 1,
   };

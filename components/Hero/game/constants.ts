@@ -29,19 +29,32 @@ export const BULLET_SPEED = 480;
 export const GENERIC_ENEMY_WIDTH = 36;
 export const GENERIC_ENEMY_HEIGHT = 30;
 
-export const WAVE_SIDE_STEP = 12;
-export const WAVE_DESCEND_STEP = 16;
+export const WAVE_SIDE_STEP_BASE = 12;
+export const WAVE_SIDE_STEP_PER_LEVEL = 3;
+export const WAVE_SIDE_STEP_PER_STEP = 2;
+export const WAVE_SIDE_STEP_MAX = 22;
+export const WAVE_DESCEND_STEP_BASE = 16;
+export const WAVE_DESCEND_STEP_PER_LEVEL = 3;
+export const WAVE_DESCEND_STEP_MAX = 36;
 export const WAVE_BASE_INTERVAL = 0.5;
-export const WAVE_SPEED_INCREMENT = 0.025;
-export const WAVE_MIN_INTERVAL = 0.08;
+export const WAVE_SPEED_INCREMENT = 0.03;
+export const WAVE_MIN_INTERVAL = 0.1;
 export const WAVE_ALL_DEAD_DELAY = 1;
 
 export const PROJECT_ENEMY_WIDTH = 42;
 export const PROJECT_ENEMY_HEIGHT = 42;
-export const PROJECT_ENEMY_SPEED = 35;
 export const SHOOT_COOLDOWN = 0.3;
-export const PROJECT_SPAWN_INTERVAL_MIN = 8;
-export const PROJECT_SPAWN_INTERVAL_MAX = 15;
+export const PROJECT_ENEMY_SPEED_BASE = 35;
+export const PROJECT_ENEMY_SPEED_PER_WAVE = 5;
+export const PROJECT_ENEMY_SPEED_MAX = 130;
+export const PROJECT_SPAWN_MIN_BASE = 9;
+export const PROJECT_SPAWN_MIN_PER_WAVE = 0.4;
+export const PROJECT_SPAWN_MIN_MIN = 2;
+export const PROJECT_SPAWN_MAX_BASE = 14;
+export const PROJECT_SPAWN_MAX_PER_WAVE = 0.5;
+export const PROJECT_SPAWN_MAX_MIN = 4;
+export const PROJECT_MAX_CONCURRENT_BASE = 1;
+export const PROJECT_MAX_CONCURRENT_PER_LEVEL = 3;
 
 export const LOOT_ITEM_SIZE = 16;
 export const LOOT_TRAY_X = BASE_WIDTH - 15;
@@ -142,3 +155,53 @@ export const GAME_PROJECTS: GameProject[] = [
     color: COLORS.cta,
   },
 ];
+
+export function getWaveInterval(waveNumber: number): number {
+  return Math.max(
+    WAVE_MIN_INTERVAL,
+    WAVE_BASE_INTERVAL - (waveNumber - 1) * WAVE_SPEED_INCREMENT
+  );
+}
+
+export function getWaveSideStep(waveNumber: number): number {
+  const tiers = Math.floor((waveNumber - 1) / WAVE_SIDE_STEP_PER_LEVEL);
+  return Math.min(
+    WAVE_SIDE_STEP_MAX,
+    WAVE_SIDE_STEP_BASE + tiers * WAVE_SIDE_STEP_PER_STEP
+  );
+}
+
+export function getWaveDescendStep(waveNumber: number): number {
+  const tiers = Math.floor((waveNumber - 1) / 2);
+  return Math.min(
+    WAVE_DESCEND_STEP_MAX,
+    WAVE_DESCEND_STEP_BASE + tiers * WAVE_DESCEND_STEP_PER_LEVEL
+  );
+}
+
+export function getProjectSpawnInterval(waveNumber: number): { min: number; max: number } {
+  return {
+    min: Math.max(
+      PROJECT_SPAWN_MIN_MIN,
+      PROJECT_SPAWN_MIN_BASE - (waveNumber - 1) * PROJECT_SPAWN_MIN_PER_WAVE
+    ),
+    max: Math.max(
+      PROJECT_SPAWN_MAX_MIN,
+      PROJECT_SPAWN_MAX_BASE - (waveNumber - 1) * PROJECT_SPAWN_MAX_PER_WAVE
+    ),
+  };
+}
+
+export function getProjectSpeed(waveNumber: number): number {
+  return Math.min(
+    PROJECT_ENEMY_SPEED_MAX,
+    PROJECT_ENEMY_SPEED_BASE + (waveNumber - 1) * PROJECT_ENEMY_SPEED_PER_WAVE
+  );
+}
+
+export function getMaxConcurrentProjectEnemies(waveNumber: number): number {
+  return Math.min(
+    PROJECT_MAX_CONCURRENT_PER_LEVEL,
+    PROJECT_MAX_CONCURRENT_BASE + Math.floor((waveNumber - 1) / 2)
+  );
+}
