@@ -73,7 +73,7 @@ export function Footer() {
                 <span className="h-2 w-2 rounded-full bg-cta animate-pulse shrink-0"></span>
                 <span>Open to Work</span>
               </li>
-              <li>Updated: May 2026</li>
+              <li>Updated: June 2026</li>
             </ul>
           </div>
         </div>
