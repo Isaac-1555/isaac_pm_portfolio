@@ -65,7 +65,7 @@ export const ASSET_MANIFEST: Record<AssetKey, AssetConfig> = {
   'bullet-big': { src: 'bullets/big.png', fw: 32, fh: 32, frames: 10, fps: 12, loop: true, cols: 10 },
   'bullet-rocket': { src: 'bullets/rocket.png', fw: 32, fh: 32, frames: 3, fps: 8, loop: true, cols: 3 },
   'bullet-zapper': { src: 'bullets/zapper.png', fw: 32, fh: 32, frames: 8, fps: 12, loop: true, cols: 8 },
-  'bullet-flame': { src: 'effects/flame.png', fw: 32, fh: 32, frames: 9, fps: 14, loop: true, cols: 9 },
+  'bullet-flame': { src: 'effects/flame.png', fw: 96, fh: 32, frames: 3, fps: 14, loop: true, cols: 3 },
   'shield-round': { src: 'shields/round.png', fw: 64, fh: 64, frames: 12, fps: 12, loop: true, cols: 12 },
   'shield-front': { src: 'shields/front.png', fw: 64, fh: 64, frames: 10, fps: 12, loop: true, cols: 10 },
   'shield-front-side': { src: 'shields/front-side.png', fw: 64, fh: 64, frames: 6, fps: 12, loop: true, cols: 6 },
@@ -85,7 +85,7 @@ export const ASSET_MANIFEST: Record<AssetKey, AssetConfig> = {
   'pickup-weapon-biggun': { src: 'pickups-weapons/big-space-gun.png', fw: 32, fh: 32, frames: 15, fps: 10, loop: true, cols: 15 },
   'pickup-weapon-rocket': { src: 'pickups-weapons/rocket.png', fw: 32, fh: 32, frames: 15, fps: 10, loop: true, cols: 15 },
   'pickup-weapon-zapper': { src: 'pickups-weapons/zapper.png', fw: 32, fh: 32, frames: 15, fps: 10, loop: true, cols: 15 },
-  'flame': { src: 'effects/flame.png', fw: 32, fh: 32, frames: 9, fps: 14, loop: true, cols: 9 },
+  'flame': { src: 'effects/flame.png', fw: 96, fh: 32, frames: 3, fps: 14, loop: true, cols: 3 },
   'asteroid': { src: 'effects/asteroid.png' },
 };
 
