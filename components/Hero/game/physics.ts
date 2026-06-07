@@ -189,7 +189,7 @@ export function updateWave(state: GameState, dt: number): void {
   let maxX = -Infinity;
   for (let i = 0; i < enemies.length; i++) {
     const e = enemies[i];
-    if (!e.active) continue;
+    if (!e.active || e.deathAnim) continue;
     if (e.x < minX) minX = e.x;
     if (e.x + e.width > maxX) maxX = e.x + e.width;
   }
@@ -202,13 +202,13 @@ export function updateWave(state: GameState, dt: number): void {
     const descendStep = getWaveDescendStep(wave.waveNumber);
     for (let i = 0; i < enemies.length; i++) {
       const e = enemies[i];
-      if (!e.active) continue;
+      if (!e.active || e.deathAnim) continue;
       e.y += descendStep;
     }
   } else {
     for (let i = 0; i < enemies.length; i++) {
       const e = enemies[i];
-      if (!e.active) continue;
+      if (!e.active || e.deathAnim) continue;
       e.x += sideStep * wave.direction;
     }
   }
@@ -248,11 +248,21 @@ export function updateProjectEnemies(state: GameState, dt: number): void {
 
   for (let i = state.projectEnemies.length - 1; i >= 0; i--) {
     const e = state.projectEnemies[i];
+    if (e.deathAnim) {
+      e.deathAnim.t += dt;
+      if (e.deathAnim.t >= e.deathAnim.duration) {
+        e.active = false;
+        e.deathAnim = null;
+        state.projectEnemies.splice(i, 1);
+      }
+      continue;
+    }
     if (!e.active) {
       state.projectEnemies.splice(i, 1);
       continue;
     }
     e.y += speed * dt;
+    e.engineAnim.t += dt;
     if (e.y > BASE_HEIGHT + 50) {
       state.projectEnemies.splice(i, 1);
     }
@@ -263,6 +273,7 @@ export function updateLootItems(state: GameState, dt: number): void {
   for (let i = 0; i < state.lootItems.length; i++) {
     const loot = state.lootItems[i];
     if (!loot.active) continue;
+    loot.anim.t += dt;
     if (loot.animating) {
       const targetX = LOOT_TRAY_X;
       const targetY = LOOT_TRAY_START_Y + loot.index * LOOT_TRAY_GAP;
@@ -287,6 +298,7 @@ export function updatePowerUps(state: GameState, dt: number): void {
     }
     p.y += p.vy * dt;
     p.animPhase += dt;
+    p.anim.t += dt;
     if (p.y > BASE_HEIGHT + 30) {
       state.powerUps.splice(i, 1);
     }
@@ -430,13 +442,28 @@ export function deactivateBullet(bullets: Bullet[], index: number): void {
 
 export function hitGenericEnemy(enemies: GenericEnemy[], index: number, damage: number = 1): number {
   const e = enemies[index];
-  if (!e || !e.active) return 0;
+  if (!e || !e.active || e.deathAnim) return 0;
   e.hits -= damage;
   if (e.hits <= 0) {
+    e.deathAnim = { t: 0, duration: 0.6 };
     e.active = false;
     return 1;
   }
   return 0;
+}
+
+export function tickGenericAnimations(enemies: GenericEnemy[], dt: number): void {
+  for (let i = enemies.length - 1; i >= 0; i--) {
+    const e = enemies[i];
+    if (e.deathAnim) {
+      e.deathAnim.t += dt;
+      if (e.deathAnim.t >= e.deathAnim.duration) {
+        e.deathAnim = null;
+      }
+    } else if (e.active) {
+      e.engineAnim.t += dt;
+    }
+  }
 }
 
 export function calculateGenericScore(type: 'standard' | 'tough' | 'fast'): number {
@@ -508,6 +535,11 @@ export function damagePlayer(state: GameState, sourceColor: string = COLORS.cta)
   }
 }
 
+export function updatePlayerAnim(state: GameState, dt: number): void {
+  state.playerAnim.t += dt;
+  state.playerLivesCache = state.lives;
+}
+
 export function checkPlayerDamage(state: GameState): void {
   if (state.phase !== 'playing') return;
   if (state.invulnerableTimer > 0) return;
@@ -515,15 +547,15 @@ export function checkPlayerDamage(state: GameState): void {
   if (generic) {
     const { enemy } = generic;
     spawnExplosionAt(state, enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, COLORS.gold);
-    enemy.active = false;
+    enemy.deathAnim = { t: 0, duration: 0.6 };
     damagePlayer(state, COLORS.gold);
     return;
   }
   const project = findPlayerProjectCollision(state.player, state.projectEnemies);
   if (project) {
-    const { enemy, index } = project;
+    const { enemy } = project;
     spawnExplosionAt(state, enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, enemy.color);
-    state.projectEnemies.splice(index, 1);
+    enemy.deathAnim = { t: 0, duration: 0.6 };
     damagePlayer(state, enemy.color);
   }
 }

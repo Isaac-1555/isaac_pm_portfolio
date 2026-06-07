@@ -18,6 +18,14 @@ import {
   PowerUpType,
   getWaveInterval,
 } from './constants';
+import {
+  STANDARD_ENEMY,
+  TOUGH_ENEMY,
+  FAST_ENEMY,
+  bossForProject,
+  POWERUP_PICKUP,
+  enemyAssetConfig,
+} from './assets/assetMap';
 
 export type { PowerUpType };
 
@@ -54,6 +62,12 @@ export interface Enemy {
   color: string;
   active: boolean;
   vx: number;
+  deathAnim?: { t: number; duration: number } | null;
+  engineAnim: { t: number };
+  assetKey: string;
+  destroyKey: string;
+  engineAssetKey: string;
+  engineOffsetY: number;
 }
 
 export interface GenericEnemy {
@@ -64,6 +78,11 @@ export interface GenericEnemy {
   type: 'standard' | 'tough' | 'fast';
   active: boolean;
   hits: number;
+  deathAnim?: { t: number; duration: number } | null;
+  engineAnim: { t: number };
+  assetKey: string;
+  engineAssetKey: string;
+  engineOffsetY: number;
 }
 
 export interface WaveState {
@@ -85,6 +104,8 @@ export interface LootItem {
   settled: boolean;
   active: boolean;
   index: number;
+  emblemKey: string;
+  anim: { t: number };
 }
 
 export interface Particle {
@@ -120,6 +141,8 @@ export interface PowerUp {
   permanent: boolean;
   active: boolean;
   animPhase: number;
+  assetKey: string;
+  anim: { t: number };
 }
 
 export interface TempWeapon {
@@ -169,6 +192,8 @@ export interface GameState {
   bulletDamage: number;
   tempWeapon: TempWeapon | null;
   shieldTimer: number;
+  playerAnim: { t: number };
+  playerLivesCache: number;
 }
 
 export function createPlayer(width: number, height: number): Player {
@@ -214,6 +239,10 @@ export function createEnemy(config: {
   projectTitle: string;
   color: string;
 }): Enemy {
+  const boss = bossForProject(config.projectId);
+  const baseCfg = enemyAssetConfig(boss.faction, boss.ship, 'base');
+  const destroyCfg = enemyAssetConfig(boss.faction, boss.ship, 'destroy');
+  const engineCfg = enemyAssetConfig(boss.faction, boss.ship, 'engine');
   return {
     x: config.x,
     y: config.y,
@@ -225,6 +254,12 @@ export function createEnemy(config: {
     color: config.color,
     active: true,
     vx: 0,
+    deathAnim: null,
+    engineAnim: { t: 0 },
+    assetKey: baseCfg.key,
+    destroyKey: destroyCfg.key,
+    engineAssetKey: engineCfg.key,
+    engineOffsetY: 0,
   };
 }
 
@@ -242,6 +277,9 @@ export function createWaveGrid(waveNumber: number): GenericEnemy[] {
     for (let col = 0; col < cols; col++) {
       const type: 'standard' | 'tough' | 'fast' =
         row === 0 ? 'tough' : row < rows - 1 ? 'standard' : 'fast';
+      const spec = type === 'tough' ? TOUGH_ENEMY : type === 'fast' ? FAST_ENEMY : STANDARD_ENEMY;
+      const baseCfg = enemyAssetConfig(spec.faction, spec.ship, 'base');
+      const engineCfg = enemyAssetConfig(spec.faction, spec.ship, 'engine');
       enemies.push({
         x: startX + col * spacingX,
         y: startY + row * spacingY,
@@ -250,6 +288,11 @@ export function createWaveGrid(waveNumber: number): GenericEnemy[] {
         type,
         active: true,
         hits: type === 'tough' ? 2 : 1,
+        deathAnim: null,
+        engineAnim: { t: 0 },
+        assetKey: baseCfg.key,
+        engineAssetKey: engineCfg.key,
+        engineOffsetY: 0,
       });
     }
   }
@@ -272,7 +315,8 @@ export function createLootItem(
   color: string,
   x: number,
   y: number,
-  index: number
+  index: number,
+  emblemKey: string
 ): LootItem {
   return {
     projectId,
@@ -285,6 +329,8 @@ export function createLootItem(
     settled: false,
     active: true,
     index,
+    emblemKey,
+    anim: { t: 0 },
   };
 }
 
@@ -408,5 +454,7 @@ export function createPowerUp(
     permanent: def.permanent,
     active: true,
     animPhase: 0,
+    assetKey: POWERUP_PICKUP[type],
+    anim: { t: 0 },
   };
 }

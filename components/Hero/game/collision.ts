@@ -57,7 +57,7 @@ export function findBulletEnemyCollisions(
   for (let bi = 0; bi < bullets.length; bi++) {
     if (!bullets[bi].active) continue;
     for (let ei = 0; ei < enemies.length; ei++) {
-      if (!enemies[ei].active) continue;
+      if (!enemies[ei].active || enemies[ei].deathAnim) continue;
       if (checkBulletEnemyCollision(bullets[bi], enemies[ei])) {
         return { bulletIndex: bi, enemyIndex: ei };
       }
@@ -89,7 +89,7 @@ export function findPlayerGenericCollision(
 ): { enemy: GenericEnemy; index: number } | null {
   for (let i = 0; i < enemies.length; i++) {
     const e = enemies[i];
-    if (!e.active) continue;
+    if (!e.active || e.deathAnim) continue;
     if (
       rectsOverlap(
         player.x - player.width / 2,
@@ -114,7 +114,7 @@ export function findPlayerProjectCollision(
 ): { enemy: Enemy; index: number } | null {
   for (let i = 0; i < enemies.length; i++) {
     const e = enemies[i];
-    if (!e.active) continue;
+    if (!e.active || e.deathAnim) continue;
     if (
       rectsOverlap(
         player.x - player.width / 2,

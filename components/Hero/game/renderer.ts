@@ -19,24 +19,22 @@ import {
   ScorePopup,
 } from './entities';
 import { drawParticles } from './particles';
+import { getAssetEntry } from './assets/loader';
+import { drawSprite, drawAnimated, getFrameSize } from './assets/sprites';
+import { drawBackground } from './assets/background';
+import {
+  playerAssetForLives,
+  shieldAssetForWeapon,
+  PROJECT_FACTION_EMBLEM,
+  POWERUP_BULLET,
+} from './assets/assetMap';
 
-const shipBody: [number, number][] = [
-  [0, -20],
-  [10, -8],
-  [14, -2],
-  [13, 6],
-  [18, 12],
-  [12, 16],
-  [8, 12],
-  [5, 18],
-  [-5, 18],
-  [-8, 12],
-  [-12, 16],
-  [-18, 12],
-  [-13, 6],
-  [-14, -2],
-  [-10, -8],
-];
+const HITBOX_DISPLAY = 1.05;
+
+function getDisplayScale(hitboxW: number, spriteW: number): number {
+  if (spriteW <= 0) return 1;
+  return (hitboxW * HITBOX_DISPLAY) / spriteW;
+}
 
 export function drawStars(ctx: CanvasRenderingContext2D, stars: Star[]): void {
   for (let i = 0; i < stars.length; i++) {
@@ -50,33 +48,14 @@ export function drawStars(ctx: CanvasRenderingContext2D, stars: Star[]): void {
   ctx.globalAlpha = 1;
 }
 
-export function drawGrid(ctx: CanvasRenderingContext2D): void {
-  ctx.strokeStyle = COLORS.divider;
-  ctx.globalAlpha = 0.08;
-  ctx.lineWidth = 1;
-  for (let y = 0; y < BASE_HEIGHT; y += 40) {
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.lineTo(BASE_WIDTH, y);
-    ctx.stroke();
-  }
-  for (let x = 0; x < BASE_WIDTH; x += 40) {
-    ctx.beginPath();
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, BASE_HEIGHT);
-    ctx.stroke();
-  }
-  ctx.globalAlpha = 1;
-}
-
 export function drawPlayer(
   ctx: CanvasRenderingContext2D,
   player: Player,
   invulnerableTimer: number,
-  time: number
+  state: GameState
 ): void {
   if (invulnerableTimer > 0) {
-    const blink = Math.floor(time * PLAYER_BLINK_RATE) % 2 === 0;
+    const blink = Math.floor(state.playerAnim.t * PLAYER_BLINK_RATE) % 2 === 0;
     if (!blink) return;
   }
 
@@ -87,59 +66,74 @@ export function drawPlayer(
   ctx.translate(cx, cy);
 
   ctx.fillStyle = COLORS.cta;
-  ctx.globalAlpha = Math.random() > 0.3 ? 0.6 : 0;
+  ctx.globalAlpha = Math.random() > 0.3 ? 0.4 : 0;
   ctx.fillRect(-2, 17, 4, 6);
   ctx.fillRect(-5, 17, 3, 4);
   ctx.fillRect(2, 17, 3, 4);
   ctx.globalAlpha = 1;
 
-  ctx.beginPath();
-  ctx.moveTo(shipBody[0][0], shipBody[0][1]);
-  for (let i = 1; i < shipBody.length; i++) {
-    ctx.lineTo(shipBody[i][0], shipBody[i][1]);
-  }
-  ctx.closePath();
-  ctx.fillStyle = COLORS.bgDark;
-  ctx.strokeStyle = COLORS.bgDark;
-  ctx.lineWidth = 1;
-  ctx.fill();
-  ctx.stroke();
+  ctx.restore();
 
-  ctx.fillStyle = COLORS.card;
-  ctx.beginPath();
-  ctx.moveTo(-18, 12);
-  ctx.lineTo(-13, 6);
-  ctx.lineTo(-8, 12);
-  ctx.closePath();
-  ctx.fill();
-  ctx.beginPath();
-  ctx.moveTo(18, 12);
-  ctx.lineTo(13, 6);
-  ctx.lineTo(8, 12);
-  ctx.closePath();
-  ctx.fill();
-
-  ctx.fillStyle = COLORS.cta;
-  ctx.fillRect(-2, -2, 4, 14);
-
-  ctx.fillStyle = COLORS.tech;
-  ctx.beginPath();
-  ctx.moveTo(0, -16);
-  ctx.lineTo(-6, -6);
-  ctx.lineTo(6, -6);
-  ctx.closePath();
-  ctx.fill();
-
-  if (invulnerableTimer > 0) {
-    ctx.globalAlpha = 0.3;
-    ctx.strokeStyle = COLORS.cta;
-    ctx.lineWidth = 1.5;
+  const assetKey = playerAssetForLives(state.lives);
+  const playerEntry = getAssetEntry(assetKey);
+  if (playerEntry && playerEntry.img.naturalWidth > 0) {
+    const { w: sw, h: sh } = getFrameSize(playerEntry);
+    const scale = getDisplayScale(PLAYER_WIDTH, sw);
+    drawSprite(ctx, playerEntry, cx, cy, { scale });
+    const engineEntry = getAssetEntry('player-engine-sheet');
+    if (engineEntry) {
+      const eSize = getFrameSize(engineEntry);
+      const engineCy = cy + (sh * scale) / 2 - 4;
+      drawAnimated(ctx, engineEntry, state.playerAnim, cx, engineCy, {
+        scale: getDisplayScale(PLAYER_WIDTH, eSize.w) * 0.8,
+        alpha: 0.85,
+      });
+    }
+  } else {
+    ctx.save();
+    ctx.translate(cx, cy);
     ctx.beginPath();
-    ctx.arc(0, 0, 24, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.globalAlpha = 1;
+    ctx.moveTo(0, -20);
+    ctx.lineTo(18, 12);
+    ctx.lineTo(0, 8);
+    ctx.lineTo(-18, 12);
+    ctx.closePath();
+    ctx.fillStyle = COLORS.cta;
+    ctx.fill();
+    ctx.restore();
   }
+}
 
+export function drawShield(
+  ctx: CanvasRenderingContext2D,
+  player: Player,
+  shieldTimer: number,
+  state: GameState
+): void {
+  if (shieldTimer <= 0) return;
+  const key = shieldAssetForWeapon(state.tempWeapon?.type ?? null);
+  const entry = getAssetEntry(key);
+  if (entry) {
+    const { w: sw, h: sh } = getFrameSize(entry);
+    const size = Math.max(sw, sh);
+    const scale = (PLAYER_WIDTH * 2.4) / size;
+    const pulse = 0.85 + 0.15 * Math.sin(state.playerAnim.t * 6);
+    drawAnimated(ctx, entry, state.playerAnim, player.x, player.y, {
+      scale: scale * pulse,
+      alpha: 0.9,
+    });
+    return;
+  }
+  const pulse = 0.7 + 0.3 * Math.sin(state.playerAnim.t * 8);
+  ctx.save();
+  ctx.globalAlpha = pulse * 0.7;
+  ctx.strokeStyle = COLORS.success;
+  ctx.lineWidth = 2;
+  ctx.shadowColor = COLORS.success;
+  ctx.shadowBlur = 6;
+  ctx.beginPath();
+  ctx.arc(player.x, player.y, 26, 0, Math.PI * 2);
+  ctx.stroke();
   ctx.restore();
 }
 
@@ -147,135 +141,126 @@ export function drawGenericEnemy(
   ctx: CanvasRenderingContext2D,
   enemy: GenericEnemy
 ): void {
+  if (enemy.deathAnim) {
+    const entry = getAssetEntry(`enemy-${enemy.assetKey.replace('enemy-', '').replace(/-base$/, '-destroy')}`);
+    if (entry) {
+      const { w: sw } = getFrameSize(entry);
+      const cx = enemy.x + enemy.width / 2;
+      const cy = enemy.y + enemy.height / 2;
+      const scale = getDisplayScale(enemy.width, sw);
+      const t = enemy.deathAnim.t / enemy.deathAnim.duration;
+      const alpha = 1 - t;
+      const drift = t * 6;
+      drawSprite(ctx, entry, cx + drift, cy + drift * 0.5, { scale, alpha });
+    }
+    return;
+  }
   const cx = enemy.x + enemy.width / 2;
   const cy = enemy.y + enemy.height / 2;
-  const hw = enemy.width / 2;
-  const hh = enemy.height / 2;
 
-  ctx.save();
-  ctx.translate(cx, cy);
-
-  const bodyColor = COLORS.bgDark;
-  const accentColor =
-    enemy.type === 'tough'
-      ? COLORS.gold
-      : enemy.type === 'fast'
-        ? COLORS.cta
-        : COLORS.tech;
-
-  ctx.fillStyle = bodyColor;
-  ctx.strokeStyle = COLORS.bgDark;
-  ctx.lineWidth = 1.5;
-
-  if (enemy.type === 'tough') {
-    ctx.beginPath();
-    ctx.moveTo(-hw, -hh * 0.6);
-    ctx.lineTo(-hw * 0.7, -hh);
-    ctx.lineTo(hw * 0.7, -hh);
-    ctx.lineTo(hw, -hh * 0.6);
-    ctx.lineTo(hw, hh * 0.6);
-    ctx.lineTo(hw * 0.6, hh);
-    ctx.lineTo(-hw * 0.6, hh);
-    ctx.lineTo(-hw, hh * 0.6);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-
-    ctx.fillStyle = accentColor;
-    ctx.fillRect(-hw * 0.4, -hh * 0.3, hw * 0.8, hh * 0.2);
-    ctx.fillStyle = COLORS.card;
-    ctx.fillRect(-hw * 0.5, -hh * 0.7, hw, hh * 0.25);
-  } else if (enemy.type === 'fast') {
-    ctx.beginPath();
-    ctx.moveTo(0, -hh);
-    ctx.lineTo(hw, 0);
-    ctx.lineTo(hw * 0.5, hh);
-    ctx.lineTo(-hw * 0.5, hh);
-    ctx.lineTo(-hw, 0);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-
-    ctx.fillStyle = accentColor;
-    ctx.beginPath();
-    ctx.moveTo(0, -hh * 0.5);
-    ctx.lineTo(hw * 0.4, 0);
-    ctx.lineTo(0, hh * 0.3);
-    ctx.lineTo(-hw * 0.4, 0);
-    ctx.closePath();
-    ctx.fill();
+  const baseEntry = getAssetEntry(enemy.assetKey);
+  if (baseEntry && baseEntry.img.naturalWidth > 0) {
+    const { w: sw } = getFrameSize(baseEntry);
+    const scale = getDisplayScale(enemy.width, sw);
+    drawSprite(ctx, baseEntry, cx, cy, { scale });
   } else {
-    ctx.beginPath();
-    ctx.moveTo(0, -hh);
-    ctx.lineTo(hw * 0.7, -hh * 0.4);
-    ctx.lineTo(hw, hh * 0.1);
-    ctx.lineTo(hw * 0.6, hh);
-    ctx.lineTo(hw * 0.2, hh * 0.6);
-    ctx.lineTo(-hw * 0.2, hh * 0.6);
-    ctx.lineTo(-hw * 0.6, hh);
-    ctx.lineTo(-hw, hh * 0.1);
-    ctx.lineTo(-hw * 0.7, -hh * 0.4);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-
-    ctx.fillStyle = accentColor;
-    ctx.beginPath();
-    ctx.arc(0, -hh * 0.15, hw * 0.2, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.fillStyle = COLORS.bgDark;
+    ctx.fillRect(-enemy.width / 2, -enemy.height / 2, enemy.width, enemy.height);
+    ctx.fillStyle = enemy.type === 'tough' ? COLORS.gold : enemy.type === 'fast' ? COLORS.cta : COLORS.tech;
+    ctx.fillRect(-enemy.width / 4, -enemy.height / 4, enemy.width / 2, enemy.height / 2);
+    ctx.restore();
   }
 
-  ctx.restore();
+  const engineEntry = getAssetEntry(enemy.engineAssetKey);
+  if (engineEntry && engineEntry.img.naturalWidth > 0) {
+    const eSize = getFrameSize(engineEntry);
+    const engineCy = cy - enemy.height * 0.3;
+    const scale = getDisplayScale(enemy.width, eSize.w) * 0.5;
+    drawAnimated(ctx, engineEntry, enemy.engineAnim, cx, engineCy, { scale, alpha: 0.9 });
+  }
 }
 
 export function drawEnemy(ctx: CanvasRenderingContext2D, enemy: Enemy): void {
-  if (!enemy.active) return;
+  if (!enemy.active && !enemy.deathAnim) return;
+
   const cx = enemy.x + enemy.width / 2;
   const cy = enemy.y + enemy.height / 2;
-  const hw = enemy.width / 2;
-  const hh = enemy.height / 2;
 
+  if (enemy.deathAnim) {
+    const entry = getAssetEntry(enemy.destroyKey);
+    if (entry) {
+      const { w: sw } = getFrameSize(entry);
+      const scale = getDisplayScale(enemy.width, sw);
+      const t = enemy.deathAnim.t / enemy.deathAnim.duration;
+      const alpha = 1 - t;
+      const drift = t * 8;
+      drawSprite(ctx, entry, cx + drift, cy + drift * 0.5, { scale, alpha });
+    }
+    return;
+  }
+
+  const baseEntry = getAssetEntry(enemy.assetKey);
+  if (baseEntry && baseEntry.img.naturalWidth > 0) {
+    const { w: sw } = getFrameSize(baseEntry);
+    const scale = getDisplayScale(enemy.width, sw);
+    drawSprite(ctx, baseEntry, cx, cy, { scale });
+  } else {
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.beginPath();
+    ctx.moveTo(0, -enemy.height / 2);
+    ctx.lineTo(enemy.width / 2, -enemy.height / 4);
+    ctx.lineTo(enemy.width / 2, enemy.height / 4);
+    ctx.lineTo(0, enemy.height / 2);
+    ctx.lineTo(-enemy.width / 2, enemy.height / 4);
+    ctx.lineTo(-enemy.width / 2, -enemy.height / 4);
+    ctx.closePath();
+    ctx.fillStyle = enemy.color;
+    ctx.fill();
+    ctx.restore();
+  }
+
+  const engineEntry = getAssetEntry(enemy.engineAssetKey);
+  if (engineEntry && engineEntry.img.naturalWidth > 0) {
+    const eSize = getFrameSize(engineEntry);
+    const engineCy = cy - enemy.height * 0.3;
+    const scale = getDisplayScale(enemy.width, eSize.w) * 0.6;
+    drawAnimated(ctx, engineEntry, enemy.engineAnim, cx, engineCy, { scale, alpha: 0.9 });
+  }
+
+  const labelY = cy + enemy.height * 0.32;
   ctx.save();
-  ctx.translate(cx, cy);
-
-  ctx.beginPath();
-  ctx.moveTo(0, -hh);
-  ctx.lineTo(hw, -hh * 0.5);
-  ctx.lineTo(hw, hh * 0.5);
-  ctx.lineTo(0, hh);
-  ctx.lineTo(-hw, hh * 0.5);
-  ctx.lineTo(-hw, -hh * 0.5);
-  ctx.closePath();
-  ctx.fillStyle = enemy.color;
-  ctx.strokeStyle = COLORS.bgDark;
-  ctx.lineWidth = 2;
-  ctx.fill();
-  ctx.stroke();
-
-  ctx.fillStyle = COLORS.card;
-  ctx.globalAlpha = 0.3;
-  ctx.beginPath();
-  ctx.moveTo(0, -hh * 0.4);
-  ctx.lineTo(hw * 0.4, -hh * 0.2);
-  ctx.lineTo(hw * 0.4, hh * 0.2);
-  ctx.lineTo(0, hh * 0.4);
-  ctx.lineTo(-hw * 0.4, hh * 0.2);
-  ctx.lineTo(-hw * 0.4, -hh * 0.2);
-  ctx.closePath();
-  ctx.fill();
-  ctx.globalAlpha = 1;
-
   ctx.fillStyle = COLORS.textPrimary;
-  ctx.font = 'bold 14px ui-monospace, monospace';
+  ctx.font = 'bold 8px ui-monospace, monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(enemy.projectInitial, 0, 1);
-
+  ctx.fillText(enemy.projectInitial, cx, labelY);
   ctx.restore();
 }
 
 export function drawBullet(ctx: CanvasRenderingContext2D, bullet: Bullet): void {
   if (!bullet.active) return;
+  let assetKey: string | null = null;
+  if (bullet.type === 'flame') assetKey = 'bullet-flame';
+  else if (bullet.type === 'chain') assetKey = 'bullet-zapper';
+  else if (bullet.type === 'strong') assetKey = 'bullet-big';
+  else assetKey = 'bullet-auto';
+
+  const entry = getAssetEntry(assetKey);
+  if (entry && entry.img.naturalWidth > 0) {
+    const { w: sw, h: sh } = getFrameSize(entry);
+    const cx = bullet.x + bullet.width / 2;
+    const cy = bullet.y + bullet.height / 2;
+    const scale = Math.max(bullet.width / sw, bullet.height / sh) * 1.1;
+    if (entry.config.frames && entry.config.frames > 1) {
+      drawAnimated(ctx, entry, { t: bullet.age }, cx, cy, { scale });
+    } else {
+      drawSprite(ctx, entry, cx, cy, { scale });
+    }
+    return;
+  }
   ctx.save();
   let color: string = COLORS.cta;
   let blur = 6;
@@ -309,16 +294,23 @@ export function drawPowerUp(
   if (!powerUp.active) return;
   const cx = powerUp.x + powerUp.width / 2;
   const cy = powerUp.y + powerUp.height / 2;
+  const entry = getAssetEntry(powerUp.assetKey);
+  if (entry && entry.img.naturalWidth > 0) {
+    const { w: sw, h: sh } = getFrameSize(entry);
+    const scale = Math.max(powerUp.width / sw, powerUp.height / sh) * 1.05;
+    if (entry.config.frames && entry.config.frames > 1) {
+      drawAnimated(ctx, entry, powerUp.anim, cx, cy, { scale });
+    } else {
+      drawSprite(ctx, entry, cx, cy, { scale });
+    }
+    return;
+  }
   const s = powerUp.width / 2;
   const pulse = 0.85 + 0.15 * Math.sin(powerUp.animPhase * 4);
-
   ctx.save();
   ctx.translate(cx, cy);
   ctx.scale(pulse, pulse);
-
   ctx.fillStyle = powerUp.color;
-  ctx.shadowColor = powerUp.color;
-  ctx.shadowBlur = 10;
   ctx.beginPath();
   for (let j = 0; j < 6; j++) {
     const a = (j * Math.PI) / 3 - Math.PI / 6;
@@ -329,38 +321,11 @@ export function drawPowerUp(
   }
   ctx.closePath();
   ctx.fill();
-  ctx.shadowBlur = 0;
-
-  ctx.strokeStyle = COLORS.bgDark;
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-
   ctx.fillStyle = COLORS.textPrimary;
   ctx.font = 'bold 7px ui-monospace, monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(powerUp.label, 0, 0);
-
-  ctx.restore();
-}
-
-export function drawShield(
-  ctx: CanvasRenderingContext2D,
-  player: Player,
-  shieldTimer: number,
-  time: number
-): void {
-  if (shieldTimer <= 0) return;
-  const pulse = 0.7 + 0.3 * Math.sin(time * 8);
-  ctx.save();
-  ctx.globalAlpha = pulse * 0.7;
-  ctx.strokeStyle = COLORS.success;
-  ctx.lineWidth = 2;
-  ctx.shadowColor = COLORS.success;
-  ctx.shadowBlur = 6;
-  ctx.beginPath();
-  ctx.arc(player.x, player.y, 26, 0, Math.PI * 2);
-  ctx.stroke();
   ctx.restore();
 }
 
@@ -418,12 +383,23 @@ export function drawLootItem(
   time: number
 ): void {
   if (!loot.active) return;
+  const cx = loot.x;
+  const cy = loot.y;
+  const entry = getAssetEntry(loot.emblemKey);
+  if (entry && entry.img.naturalWidth > 0) {
+    const { w: sw, h: sh } = getFrameSize(entry);
+    const size = LOOT_ITEM_SIZE;
+    const scale = Math.max(size / sw, size / sh) * 1.4;
+    if (entry.config.frames && entry.config.frames > 1) {
+      drawAnimated(ctx, entry, loot.anim, cx, cy, { scale });
+    } else {
+      drawSprite(ctx, entry, cx, cy, { scale });
+    }
+  }
   const s = LOOT_ITEM_SIZE / 2;
   const glow = 0.55 + 0.45 * Math.sin(time * 3 + loot.index);
-
   ctx.save();
-  ctx.translate(loot.x, loot.y);
-
+  ctx.translate(cx, cy);
   ctx.globalAlpha = glow;
   ctx.fillStyle = loot.color;
   ctx.strokeStyle = COLORS.bgDark;
@@ -440,13 +416,11 @@ export function drawLootItem(
   ctx.fill();
   ctx.stroke();
   ctx.globalAlpha = 1;
-
   ctx.fillStyle = COLORS.textPrimary;
   ctx.font = 'bold 8px ui-monospace, monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(loot.projectInitial, 0, 0);
-
   ctx.restore();
 }
 
@@ -475,20 +449,26 @@ export function drawLives(
   const h = PLAYER_HEIGHT * 0.5;
   const startX = 8;
   const y = 22;
+  const fullEntry = getAssetEntry('player-full');
   for (let i = 0; i < lives; i++) {
     const x = startX + i * (w + 4);
-    ctx.save();
-    ctx.translate(x + w / 2, y + h / 2);
-    ctx.scale(0.5, 0.5);
-    ctx.beginPath();
-    ctx.moveTo(shipBody[0][0], shipBody[0][1]);
-    for (let j = 1; j < shipBody.length; j++) {
-      ctx.lineTo(shipBody[j][0], shipBody[j][1]);
+    if (fullEntry && fullEntry.img.naturalWidth > 0) {
+      const { w: sw, h: sh } = getFrameSize(fullEntry);
+      const scale = Math.max(w / sw, h / sh) * 1.05;
+      drawSprite(ctx, fullEntry, x + w / 2, y + h / 2, { scale });
+    } else {
+      ctx.save();
+      ctx.translate(x + w / 2, y + h / 2);
+      ctx.beginPath();
+      ctx.moveTo(0, -h * 0.5);
+      ctx.lineTo(w * 0.5, h * 0.5);
+      ctx.lineTo(0, h * 0.3);
+      ctx.lineTo(-w * 0.5, h * 0.5);
+      ctx.closePath();
+      ctx.fillStyle = COLORS.cta;
+      ctx.fill();
+      ctx.restore();
     }
-    ctx.closePath();
-    ctx.fillStyle = COLORS.cta;
-    ctx.fill();
-    ctx.restore();
   }
   ctx.restore();
 }
@@ -659,31 +639,67 @@ export function drawHitEffect(
   ctx.restore();
 }
 
+export function drawLoadingScreen(
+  ctx: CanvasRenderingContext2D,
+  progress: number
+): void {
+  ctx.save();
+  ctx.fillStyle = COLORS.bgBase;
+  ctx.fillRect(0, 0, BASE_WIDTH, BASE_HEIGHT);
+  ctx.fillStyle = COLORS.bgDark;
+  ctx.font = 'bold 16px ui-monospace, monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('LOADING ASSETS', BASE_WIDTH / 2, BASE_HEIGHT / 2 - 10);
+  const barW = 200;
+  const barH = 12;
+  const x = (BASE_WIDTH - barW) / 2;
+  const y = BASE_HEIGHT / 2 + 10;
+  ctx.strokeStyle = COLORS.bgDark;
+  ctx.lineWidth = 2;
+  ctx.strokeRect(x, y, barW, barH);
+  ctx.fillStyle = COLORS.cta;
+  ctx.fillRect(x + 2, y + 2, (barW - 4) * progress, barH - 4);
+  ctx.fillStyle = COLORS.textSecondary;
+  ctx.font = '9px ui-monospace, monospace';
+  ctx.fillText(`${Math.floor(progress * 100)}%`, BASE_WIDTH / 2, y + barH + 14);
+  ctx.restore();
+}
+
 export function render(
   ctx: CanvasRenderingContext2D,
   state: GameState,
   scaleX: number,
   scaleY: number,
   hitEffects: { x: number; y: number; time: number }[],
-  time: number
+  time: number,
+  loadProgress: number = 1,
+  assetsReady: boolean = true
 ): void {
   ctx.save();
 
   const dpr = window.devicePixelRatio || 1;
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  ctx.imageSmoothingEnabled = false;
   ctx.scale(scaleX * dpr, scaleY * dpr);
+
+  if (!assetsReady) {
+    drawLoadingScreen(ctx, loadProgress);
+    ctx.restore();
+    return;
+  }
 
   const shakeX = state.shakeAmount > 0 ? (Math.random() - 0.5) * state.shakeAmount : 0;
   const shakeY = state.shakeAmount > 0 ? (Math.random() - 0.5) * state.shakeAmount : 0;
   ctx.translate(shakeX, shakeY);
 
-  drawGrid(ctx);
+  drawBackground(ctx, BASE_HEIGHT);
   drawStars(ctx, state.stars);
 
   for (let i = 0; i < state.genericEnemies.length; i++) {
     const e = state.genericEnemies[i];
-    if (!e.active) continue;
+    if (!e.active && !e.deathAnim) continue;
     drawGenericEnemy(ctx, e);
   }
 
@@ -705,8 +721,8 @@ export function render(
   }
 
   if (state.phase !== 'start' && state.lives > 0) {
-    drawPlayer(ctx, state.player, state.invulnerableTimer, time);
-    drawShield(ctx, state.player, state.shieldTimer, time);
+    drawPlayer(ctx, state.player, state.invulnerableTimer, state);
+    drawShield(ctx, state.player, state.shieldTimer, state);
   }
   drawParticles(ctx, state.particles);
 
@@ -733,3 +749,6 @@ export function render(
 
   ctx.restore();
 }
+
+void PROJECT_FACTION_EMBLEM;
+void POWERUP_BULLET;

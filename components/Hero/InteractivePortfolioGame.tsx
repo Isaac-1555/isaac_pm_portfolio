@@ -37,6 +37,8 @@ import {
   updateTempWeapon,
   updateShield,
   findNearestEnemy,
+  tickGenericAnimations,
+  updatePlayerAnim,
 } from './game/physics';
 import {
   findBulletGenericCollisions,
@@ -59,6 +61,9 @@ import {
 } from './game/constants';
 import ProjectPreviewCard from './ProjectPreviewCard';
 import type { GameProject } from './game/constants';
+import { allPreloadKeys, PROJECT_FACTION_EMBLEM } from './game/assets/assetMap';
+import { preloadAssets, getCachedImage } from './game/assets/loader';
+import { updateBackground, resetBackground } from './game/assets/background';
 
 interface HitEffect {
   x: number;
@@ -107,6 +112,8 @@ function createInitialGameState(): GameState {
     bulletDamage: 1,
     tempWeapon: null,
     shieldTimer: 0,
+    playerAnim: { t: 0 },
+    playerLivesCache: INITIAL_LIVES,
   };
 }
 
@@ -135,6 +142,9 @@ function startGame(state: GameState): void {
   state.bulletDamage = 1;
   state.tempWeapon = null;
   state.shieldTimer = 0;
+  state.playerAnim = { t: 0 };
+  state.playerLivesCache = INITIAL_LIVES;
+  resetBackground();
   announceWave(state, 1);
 }
 
@@ -159,12 +169,49 @@ export default function InteractivePortfolioGame() {
     if (typeof window === 'undefined') return false;
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   });
+  const [assetsReady, setAssetsReady] = useState(false);
+  const [loadProgress, setLoadProgress] = useState(0);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
     mq.addEventListener('change', handler);
     return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  useEffect(() => {
+    const keys = allPreloadKeys();
+    let cancelled = false;
+    const total = keys.length;
+    let done = 0;
+    const tick = () => {
+      done += 1;
+      if (!cancelled) setLoadProgress(total > 0 ? done / total : 1);
+    };
+    preloadAssets(keys)
+      .then(() => {
+        for (const k of keys) {
+          if (k.startsWith('/')) {
+            const img = getCachedImage(k);
+            void img;
+          }
+        }
+      })
+      .catch(() => {})
+      .finally(() => {
+        tick();
+        if (!cancelled) {
+          setLoadProgress(1);
+          setAssetsReady(true);
+        }
+      });
+    const interval = setInterval(() => {
+      setLoadProgress((p) => Math.min(0.95, p + 0.04));
+    }, 120);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
   }, []);
 
   const updateCanvasSize = useCallback(() => {
@@ -209,8 +256,8 @@ export default function InteractivePortfolioGame() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     const scale = scaleRef.current;
-    render(ctx, state, scale.x, scale.y, hitEffectsRef.current, time);
-  }, []);
+    render(ctx, state, scale.x, scale.y, hitEffectsRef.current, time, loadProgress, assetsReady);
+  }, [loadProgress, assetsReady]);
 
   useEffect(() => {
     if (!reducedMotion) return;
@@ -245,6 +292,7 @@ export default function InteractivePortfolioGame() {
 
         if (state.paused && state.phase === 'playing') {
           updateStars(state.stars, dt, BASE_WIDTH, BASE_HEIGHT);
+          updateBackground(dt);
           updateScreenShake(state, dt);
           drawFrame(state, timeRef.current);
           return;
@@ -258,6 +306,7 @@ export default function InteractivePortfolioGame() {
             return;
           }
           updateStars(state.stars, dt, BASE_WIDTH, BASE_HEIGHT);
+          updateBackground(dt);
           updateScreenShake(state, dt);
           drawFrame(state, timeRef.current);
           return;
@@ -265,6 +314,7 @@ export default function InteractivePortfolioGame() {
 
         if (isCardOpen) {
           updateStars(state.stars, dt, BASE_WIDTH, BASE_HEIGHT);
+          updateBackground(dt);
           updateScreenShake(state, dt);
           drawFrame(state, timeRef.current);
           return;
@@ -279,6 +329,7 @@ export default function InteractivePortfolioGame() {
 
         processInput(state, dt, left, right, kbShoot || touchShoot);
         updatePlayer(state.player, dt);
+        updatePlayerAnim(state, dt);
         updateBullets(state.bullets, dt);
         updatePowerUps(state, dt);
         updatePowerUpSpawner(state, dt);
@@ -286,7 +337,9 @@ export default function InteractivePortfolioGame() {
         updateShield(state, dt);
         updateWave(state, dt);
         updateProjectEnemies(state, dt);
+        tickGenericAnimations(state.genericEnemies, dt);
         updateLootItems(state, dt);
+        updateBackground(dt);
         updateStars(state.stars, dt, BASE_WIDTH, BASE_HEIGHT);
         updateParticles(state.particles, dt);
         updateInvulnerability(state, dt);
@@ -369,7 +422,7 @@ export default function InteractivePortfolioGame() {
           const bullet = state.bullets[bulletIndex];
           const enemy = state.projectEnemies[enemyIndex];
           if (bullet) bullet.active = false;
-          if (enemy.active) {
+          if (enemy.active && !enemy.deathAnim) {
             spawnExplosionFromPool(
               state.particles,
               enemy.x + enemy.width / 2,
@@ -382,6 +435,7 @@ export default function InteractivePortfolioGame() {
               time: 0,
             });
             const lootCount = state.lootItems.filter((l) => l.active).length;
+            const emblemKey = PROJECT_FACTION_EMBLEM[enemy.projectId] ?? 'pickup-engine-base';
             state.lootItems.push(
               createLootItem(
                 enemy.projectId,
@@ -389,10 +443,11 @@ export default function InteractivePortfolioGame() {
                 enemy.color,
                 enemy.x + enemy.width / 2,
                 enemy.y + enemy.height / 2,
-                lootCount
+                lootCount,
+                emblemKey
               )
             );
-            state.projectEnemies.splice(enemyIndex, 1);
+            enemy.deathAnim = { t: 0, duration: 0.7 };
             state.score += SCORE_PROJECT;
             addScorePopup(
               state,
@@ -421,7 +476,7 @@ export default function InteractivePortfolioGame() {
 
         const allDead =
           state.genericEnemies.length > 0 &&
-          state.genericEnemies.every((e) => !e.active);
+          state.genericEnemies.every((e) => !e.active && !e.deathAnim);
         if (allDead) {
           state.wave.allDeadTimer -= dt;
           if (state.wave.allDeadTimer <= 0) {
@@ -446,7 +501,7 @@ export default function InteractivePortfolioGame() {
       },
       [isCardOpen, keysRef, drawFrame]
     ),
-    !reducedMotion
+    !reducedMotion && assetsReady
   );
 
   const handleTouchStart = (e: React.TouchEvent) => {
