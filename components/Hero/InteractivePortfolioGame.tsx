@@ -162,6 +162,7 @@ export default function InteractivePortfolioGame() {
   const touchStartXRef = useRef(0);
   const touchHasMovedRef = useRef(false);
   const touchPendingShotRef = useRef(false);
+  const isTouchingRef = useRef(false);
   const suppressClickRef = useRef(false);
 
   const [selectedProject, setSelectedProject] = useState<GameProject | null>(null);
@@ -324,7 +325,7 @@ export default function InteractivePortfolioGame() {
         const right = keys.has('ArrowRight') || keys.has('d') || keys.has('D');
         const kbShoot = isSpaceDown;
 
-        const touchShoot = touchPendingShotRef.current;
+        const touchShoot = isTouchingRef.current || touchPendingShotRef.current;
         touchPendingShotRef.current = false;
 
         processInput(state, dt, left, right, kbShoot || touchShoot);
@@ -509,6 +510,7 @@ export default function InteractivePortfolioGame() {
     const touch = e.touches[0];
     touchStartXRef.current = touch.clientX;
     touchHasMovedRef.current = false;
+    isTouchingRef.current = true;
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
@@ -525,6 +527,7 @@ export default function InteractivePortfolioGame() {
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     e.preventDefault();
+    isTouchingRef.current = false;
     if (!touchHasMovedRef.current) {
       const phase = gameStateRef.current.phase;
       if (phase === 'start' || phase === 'gameOver') {
