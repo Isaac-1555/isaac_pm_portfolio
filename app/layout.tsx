@@ -5,6 +5,8 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MascotMount } from "@/components/mascot/MascotMount";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { CursorProvider } from "@/components/cursor/cursor-context";
+import { Cursor } from "@/components/cursor/Cursor";
 
 const orbitron = Orbitron({
   subsets: ["latin"],
@@ -61,12 +63,15 @@ export default function RootLayout({
       <body
         className={`${orbitron.variable} ${rajdhani.variable} ${inter.variable} antialiased bg-bg-base text-text-primary font-sans flex flex-col min-h-screen`}
       >
-        <Header />
-        <main className="flex-grow">
-          {children}
-        </main>
-        <MascotMount />
-        <Footer />
+        <CursorProvider>
+          <Header />
+          <main className="flex-grow">
+            {children}
+          </main>
+          <MascotMount />
+          <Footer />
+          <Cursor />
+        </CursorProvider>
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
       </body>
     </html>

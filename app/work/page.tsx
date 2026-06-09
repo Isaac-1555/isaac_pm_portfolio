@@ -199,7 +199,7 @@ export default function WorkPage() {
                 data-icon-hover-trigger
                 className="group h-full flex flex-col hover:border-cta transition-colors"
               >
-                <div className={`h-48 w-full bg-gradient-to-br ${project.gradient} relative overflow-hidden flex items-center justify-center`}>
+                <div data-cursor-spotlight className={`h-48 w-full bg-gradient-to-br ${project.gradient} relative overflow-hidden flex items-center justify-center`}>
                   {project.image ? (
                     <>
                       <Image

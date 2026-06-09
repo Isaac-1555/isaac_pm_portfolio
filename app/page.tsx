@@ -38,7 +38,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="relative h-64 md:h-96 w-full border-2 border-bg-accent rounded-sm overflow-hidden bg-bg-accent/20 backdrop-blur">
+          <div data-cursor-spotlight className="relative h-64 md:h-96 w-full border-2 border-bg-accent rounded-sm overflow-hidden bg-bg-accent/20 backdrop-blur">
             <Image
               src="/isaac.png"
               alt="Isaac Daniel Sudakar"

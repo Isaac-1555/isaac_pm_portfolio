@@ -86,7 +86,7 @@ export function FeaturedWork() {
                 className="group h-full flex flex-col hover:border-cta transition-colors"
               >
                 {/* Card Image Header */}
-                <div className={`h-40 w-full bg-gradient-to-br ${project.gradient} relative overflow-hidden flex items-center justify-center`}>
+                <div data-cursor-spotlight className={`h-40 w-full bg-gradient-to-br ${project.gradient} relative overflow-hidden flex items-center justify-center`}>
                   {project.image ? (
                     <>
                       <Image 
