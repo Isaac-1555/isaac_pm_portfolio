@@ -116,7 +116,7 @@ export function processInput(
       const angle = t * FLAME_CONE_SPREAD;
       const vx = Math.sin(angle) * FLAME_BULLET_SPEED;
       const vy = -Math.cos(angle) * FLAME_BULLET_SPEED * (1 - FLAME_VERTICAL_VARIANCE * Math.abs(t));
-      spawnBullet(state, player.x, tipY, { vx, vy, type: 'flame', damage: 0 });
+      spawnBullet(state, player.x, tipY, { vx, vy, type: 'flame' });
     }
     return;
   }
