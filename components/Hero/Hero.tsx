@@ -1,4 +1,5 @@
 import HeroContent from './HeroContent';
+import { HeroBackground } from './HeroBackground';
 import InteractivePortfolioGame from './InteractivePortfolioGame';
 
 export function Hero() {
@@ -7,11 +8,7 @@ export function Hero() {
       id="mission-home-hero"
       className="relative w-full min-h-[calc(100dvh-3.5rem)] md:min-h-[calc(100dvh-4rem)] bg-bg-base py-12 md:py-16 lg:py-24 overflow-hidden"
     >
-      {/* Background Pattern */}
-      <div className="absolute inset-0 z-0 diagonal-stripes pointer-events-none" />
-
-      {/* Accent Stripe */}
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-bg-dark/10 to-transparent skew-x-12 transform origin-top-right pointer-events-none" />
+      <HeroBackground />
 
       <div className="container mx-auto relative z-10 px-6 md:px-8">
         <div className="relative">
