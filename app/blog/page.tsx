@@ -9,6 +9,19 @@ import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 
 const posts = [
   {
+    slug: "barcode-lists",
+    title:
+      "Barcode Lists: A Shared Workflow for Calgary Coop",
+    subtitle:
+      "A Monday-morning scanning problem turned into a shared Chrome extension with AI-powered OCR, realtime sync, and 24 commits of iteration over three months.",
+    date: "June 2026",
+    readTime: "10 min",
+    author: "Isaac",
+    tags: ["Chrome Extension", "AI/OCR", "Internal Tool", "Realtime"],
+    image: "/BarcodeLists_1.png",
+    gradient: "from-slate-800 to-slate-950",
+  },
+  {
     slug: "d4c",
     title: "D4C: Building a Personalized Coding Agent on Top of Pi",
     subtitle:

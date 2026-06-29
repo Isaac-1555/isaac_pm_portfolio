@@ -1,7 +1,7 @@
 import React from "react";
 import BrainCircuitIcon from "@/components/icons/brain-circuit-icon";
 import FileDescriptionIcon from "@/components/icons/file-description-icon";
-import ScanBarcodeIcon from "@/components/icons/scan-barcode-icon";
+import TerminalIcon from "@/components/icons/terminal-icon";
 import type { AnimatedIconProps } from "@/components/icons/types";
 
 export interface CaseStudy {
@@ -80,6 +80,124 @@ export interface CaseStudy {
 
 export const caseStudies: CaseStudy[] = [
   {
+    id: "tux",
+    title: "Tux",
+    subtitle: "Barebones terminal IDE with split panes, session sidebar, and git-aware workflow — built because Warp and VSCode buried the features I needed.",
+    company: "Developer Tooling (Personal)",
+    role: "Solo Developer & Designer",
+    timeline: "1 Day (Initial + 5 Fixes)",
+    team: "Solo",
+    status: "Open Source (GitHub)",
+
+    context: "I live in the terminal. Warp and VSCode promised the workflow I wanted — split panes, a file explorer, a git tree, session monitoring — but every one of those features was either missing, behind a flag, or three menus deep. I wanted a tool that only had what I needed, in the order I needed it, with a native feel and a small footprint. So I built it.",
+
+    problem: {
+      statement: "Modern IDEs and terminals overload on features I don't use, while burying the features I do. Every menu click is a context switch. Every buried feature is friction that compounds over a workday.",
+      importance: "The features that actually matter for my workflow are layout, git visibility, file state, and fast terminal access. If a tool can't surface those in under a second, it's slowing me down — even if it has the feature somewhere.",
+      constraints: ["Must launch fast — sub-2s cold start target", "Only the features I actually use, nothing else", "Native feel, not a web wrapper in disguise", "Small package size, not a multi-hundred-megabyte bundle"]
+    },
+
+    goals: {
+      objectives: [
+        "Split panes (vertical and horizontal)",
+        "Right-side terminal",
+        "Left sidebar: file explorer, git tree, terminal sessions",
+        "Inline git diffs",
+        "Read, write, and edit files with Prettier syntax highlighting",
+        "Rust + Tauri for speed and smaller package size"
+      ],
+      kpis: ["Time from launch to first command", "Package / binary size", "Number of features kept (intentionally small)"]
+    },
+
+    research: {
+      methods: [
+        "Daily driver: Warp + VSCode side-by-side for two weeks before writing any code",
+        "PRD written before code (`PRD.md` checked into the repo)",
+        "Constraint: every feature must earn its place or get cut"
+      ],
+      insights: [
+        "Most IDE features are inert for me — extensions marketplace, debugger, plugin system, integrated package manager.",
+        "The features that actually matter are layout, git state, and file state. Those three cover ~90% of my day.",
+        "Tauri gives a native UX with webview flexibility, without the 200MB Electron tax."
+      ]
+    },
+
+    approach: {
+      strategy: "PRD-first, then a single-day scaffold followed by 5 fix commits. Rust backend handles PTY, git ops, and the editor engine. React frontend handles the layout because that's where webview pays off.",
+      frameworks: ["Tauri 2", "ghostty-web (terminal rendering)", "CodeMirror (editor)", "@pierre/diffs (diff viewer)", "git2-rs (git operations)"],
+      collaboration: "Solo. Daily-driver dogfooding from commit 1 — every feature had to be used the same day it was built."
+    },
+
+    solution: {
+      description: "A three-pane desktop app. Sessions and the file tree live on the left. The terminal plus editor/diff sit in the middle. Git state lives on the right. Ghostty powers the terminal, CodeMirror powers the editor with Prettier for JS/TS/JSON/HTML/CSS/MD, and @pierre/diffs renders the diff pane. Session state persists across launches.",
+      features: [
+        "Split panes (vertical and horizontal, resizable)",
+        "Right-side terminal powered by Ghostty",
+        "Left sidebar: file explorer, git tree, terminal session list",
+        "Inline git diffs (unified and side-by-side)",
+        "Read / write / edit files with Prettier syntax highlighting",
+        "Session persistence across launches",
+        "Keyboard-first — every major action has a shortcut"
+      ],
+      rationale: "Rust + Tauri for sub-2s cold start and a small binary. React only where layout actually needs it (split panes, drag-resize, sidebar collapse). No LSP, no plugin marketplace, no debugger — explicitly out of scope per the PRD."
+    },
+
+    execution: {
+      roadmap: [
+        { label: "PRD", description: "20-section PRD covering layout, terminal, git, editor, persistence, performance targets" },
+        { label: "Initial commit", description: "Tauri 2 + React 19 scaffold with all 7 panes wired (App, Sidebar, FileTree, Terminal, GitViewer, Diff, Editor)" },
+        { label: "5 fix passes", description: "File explorer → CWD reset → GitViewer → shortcuts + git.rs → backspace keystroke" }
+      ],
+      challenges: [
+        "File explorer: PTY and sidebar state had to be rewired so the tree and the terminals stayed in sync (`7097843`).",
+        "CWD reset bug: shell working directory wasn't restoring on session switch, breaking per-session isolation (`de63eac`).",
+        "GitViewer stability: two passes to get diffs rendering reliably across staged / unstaged / untracked states (`d10a0a4`, `53678a0`).",
+        "Keyboard shortcut layer + dedicated `git.rs` module landed in the same commit to keep the surface area small (`53678a0`).",
+        "Backspace keystroke wasn't reaching the shell in the built binary, only in dev. Keymap registration was happening too late (`be3d4d1`)."
+      ]
+    },
+
+    outcome: {
+      quantifiable: [
+        "6 commits, 1 day from PRD to working binary",
+        "All 5 PRD core features shipped (sessions, terminal, file tree, git, editor, diff, persistence)",
+        "Open source on GitHub — full Rust + TS source available"
+      ],
+      qualitative: [
+        "Feels native, not browser-y",
+        "No feature I have to ignore or disable",
+        "Daily-driver capable for terminal-centric workflows"
+      ]
+    },
+
+    learnings: {
+      takeaways: [
+        "Build the tool that fits how you actually work — not how a feature list says it should.",
+        "A PRD prevents scope creep better than any framework. It also makes the 'what we cut' conversation easy.",
+        "Fix commits tell you where the real work was. The initial scaffold is the easy part."
+      ],
+      nextSteps: [
+        "LSP for syntax-only lint hints (no autocomplete — out of scope by design)",
+        "Hunk staging directly in the diff viewer",
+        "Fuzzy file search (Cmd+P)",
+        "Workspace JSON snapshots for cross-machine restore",
+        "UI improvements tailored for terminal-based coding agents (Claude Code, Codex, Aider) — clearer diffs, in-place prompts, agent run state",
+        "Better shortcut detection — context-aware keybindings that don't fight with the shell or the agent"
+      ]
+    },
+
+    icon: TerminalIcon,
+    gradient: "from-slate-900 to-bg-dark",
+    tags: ["Rust", "Tauri", "IDE", "Terminal", "Dev Tool"],
+    techStack: ["Rust", "Tauri 2", "React 19", "TypeScript", "Ghostty", "CodeMirror", "@pierre/diffs", "Vite", "git2-rs"],
+    websiteUrl: "https://github.com/Isaac-1555/Tux",
+    repoUrl: "https://github.com/Isaac-1555/Tux",
+    screenshots: [
+      "/Tux_UI.png",
+      "/Tux_Panes.png"
+    ]
+  },
+  {
     id: "satbrain",
     title: "SatBrain",
     subtitle: "AI-Powered Study Assistant transforming documents into interactive learning materials.",
@@ -147,75 +265,6 @@ export const caseStudies: CaseStudy[] = [
     screenshots: [
       "/Satbrain_Home.png",
       "/Satbrain_Mapview.png"
-    ]
-  },
-  {
-    id: "barcode-lists",
-    title: "Barcode Lists",
-    subtitle: "Internal Chrome Extension for Calgary Coop that streamlines barcode management with shared access and AI-powered extraction.",
-    company: "Calgary Coop (Internal Tool)",
-    role: "Product Manager & Developer",
-    timeline: "2 Weeks",
-    team: "Solo Dev",
-    status: "Live in Chrome Web Store",
-    
-    context: "Calgary Coop store personnel scan barcodes every Monday as part of inventory operations. Previously, these barcodes were tracked manually or lost between shifts, causing repeated work and data inconsistency across staff members. Barcode Lists was built as an internal Chrome Extension to centralize barcode storage, enable shared access across all store personnel, and use AI to handle complex image and spreadsheet extraction.",
-    
-    problem: {
-      statement: "Store personnel had no centralized system to save and reuse scanned barcodes. Data was siloed per individual, leading to duplicate scans, lost records, and wasted operational time.",
-      importance: "Accurate barcode tracking is critical for inventory management at scale. Errors cascade into stock discrepancies, ordering issues, and wasted labor hours across multiple store locations.",
-      constraints: ["Must work within Chrome browser (no native app install).", "Shared data access requires authentication to protect store data.", "Must handle noisy inputs: invoice numbers, extra spaces, and complex image formats."]
-    },
-    
-    goals: {
-      objectives: ["Provide a shared, persistent barcode storage system accessible by all authorized personnel.", "Automate barcode extraction from images and spreadsheets using AI/OCR.", "Eliminate manual cleanup by intelligently filtering invoice numbers and whitespace."],
-      kpis: ["Time saved per scanning session", "Data accuracy (clean barcodes vs raw input)", "User adoption across store personnel"]
-    },
-    
-    research: {
-      methods: ["On-site observation of Monday scanning workflows at Calgary Coop.", "Interviews with store personnel about pain points in barcode tracking.", "Analysis of existing barcode data formats (images, spreadsheets, handwritten lists)."],
-      insights: ["Personnel often re-scan barcodes that were already captured by a colleague on a different shift.", "Images from scanners often contain invoice numbers mixed with barcodes, causing manual sorting.", "A shared login system was the top-requested feature to enable cross-shift collaboration."]
-    },
-    
-    approach: {
-      strategy: "Build a lightweight Chrome Extension with cloud-synced storage and AI-powered OCR to handle the full pipeline: capture, clean, store, and share barcodes.",
-      frameworks: ["Chrome Extension Manifest V3", "OCR + AI Image Processing", "Shared State Architecture"],
-      collaboration: "Direct feedback loop with Calgary Coop store staff during development and testing."
-    },
-    
-    solution: {
-      description: "A Chrome Extension that allows store personnel to save, manage, and share barcode lists. Users log in to access a shared database, so barcodes saved by one person are instantly available to all authorized staff. AI-powered OCR reads complex images and spreadsheets to extract barcode numbers, automatically removing invoice numbers and cleaning whitespace.",
-      features: ["Shared Barcode Database with Login Authentication", "AI-Powered Image & Spreadsheet OCR", "Intelligent Barcode Cleaning (removes invoice numbers & spaces)", "Persistent Cloud Storage with Real-Time Sync", "Simple List Management (add, delete, search)"],
-      rationale: "Chrome Extension was chosen because all store operations already happen in the browser. No app install friction, and Manifest V3 ensures security and performance."
-    },
-    
-    execution: {
-      roadmap: [
-        { label: "Week 1", description: "Core extension setup, barcode CRUD, and authentication system" },
-        { label: "Week 2", description: "AI/OCR integration for image & spreadsheet extraction, Chrome Web Store deployment" }
-      ],
-      challenges: ["Extracting clean barcodes from noisy images that mix invoice numbers with actual barcodes (Solved with AI refinement pipeline).", "Ensuring real-time data sync across multiple users logged into the same store account."]
-    },
-    
-    outcome: {
-      quantifiable: ["Live on Chrome Web Store (v3.2)", "4 active users across Calgary Coop locations", "Eliminated duplicate scanning across shifts"],
-      qualitative: ["Store staff reported significant time savings on Monday scanning workflows.", "AI extraction reduced manual barcode cleanup to near zero."]
-    },
-    
-    learnings: {
-      takeaways: ["Internal tools don't need to be complex — they need to be reliable and fit the existing workflow.", "AI-powered data cleaning is a massive force multiplier for operational tools."],
-      nextSteps: ["Multi-store rollout across more Calgary Coop locations", "Batch export functionality for inventory systems", "Offline mode for areas with poor connectivity"]
-    },
-
-    icon: ScanBarcodeIcon,
-    gradient: "from-bg-accent to-divider",
-    tags: ["Chrome Extension", "AI/OCR", "Internal Tool", "B2B"],
-    techStack: ["Chrome MV3", "JavaScript", "Clerk Auth", "Supabase", "OCR", "AI", "Tailwind", "Vite"],
-    websiteUrl: "https://chromewebstore.google.com/detail/barcode-lists/colpoghjdbjnmciefnipaefbdflgjifg",
-    repoUrl: "https://github.com/Isaac-1555/Barcode-Lists",
-    screenshots: [
-      "/BarcodeLists_1.png",
-      "/BarcodeLists_2.png"
     ]
   },
   {

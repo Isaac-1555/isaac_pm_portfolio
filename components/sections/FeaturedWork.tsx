@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import RightChevron from "@/components/icons/right-chevron";
 import BrainCircuitIcon from "@/components/icons/brain-circuit-icon";
-import ScanBarcodeIcon from "@/components/icons/scan-barcode-icon";
+import TerminalIcon from "@/components/icons/terminal-icon";
 import FileDescriptionIcon from "@/components/icons/file-description-icon";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 
@@ -25,17 +25,17 @@ const projects = [
     icon: BrainCircuitIcon,
   },
   {
-    id: "barcode-lists",
-    title: "Barcode Lists",
-    company: "Calgary Coop (Internal)",
-    role: "PM & Developer",
-    description: "Internal Chrome Extension for Calgary Coop. AI-powered barcode extraction with shared access across store personnel.",
-    metrics: ["Live in Store", "AI/OCR"],
-    tags: ["Chrome Ext", "AI", "Internal Tool"],
-    href: "/case-studies/barcode-lists",
-    gradient: "from-bg-accent to-divider",
-    image: "/BarcodeLists_1.png",
-    icon: ScanBarcodeIcon,
+    id: "tux",
+    title: "Tux",
+    company: "Developer Tooling (Personal)",
+    role: "Solo Developer & Designer",
+    description: "Barebones terminal IDE with split panes, session sidebar, and git-aware workflow. Built because Warp and VSCode buried the features I actually needed.",
+    metrics: ["Rust + Tauri", "Open Source"],
+    tags: ["Rust", "Tauri", "IDE", "Terminal"],
+    href: "/case-studies/tux",
+    gradient: "from-slate-900 to-bg-dark",
+    image: "/Tux_UI.png",
+    icon: TerminalIcon,
   },
   {
     id: "pocket-resume",
