@@ -27,7 +27,7 @@ export default function Home() {
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-industrial font-bold uppercase tracking-wide md:tracking-widest text-white mb-6">
               Engineering <AccentWord text="Impact" />
             </h2>
-            <p className="text-text-secondary leading-relaxed mb-8 max-w-lg font-sans text-sm md:text-base">
+            <p className="text-white leading-relaxed mb-8 max-w-lg font-sans text-sm md:text-base">
               With over 5 years of experience in software development, AI integration, and product management, I specialize in transforming ambiguous problems into scalable, AI-powered solutions. My approach combines rigorous data analysis with intuitive design principles.
             </p>
             <ProfileSummaryStats />
