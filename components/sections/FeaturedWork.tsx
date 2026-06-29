@@ -81,91 +81,89 @@ export function FeaturedWork() {
           {projects.map((project) => {
             const Icon = project.icon;
             return (
-              <Card
+              <Link
                 key={project.id}
-                data-icon-hover-trigger
-                className="group h-full flex flex-col hover:border-cta transition-colors"
+                href={project.href}
+                className="group block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cta rounded-sm"
               >
-                {/* Card Image Header */}
-                <div data-cursor-spotlight className={`h-40 w-full bg-gradient-to-br ${project.gradient} relative overflow-hidden flex items-center justify-center`}>
-                  {project.image ? (
-                    <>
-                      <Image 
-                        src={project.image} 
-                        alt={project.title} 
-                        fill 
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
-                    </>
-                  ) : (
-                    <>
-                      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
-                      <IconHoverWrapper
-                        hoverTrigger="closest"
-                        className="transition-transform group-hover:scale-110 [&_svg]:transition-colors group-hover:[&_svg]:text-white/40"
-                      >
-                        <Icon size={48} color="rgba(255,255,255,0.2)" />
-                      </IconHoverWrapper>
-                    </>
-                  )}
-                  <Badge variant="outline" className="absolute top-3 right-3 bg-black/50 backdrop-blur text-white border-white/20 text-xs z-10">
-                    {project.company}
-                  </Badge>
-                </div>
-                
-                {/* Card Header */}
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg md:text-xl group-hover:text-cta transition-colors">
-                    {project.title}
-                  </CardTitle>
-                  <div className="text-xs font-mono text-text-secondary uppercase tracking-wide mt-1">
-                    {project.role}
-                  </div>
-                </CardHeader>
-                
-                {/* Card Content */}
-                <CardContent className="flex-grow space-y-4">
-                  <p className="text-sm text-text-secondary leading-relaxed line-clamp-3">
-                    {project.description}
-                  </p>
-                  
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-1.5">
-                    {project.tags.map((tag) => (
-                      <Badge key={tag} variant="secondary" className="text-[10px] px-2 py-0.5">
-                        {tag}
-                      </Badge>
-                    ))}
+                <Card
+                  data-icon-hover-trigger
+                  className="h-full flex flex-col hover:border-cta transition-colors"
+                >
+                  {/* Card Image Header */}
+                  <div data-cursor-spotlight className={`h-40 w-full bg-gradient-to-br ${project.gradient} relative overflow-hidden flex items-center justify-center`}>
+                    {project.image ? (
+                      <>
+                        <Image
+                          src={project.image}
+                          alt={project.title}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
+                      </>
+                    ) : (
+                      <>
+                        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
+                        <IconHoverWrapper
+                          hoverTrigger="closest"
+                          className="transition-transform group-hover:scale-110 [&_svg]:transition-colors group-hover:[&_svg]:text-white/40"
+                        >
+                          <Icon size={48} color="rgba(255,255,255,0.2)" />
+                        </IconHoverWrapper>
+                      </>
+                    )}
+                    <Badge variant="outline" className="absolute top-3 right-3 bg-black/50 backdrop-blur text-white border-white/20 text-xs z-10">
+                      {project.company}
+                    </Badge>
                   </div>
 
-                  {/* Metrics */}
-                  <div className="grid grid-cols-2 gap-2">
-                    {project.metrics.map((metric) => (
-                      <div key={metric} className="bg-bg-accent/10 border border-bg-dark/20 p-2 text-center rounded-sm">
-                        <div className="text-gold font-bold font-industrial text-[10px] whitespace-nowrap">{metric}</div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-                
-                {/* Card Footer */}
-                <CardFooter className="mt-auto pt-4 border-t border-divider/50">
-                  <Link
-                    href={project.href}
-                    data-icon-hover-trigger
-                    className="w-full"
-                    target={project.href.startsWith("http") ? "_blank" : "_self"}
-                  >
-                    <Button variant="ghost" className="w-full text-sm group-hover:bg-cta group-hover:text-white transition-all">
+                  {/* Card Header */}
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-lg md:text-xl group-hover:text-cta transition-colors">
+                      {project.title}
+                    </CardTitle>
+                    <div className="text-xs font-mono text-text-secondary uppercase tracking-wide mt-1">
+                      {project.role}
+                    </div>
+                  </CardHeader>
+
+                  {/* Card Content */}
+                  <CardContent className="flex-grow space-y-4">
+                    <p className="text-sm text-text-secondary leading-relaxed line-clamp-3">
+                      {project.description}
+                    </p>
+
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-1.5">
+                      {project.tags.map((tag) => (
+                        <Badge key={tag} variant="secondary" className="text-[10px] px-2 py-0.5">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+
+                    {/* Metrics */}
+                    <div className="grid grid-cols-2 gap-2">
+                      {project.metrics.map((metric) => (
+                        <div key={metric} className="bg-bg-accent/10 border border-bg-dark/20 p-2 text-center rounded-sm">
+                          <div className="text-gold font-bold font-industrial text-[10px] whitespace-nowrap">{metric}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+
+                  {/* Card Footer */}
+                  <CardFooter className="mt-auto pt-4 border-t border-divider/50">
+                    <div className="w-full inline-flex items-center justify-center text-sm group-hover:bg-cta group-hover:text-white transition-all uppercase tracking-widest font-industrial border-2 border-transparent h-10 px-4 py-2 rounded-sm">
                       View Details
                       <IconHoverWrapper hoverTrigger="closest">
                         <RightChevron size={16} className="ml-2" />
                       </IconHoverWrapper>
-                    </Button>
-                  </Link>
-                </CardFooter>
-              </Card>
+                    </div>
+                  </CardFooter>
+                </Card>
+              </Link>
             );
           })}
         </div>

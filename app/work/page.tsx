@@ -1,6 +1,5 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import RightChevron from "@/components/icons/right-chevron";
@@ -195,85 +194,83 @@ export default function WorkPage() {
           {flagshipProjects.map((project) => {
             const Icon = project.icon;
             return (
-              <Card
+              <Link
                 key={project.id}
-                data-icon-hover-trigger
-                className="group h-full flex flex-col hover:border-cta transition-colors"
+                href={project.href}
+                className="group block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cta rounded-sm"
               >
-                <div data-cursor-spotlight className={`h-48 w-full bg-gradient-to-br ${project.gradient} relative overflow-hidden flex items-center justify-center`}>
-                  {project.image ? (
-                    <>
-                      <Image
-                        src={project.image}
-                        alt={project.title}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
-                    </>
-                  ) : (
-                    <>
-                      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
-                      <IconHoverWrapper
-                        hoverTrigger="closest"
-                        className="transition-transform group-hover:scale-110 [&_svg]:transition-colors group-hover:[&_svg]:text-white/40"
-                      >
-                        <Icon size={64} color="rgba(255,255,255,0.2)" />
-                      </IconHoverWrapper>
-                    </>
-                  )}
-                  <Badge variant="outline" className="absolute top-4 right-4 bg-black/50 backdrop-blur text-white border-white/20 z-10">
-                    {project.company}
-                  </Badge>
-                </div>
-                
-                <CardHeader>
-                  <CardTitle className="group-hover:text-cta transition-colors text-xl">
-                    {project.title}
-                  </CardTitle>
-                  <div className="text-xs font-mono text-text-secondary uppercase tracking-widest mt-1">
-                    {project.role}
-                  </div>
-                </CardHeader>
-                
-                <CardContent className="flex-grow space-y-6">
-                  <p className="text-text-secondary leading-relaxed text-sm">
-                    {project.description}
-                  </p>
-                  
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag) => (
-                      <Badge key={tag} variant="secondary" className="text-[10px]">
-                        {tag}
-                      </Badge>
-                    ))}
+                <Card
+                  data-icon-hover-trigger
+                  className="h-full flex flex-col hover:border-cta transition-colors"
+                >
+                  <div data-cursor-spotlight className={`h-48 w-full bg-gradient-to-br ${project.gradient} relative overflow-hidden flex items-center justify-center`}>
+                    {project.image ? (
+                      <>
+                        <Image
+                          src={project.image}
+                          alt={project.title}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
+                      </>
+                    ) : (
+                      <>
+                        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
+                        <IconHoverWrapper
+                          hoverTrigger="closest"
+                          className="transition-transform group-hover:scale-110 [&_svg]:transition-colors group-hover:[&_svg]:text-white/40"
+                        >
+                          <Icon size={64} color="rgba(255,255,255,0.2)" />
+                        </IconHoverWrapper>
+                      </>
+                    )}
+                    <Badge variant="outline" className="absolute top-4 right-4 bg-black/50 backdrop-blur text-white border-white/20 z-10">
+                      {project.company}
+                    </Badge>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2">
-                    {project.metrics.map((metric) => (
-                      <div key={metric} className="bg-bg-accent/10 border border-bg-dark/20 p-2 text-center rounded-sm">
-                        <div className="text-gold font-bold font-industrial text-[10px] whitespace-nowrap">{metric}</div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-                
-                <CardFooter className="mt-auto pt-6 border-t border-divider/50">
-                  <Link
-                    href={project.href}
-                    data-icon-hover-trigger
-                    className="w-full"
-                    target={project.href.startsWith("http") ? "_blank" : "_self"}
-                  >
-                    <Button variant="ghost" className="w-full group-hover:bg-cta group-hover:text-white transition-all">
+                  <CardHeader>
+                    <CardTitle className="group-hover:text-cta transition-colors text-xl">
+                      {project.title}
+                    </CardTitle>
+                    <div className="text-xs font-mono text-text-secondary uppercase tracking-widest mt-1">
+                      {project.role}
+                    </div>
+                  </CardHeader>
+
+                  <CardContent className="flex-grow space-y-6">
+                    <p className="text-text-secondary leading-relaxed text-sm">
+                      {project.description}
+                    </p>
+
+                    <div className="flex flex-wrap gap-2">
+                      {project.tags.map((tag) => (
+                        <Badge key={tag} variant="secondary" className="text-[10px]">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      {project.metrics.map((metric) => (
+                        <div key={metric} className="bg-bg-accent/10 border border-bg-dark/20 p-2 text-center rounded-sm">
+                          <div className="text-gold font-bold font-industrial text-[10px] whitespace-nowrap">{metric}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+
+                  <CardFooter className="mt-auto pt-6 border-t border-divider/50">
+                    <div className="w-full inline-flex items-center justify-center group-hover:bg-cta group-hover:text-white transition-all uppercase tracking-widest font-industrial border-2 border-transparent h-10 px-4 py-2 rounded-sm">
                       View Project
                       <IconHoverWrapper hoverTrigger="closest">
                         <RightChevron size={16} className="ml-2" />
                       </IconHoverWrapper>
-                    </Button>
-                  </Link>
-                </CardFooter>
-              </Card>
+                    </div>
+                  </CardFooter>
+                </Card>
+              </Link>
             );
           })}
         </div>
