@@ -72,6 +72,7 @@ export interface CaseStudy {
   icon: React.ComponentType<AnimatedIconProps>;
   gradient: string;
   tags: string[];
+  techStack: string[];
   websiteUrl: string;
   repoUrl: string;
   screenshots: string[]; // URLs
@@ -138,8 +139,9 @@ export const caseStudies: CaseStudy[] = [
     },
 
     icon: BrainCircuitIcon,
-    gradient: "from-blue-900 to-indigo-900",
+    gradient: "from-tech to-bg-accent",
     tags: ["AI/ML", "EdTech", "Full Stack"],
+    techStack: ["Next.js", "Supabase", "Vega-Lite", "Tailwind v4", "TypeScript", "Radix UI", "Vercel AI SDK"],
     websiteUrl: "https://satbrain.vercel.app/",
     repoUrl: "https://github.com/Isaac-1555/project_goldmine",
     screenshots: [
@@ -206,8 +208,9 @@ export const caseStudies: CaseStudy[] = [
     },
 
     icon: ScanBarcodeIcon,
-    gradient: "from-violet-900 to-purple-900",
+    gradient: "from-bg-accent to-divider",
     tags: ["Chrome Extension", "AI/OCR", "Internal Tool", "B2B"],
+    techStack: ["Chrome MV3", "JavaScript", "Clerk Auth", "Supabase", "OCR", "AI", "Tailwind", "Vite"],
     websiteUrl: "https://chromewebstore.google.com/detail/barcode-lists/colpoghjdbjnmciefnipaefbdflgjifg",
     repoUrl: "https://github.com/Isaac-1555/Barcode-Lists",
     screenshots: [
@@ -276,8 +279,9 @@ export const caseStudies: CaseStudy[] = [
     },
 
     icon: FileDescriptionIcon,
-    gradient: "from-orange-900 to-red-900",
+    gradient: "from-warning to-gold",
     tags: ["GenAI", "Chrome Ext", "Productivity"],
+    techStack: ["Chrome MV3", "TypeScript", "AI API", "jsPDF", "DOM Scraping", "Tailwind", "Chrome Storage API"],
     websiteUrl: "https://chromewebstore.google.com/detail/pocketresume/mdplmgfkpgalajmchilemiamifoaneip?hl=en-US&utm_source=ext_sidebar",
     repoUrl: "https://github.com/Isaac-1555/pocket-resume",
     screenshots: [

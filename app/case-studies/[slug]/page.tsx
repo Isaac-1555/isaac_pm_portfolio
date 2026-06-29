@@ -20,6 +20,7 @@ import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 import { caseStudies } from "../data";
 import { notFound } from "next/navigation";
 import type { AnimatedIconProps } from "@/components/icons/types";
+import { TechPillField } from "@/components/case-study/TechPillField";
 
 function SectionHeader({ icon: Icon, title }: { icon: React.ComponentType<AnimatedIconProps>, title: string }) {
   return (
@@ -41,39 +42,40 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
     <article className="min-h-screen pb-24 bg-bg-base">
       {/* Header */}
       <header className={`py-24 relative overflow-hidden bg-gradient-to-br ${project.gradient}`}>
-        <div className="absolute inset-0 bg-bg-base/90 backdrop-blur-sm z-0" />
-        <div className="absolute inset-0 z-0 diagonal-stripes opacity-10 pointer-events-none" />
-        
-        <div className="container mx-auto px-6 md:px-8 relative z-10">
+        <TechPillField techStack={project.techStack} />
+        <div className="absolute inset-0 bg-bg-dark/40 z-[2] pointer-events-none" />
+        <div className="absolute inset-0 z-[2] diagonal-stripes opacity-10 pointer-events-none" />
+
+        <div className="container mx-auto px-6 md:px-8 relative z-10 pointer-events-none">
           <Link
             href="/work"
             data-icon-hover-trigger
-            className="inline-flex items-center text-text-secondary hover:text-cta mb-8 transition-colors uppercase tracking-widest text-sm font-tech"
+            className="inline-flex items-center text-white hover:text-cta mb-8 transition-colors uppercase tracking-widest text-sm font-tech pointer-events-auto drop-shadow-[0_1px_4px_rgba(0,0,0,0.35)]"
           >
             <IconHoverWrapper hoverTrigger="closest">
               <ArrowBackIcon size={16} className="mr-2" />
             </IconHoverWrapper>
             Return to Mission Control
           </Link>
-          
+
           <div className="flex flex-wrap gap-2 mb-6">
-            <Badge variant="tech">{project.company}</Badge>
-            <Badge variant="outline" className="border-cta/50 text-cta">{project.status}</Badge>
+            <Badge variant="tech" className="bg-white/15 text-white border border-white/30">{project.company}</Badge>
+            <Badge variant="outline" className="border-cta bg-cta/10 text-white">{project.status}</Badge>
           </div>
 
-          <h1 className="text-4xl md:text-7xl font-industrial font-bold uppercase tracking-widest mb-4 text-text-primary">
+          <h1 className="text-4xl md:text-7xl font-industrial font-bold uppercase tracking-widest mb-4 text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)]">
             {project.title}
           </h1>
-          <p className="text-xl md:text-2xl text-text-secondary max-w-3xl font-light mb-8">
+          <p className="text-xl md:text-2xl text-white/90 max-w-3xl font-light mb-8 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
             {project.subtitle}
           </p>
 
-          <div className="flex flex-wrap gap-4 text-sm font-tech uppercase tracking-widest text-text-secondary border-t border-divider/20 pt-6">
-            <span>Role: <span className="text-text-primary">{project.role}</span></span>
+          <div className="flex flex-wrap gap-4 text-sm font-tech uppercase tracking-widest text-white/85 pt-6 drop-shadow-[0_1px_4px_rgba(0,0,0,0.4)]">
+            <span>Role: <span className="text-white">{project.role}</span></span>
             <span className="text-cta">•</span>
-            <span>Duration: <span className="text-text-primary">{project.timeline}</span></span>
+            <span>Duration: <span className="text-white">{project.timeline}</span></span>
             <span className="text-cta">•</span>
-            <span>Team: <span className="text-text-primary">{project.team}</span></span>
+            <span>Team: <span className="text-white">{project.team}</span></span>
           </div>
         </div>
       </header>
