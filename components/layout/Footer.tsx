@@ -6,7 +6,7 @@ import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 
 export function Footer() {
   return (
-    <footer className="w-full border-t-2 border-bg-dark bg-bg-dark text-bg-base py-12 md:py-16">
+    <footer className="sticky bottom-0 z-0 w-full border-t-2 border-bg-base/20 bg-[#2B3233] text-bg-base py-12 md:py-16">
       <div className="container mx-auto px-6 md:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
           {/* Brand Section */}
@@ -15,11 +15,14 @@ export function Footer() {
               Isaac Daniel
             </Link>
             <p className="text-text-secondary text-sm leading-relaxed max-w-sm font-sans">
-              Software Developer & Technical Product Manager | B2B SaaS & Internal Tools. <br />
+              Software Developer &amp; Technical Product Manager
+              <br />
+              B2B SaaS &amp; Internal Tools
+              <br />
               Based in Calgary, AB.
             </p>
           </div>
-          
+
           {/* Connect Section */}
           <div>
             <h4 className="text-base font-industrial font-bold mb-4 text-bg-base uppercase tracking-widest">Connect</h4>
@@ -77,9 +80,9 @@ export function Footer() {
             </ul>
           </div>
         </div>
-        
+
         {/* Copyright */}
-        <div className="mt-12 pt-8 border-t border-divider/30 text-center text-xs text-text-secondary font-sans">
+        <div className="mt-12 pt-8 border-t border-bg-base/10 text-center text-xs text-text-secondary font-sans">
           &copy; {new Date().getFullYear()} Isaac Daniel Sudakar. All rights reserved.
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { AccentWord } from "@/components/ui/AccentWord";
 import Link from "next/link";
 import RocketIcon from "@/components/icons/rocket-icon";
 import ShieldCheck from "@/components/icons/shield-check";
@@ -82,7 +83,7 @@ export default function AboutPage() {
     <div className="container mx-auto px-4 py-24">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl md:text-6xl font-industrial font-bold uppercase tracking-widest text-text-primary mb-12">
-          Professional <span className="text-cta">Profile</span>
+          Professional <AccentWord text="Profile" />
         </h1>
 
         <div className="prose prose-invert max-w-none mb-16">

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
+import { AccentWord } from "@/components/ui/AccentWord";
 import RightChevron from "@/components/icons/right-chevron";
 import ClockIcon from "@/components/icons/clock-icon";
 import UserIcon from "@/components/icons/user-icon";
@@ -27,7 +28,7 @@ export default function BlogPage() {
       {/* Header */}
       <div id="mission-blog-header" className="mb-16">
         <h1 className="text-4xl md:text-6xl font-industrial font-bold uppercase tracking-widest text-text-primary mb-4">
-          Project <span className="text-cta">Blog</span>
+          Project <AccentWord text="Blog" />
         </h1>
         <p className="text-text-secondary max-w-2xl text-lg leading-relaxed">
           Deeper dives into past projects, lessons learned, and the product

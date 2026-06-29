@@ -1,6 +1,7 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { AccentWord } from "@/components/ui/AccentWord";
 import Link from "next/link";
 import RightChevron from "@/components/icons/right-chevron";
 import RocketIcon from "@/components/icons/rocket-icon";
@@ -52,7 +53,7 @@ export default function CaseStudiesPage() {
     <div className="container mx-auto px-4 py-24">
       <div className="mb-12">
         <h1 className="text-4xl md:text-6xl font-industrial font-bold uppercase tracking-widest text-text-primary mb-4">
-          Mission <span className="text-cta">Logs</span>
+          Mission <AccentWord text="Logs" />
         </h1>
         <p className="text-text-secondary max-w-2xl text-lg font-tech uppercase tracking-wide">
           Detailed records of product development cycles, from concept to launch.

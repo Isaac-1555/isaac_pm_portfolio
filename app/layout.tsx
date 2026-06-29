@@ -65,7 +65,7 @@ export default function RootLayout({
       >
         <CursorProvider>
           <Header />
-          <main className="flex-grow">
+          <main className="relative z-10 flex-grow min-h-[100vh] bg-bg-base">
             {children}
           </main>
           <MascotMount />

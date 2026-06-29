@@ -1,6 +1,7 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { AccentWord } from "@/components/ui/AccentWord";
 import Link from "next/link";
 import Image from "next/image";
 import RightChevron from "@/components/icons/right-chevron";
@@ -53,7 +54,7 @@ const projects = [
 
 export function FeaturedWork() {
   return (
-    <section id="mission-home-featured" className="py-16 md:py-24 bg-bg-base/50">
+      <section id="mission-home-featured" className="py-16 md:py-24 bg-bg-base">
       <div className="container mx-auto px-6 md:px-8">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-12 gap-4">
@@ -62,7 +63,7 @@ export function FeaturedWork() {
               Selected Case Studies
             </Badge>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-industrial font-bold uppercase tracking-wide md:tracking-widest text-text-primary">
-              Featured <span className="text-cta">Works</span>
+              Featured <AccentWord text="Works" />
             </h2>
           </div>
           <Link href="/work" className="hidden md:block">
