@@ -3,86 +3,72 @@ import GithubIcon from "@/components/icons/github-icon";
 import LinkedInIcon from "@/components/icons/linkedin-icon";
 import MailFilledIcon from "@/components/icons/mail-filled-icon";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
+import { FooterParallax } from "@/components/layout/FooterParallax";
 
 export function Footer() {
   return (
-    <footer className="sticky bottom-0 z-0 w-full border-t-2 border-bg-base/20 bg-[#2B3233] text-bg-base py-12 md:py-16">
-      <div className="container mx-auto px-6 md:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
-          {/* Brand Section */}
-          <div className="sm:col-span-2 lg:col-span-2">
-            <Link href="/" className="font-industrial text-xl md:text-2xl font-bold tracking-widest text-cta mb-4 block uppercase">
-              Isaac Daniel
+    <footer className="sticky bottom-0 z-0 w-full border-t-2 border-bg-base/20 bg-text-primary text-bg-base min-h-[60vh] md:min-h-[75vh] flex flex-col justify-between relative overflow-hidden">
+      {/* Parallax SVG layer (clickable to toggle color) */}
+      <FooterParallax />
+
+      {/* Wordmark — solid cta fill, bottom half clipped by overflow-hidden */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-0 left-1/2 z-0 -translate-x-1/2 translate-y-[40%] font-industrial font-black uppercase tracking-wide leading-none text-[length:14vw] md:text-[length:12vw] whitespace-nowrap text-cta/40 select-none"
+      >
+        LET&apos;S CONNECT
+      </span>
+
+      {/* Top spacer */}
+      <div className="flex-none pt-12 md:pt-16" />
+
+      {/* Middle: centered social row — container passes clicks through to SVG layer */}
+      <div className="container relative z-20 mx-auto px-6 md:px-8 flex-grow flex items-center justify-center pointer-events-none">
+        <ul className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 pointer-events-auto">
+          <li>
+            <Link
+              href="https://www.linkedin.com/in/isaac-daniel-sudakar-182792375"
+              target="_blank"
+              data-icon-hover-trigger
+              className="flex items-center gap-2.5 text-base md:text-lg text-white hover:text-cta transition-colors font-sans"
+            >
+              <IconHoverWrapper hoverTrigger="closest" className="shrink-0">
+                <LinkedInIcon size={20} />
+              </IconHoverWrapper>
+              <span>LinkedIn</span>
             </Link>
-            <p className="text-text-secondary text-sm leading-relaxed max-w-sm font-sans">
-              Software Developer &amp; Technical Product Manager
-              <br />
-              B2B SaaS &amp; Internal Tools
-              <br />
-              Based in Calgary, AB.
-            </p>
-          </div>
+          </li>
+          <li>
+            <Link
+              href="https://github.com/Isaac-1555"
+              target="_blank"
+              data-icon-hover-trigger
+              className="flex items-center gap-2.5 text-base md:text-lg text-white hover:text-cta transition-colors font-sans"
+            >
+              <IconHoverWrapper hoverTrigger="closest" className="shrink-0">
+                <GithubIcon size={20} />
+              </IconHoverWrapper>
+              <span>GitHub</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="mailto:benisaac1892@gmail.com"
+              data-icon-hover-trigger
+              className="flex items-center gap-2.5 text-base md:text-lg text-white hover:text-cta transition-colors font-sans"
+            >
+              <IconHoverWrapper hoverTrigger="closest" className="shrink-0">
+                <MailFilledIcon size={20} />
+              </IconHoverWrapper>
+              <span>Email</span>
+            </Link>
+          </li>
+        </ul>
+      </div>
 
-          {/* Connect Section */}
-          <div>
-            <h4 className="text-base font-industrial font-bold mb-4 text-bg-base uppercase tracking-widest">Connect</h4>
-            <ul className="space-y-3">
-              <li>
-                <Link
-                  href="https://www.linkedin.com/in/isaac-daniel-sudakar-182792375"
-                  target="_blank"
-                  data-icon-hover-trigger
-                  className="flex items-center gap-2 text-sm text-text-secondary hover:text-cta transition-colors font-sans"
-                >
-                  <IconHoverWrapper hoverTrigger="closest" className="shrink-0">
-                    <LinkedInIcon size={16} />
-                  </IconHoverWrapper>
-                  <span>LinkedIn</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="https://github.com/Isaac-1555"
-                  target="_blank"
-                  data-icon-hover-trigger
-                  className="flex items-center gap-2 text-sm text-text-secondary hover:text-cta transition-colors font-sans"
-                >
-                  <IconHoverWrapper hoverTrigger="closest" className="shrink-0">
-                    <GithubIcon size={16} />
-                  </IconHoverWrapper>
-                  <span>GitHub</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="mailto:benisaac1892@gmail.com"
-                  data-icon-hover-trigger
-                  className="flex items-center gap-2 text-sm text-text-secondary hover:text-cta transition-colors font-sans"
-                >
-                  <IconHoverWrapper hoverTrigger="closest" className="shrink-0">
-                    <MailFilledIcon size={16} />
-                  </IconHoverWrapper>
-                  <span>Email</span>
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* System Section */}
-          <div>
-            <h4 className="text-base font-industrial font-bold mb-4 text-bg-base uppercase tracking-widest">Status</h4>
-            <ul className="space-y-2 text-sm text-text-secondary font-sans">
-              <li className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-cta animate-pulse shrink-0"></span>
-                <span>Open to Work</span>
-              </li>
-              <li>Updated: June 2026</li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Copyright */}
-        <div className="mt-12 pt-8 border-t border-bg-base/10 text-center text-xs text-text-secondary font-sans">
+      {/* Bottom: Copyright */}
+      <div className="container relative z-20 mx-auto px-6 md:px-8 pb-10 md:pb-12 flex-none pointer-events-none">
+        <div className="pt-8 border-t border-bg-base/10 text-center text-xs text-text-secondary font-sans pointer-events-auto">
           &copy; {new Date().getFullYear()} Isaac Daniel Sudakar. All rights reserved.
         </div>
       </div>
