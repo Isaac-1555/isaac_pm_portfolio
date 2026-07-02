@@ -8,15 +8,13 @@ import ScanBarcodeIcon from "@/components/icons/scan-barcode-icon";
 import TravelBag from "@/components/icons/travel-bag";
 import FileDescriptionIcon from "@/components/icons/file-description-icon";
 import GamepadIcon from "@/components/icons/gamepad-icon";
-import MapPinIcon from "@/components/icons/map-pin-icon";
 import RadioIcon from "@/components/icons/radio-icon";
 import SparklesIcon from "@/components/icons/sparkles-icon";
-import LayoutDashboardIcon from "@/components/icons/layout-dashboard-icon";
 import YoutubeIcon from "@/components/icons/youtube-icon";
 import CodeIcon from "@/components/icons/code-icon";
-import GlobeIcon from "@/components/icons/globe-icon";
 import TerminalIcon from "@/components/icons/terminal-icon";
 import SendIcon from "@/components/icons/send-icon";
+import PlayIcon from "@/components/icons/play-icon";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 import { AccentWord } from "@/components/ui/AccentWord";
 
@@ -64,83 +62,65 @@ const flagshipProjects = [
 
 const technicalProjects = [
   {
+    id: "barcode-lists",
+    title: "Barcode-Lists",
+    role: "Developer",
+    description: "Chrome extension for saving and reusing barcodes across scans. Lightweight, keyboard-first, built for inventory workflows.",
+    tags: ["Chrome Extension", "JavaScript", "Productivity"],
+    href: "https://github.com/Isaac-1555/Barcode-Lists",
+    icon: ScanBarcodeIcon,
+  },
+  {
     id: "phone-barcode",
     title: "Phone-Barcode-scanner",
     role: "Developer",
-    description: "Helps scan barcodes and send them to Barcode-Lists extension.",
-    tags: ["React Native", "Mobile", "Barcode"],
+    description: "Mobile companion app that scans barcodes and pushes them straight to the Barcode-Lists extension.",
+    tags: ["TypeScript", "Mobile", "Barcode"],
     href: "https://github.com/Isaac-1555/Phone-Barcode-scanner",
     icon: ScanBarcodeIcon,
   },
   {
-    id: "pigeon",
-    title: "Pigeon",
+    id: "ez-resume",
+    title: "Ez-Resume",
     role: "Developer",
-    description: "Helps small business owners keep customers updated about their jobs with automated notifications.",
-    tags: ["TypeScript", "B2B", "Notifications"],
-    href: "https://github.com/Isaac-1555/Pigeon",
-    icon: SendIcon,
-  },
-  {
-    id: "pocket-resume",
-    title: "Pocket Resume",
-    role: "Software Developer & Technical PM",
-    description: "AI-powered tool that tailors resumes to job descriptions. Demonstrates rapid prototyping and LLM integration.",
-    tags: ["GenAI", "React", "Prototype"],
-    href: "https://github.com/Isaac-1555/pocket-resume",
+    description: "No-AI resume builder that generates clean, structured resumes in under a minute. Speed over smarts.",
+    tags: ["Chrome Extension", "JavaScript", "Resume"],
+    href: "https://github.com/Isaac-1555/Ez-Resume",
     icon: FileDescriptionIcon,
-  },
-  {
-    id: "coachgg",
-    title: "CoachGG",
-    role: "Full-Stack Dev",
-    description: "Esports coaching platform helping amateur players reach pro level. Team management and analytics features.",
-    tags: ["Esports", "Platform", "Community"],
-    href: "https://github.com/Isaac-1555/coachgg",
-    icon: GamepadIcon,
-  },
-  {
-    id: "project-goldmine",
-    title: "Project Goldmine",
-    role: "Developer",
-    description: "Knowledge map generator that summarizes notes and visualizes connections.",
-    tags: ["Visualization", "Knowledge Mgmt"],
-    href: "https://github.com/Isaac-1555/project_goldmine",
-    icon: MapPinIcon,
   },
   {
     id: "summarease",
     title: "Summarease",
     role: "Developer",
-    description: "Audio summarization tool transforming conversations into structured formats.",
-    tags: ["Audio Processing", "AI"],
+    description: "Turns long audio and conversations into the format you want — summaries, action items, transcripts.",
+    tags: ["JavaScript", "Audio", "AI"],
     href: "https://github.com/Isaac-1555/summarease_v1",
     icon: RadioIcon,
   },
   {
-    id: "edhelper",
-    title: "EDHelper",
+    id: "anickie",
+    title: "Anickie",
     role: "Developer",
-    description: "Deck building assistant for Magic: The Gathering Commander players.",
-    tags: ["Gaming", "Utility"],
-    href: "https://github.com/Isaac-1555/EDHelper",
-    icon: SparklesIcon,
+    description: "Rust app for anime lovers that fetches and plays episodes. Fast, native, no browser.",
+    tags: ["Rust", "Anime", "Streaming"],
+    href: "https://github.com/Isaac-1555/Anickie",
+    icon: PlayIcon,
   },
   {
-    id: "mam",
-    title: "MAM Landing",
-    role: "Freelance",
-    description: "Lead generation and landing page development for a client.",
-    tags: ["Frontend", "Marketing"],
-    href: "https://github.com/Isaac-1555/MAM",
-    icon: LayoutDashboardIcon,
+    id: "coachgg",
+    title: "CoachGG",
+    role: "Full-Stack Dev",
+    description: "Platform helping amateur esports players level up — coaching, team management, and analytics in one place.",
+    tags: ["Esports", "JavaScript", "Platform"],
+    href: "https://github.com/Isaac-1555/coachgg",
+    icon: GamepadIcon,
   },
   {
     id: "betteryt",
     title: "BetterYT",
     role: "Developer",
-    description: "Chrome extension for curated YouTube feeds with AI-powered recommendations and custom category chips.",
-    tags: ["Chrome Extension", "AI", "React"],
+    description: "Chrome extension that fixes YouTube recommendations with custom category chips and curated feeds.",
+    tags: ["Chrome Extension", "JavaScript", "AI"],
     href: "https://github.com/Isaac-1555/BetterYT",
     icon: YoutubeIcon,
   },
@@ -148,19 +128,19 @@ const technicalProjects = [
     id: "d4c",
     title: "D4C",
     role: "Developer",
-    description: "Personal coding agent built from pi coding agent with customizations for personal coding preferences and workflow.",
-    tags: ["AI", "Coding Agent", "Dev Tool"],
+    description: "Personalized coding agent forked from pi, tuned for my own workflow and preferences.",
+    tags: ["TypeScript", "AI", "Coding Agent"],
     href: "https://github.com/Isaac-1555/D4C",
     icon: CodeIcon,
   },
   {
-    id: "portfolio",
-    title: "Portfolio Site",
+    id: "pigeon",
+    title: "Pigeon",
     role: "Developer",
-    description: "This portfolio — a Next.js App Router site with dynamic case studies and an interactive mascot.",
-    tags: ["Next.js", "TypeScript", "Tailwind"],
-    href: "https://github.com/Isaac-1555/isaac_pm_portfolio",
-    icon: GlobeIcon,
+    description: "Notification system for small businesses — keeps customers in the loop on job status automatically.",
+    tags: ["TypeScript", "B2B", "Notifications"],
+    href: "https://github.com/Isaac-1555/Pigeon",
+    icon: SendIcon,
   },
 ];
 
