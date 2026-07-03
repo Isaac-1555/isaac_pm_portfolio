@@ -4,6 +4,7 @@ import { LazyMotion, domAnimation, m, useReducedMotion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import SparklesIcon from "@/components/icons/sparkles-icon";
+import { useLenis } from "@/components/scroll/LenisProvider";
 import { AstronautSvg } from "./AstronautSvg";
 
 /* ── Configuration ── */
@@ -88,6 +89,7 @@ const readStoredFlag = (key: string, fallback = false) => {
 export function AstronautMascot() {
   const pathname = usePathname() || "/";
   const shouldReduceMotion = useReducedMotion();
+  const lenisRef = useLenis();
   const activeTour = TOUR_CONFIGS[pathname] ?? null;
 
   /* --- State --- */
@@ -334,9 +336,15 @@ export function AstronautMascot() {
     if (el) {
       /* Scroll so the section heading sits ~30% from the viewport top.
          This keeps the section content visible around the mascot at the bottom. */
-      const rect = el.getBoundingClientRect();
-      const scrollTarget = window.scrollY + rect.top - window.innerHeight * 0.3;
-      window.scrollTo({ top: Math.max(0, scrollTarget), behavior: "smooth" });
+      const offset = -window.innerHeight * 0.3;
+      const lenis = lenisRef?.current;
+      if (lenis) {
+        lenis.scrollTo(el, { offset });
+      } else {
+        const rect = el.getBoundingClientRect();
+        const scrollTarget = window.scrollY + rect.top + offset;
+        window.scrollTo({ top: Math.max(0, scrollTarget), behavior: "smooth" });
+      }
     }
 
     /* Move astronaut to a natural position in the viewport */
@@ -347,7 +355,7 @@ export function AstronautMascot() {
     setDirection(nextX >= currentXRef.current ? "right" : "left");
     currentXRef.current = nextX;
     setXTarget(nextX);
-  }, [activeSection, activeTour, clearTimers, viewportWidth]);
+  }, [activeSection, activeTour, clearTimers, lenisRef, viewportWidth]);
 
   const handleDoubleClick = useCallback(() => {
     setIsHidden(true);

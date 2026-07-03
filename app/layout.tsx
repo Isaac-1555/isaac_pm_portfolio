@@ -7,6 +7,7 @@ import { MascotMount } from "@/components/mascot/MascotMount";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { CursorProvider } from "@/components/cursor/cursor-context";
 import { Cursor } from "@/components/cursor/Cursor";
+import { LenisProvider } from "@/components/scroll/LenisProvider";
 
 const orbitron = Orbitron({
   subsets: ["latin"],
@@ -64,13 +65,15 @@ export default function RootLayout({
         className={`${orbitron.variable} ${rajdhani.variable} ${inter.variable} antialiased bg-bg-base text-text-primary font-sans flex flex-col min-h-screen`}
       >
         <CursorProvider>
-          <Header />
-          <main className="relative z-10 flex-grow min-h-[100vh] bg-bg-base">
-            {children}
-          </main>
-          <MascotMount />
-          <Footer />
-          <Cursor />
+          <LenisProvider>
+            <Header />
+            <main className="relative z-10 flex-grow min-h-[100vh] bg-bg-base">
+              {children}
+            </main>
+            <MascotMount />
+            <Footer />
+            <Cursor />
+          </LenisProvider>
         </CursorProvider>
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
       </body>

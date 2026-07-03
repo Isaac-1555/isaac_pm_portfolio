@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef } from "react"
 import Gravity, { MatterBody } from "@/components/fancy/physics/gravity"
+import { useLenis } from "@/components/scroll/LenisProvider"
 
 interface TechPillFieldProps {
   techStack: string[]
@@ -14,6 +15,7 @@ function seeded(i: number, salt: number) {
 
 export function TechPillField({ techStack }: TechPillFieldProps) {
   const wrapperRef = useRef<HTMLDivElement>(null)
+  const lenisRef = useLenis()
 
   const layout = useMemo(
     () =>
@@ -32,11 +34,16 @@ export function TechPillField({ techStack }: TechPillFieldProps) {
     const wrapper = wrapperRef.current
     const onWheel = (e: WheelEvent) => {
       // canvas consumes wheel as a scroll target; manually forward to page
-      window.scrollBy({ top: e.deltaY, left: e.deltaX, behavior: "auto" })
+      const lenis = lenisRef?.current
+      if (lenis) {
+        lenis.scrollTo(lenis.scroll + e.deltaY, { programmatic: true })
+      } else {
+        window.scrollBy({ top: e.deltaY, left: e.deltaX, behavior: "auto" })
+      }
     }
     wrapper.addEventListener("wheel", onWheel, { passive: true })
     return () => wrapper.removeEventListener("wheel", onWheel)
-  }, [techStack])
+  }, [lenisRef, techStack])
 
   if (!techStack || techStack.length === 0) return null
 
