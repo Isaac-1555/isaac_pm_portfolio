@@ -3,6 +3,7 @@
 import { LazyMotion, domAnimation, m, useReducedMotion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
+import SparklesIcon from "@/components/icons/sparkles-icon";
 import { AstronautSvg } from "./AstronautSvg";
 
 /* ── Configuration ── */
@@ -42,9 +43,6 @@ const OTHER_PAGE_MESSAGES = [
   "I give tours on bigger pages \u2014 try the home or works page!",
 ];
 
-/** Pages where the mascot is completely hidden (no restore button either). */
-const HIDDEN_PAGES = new Set(["/experience"]);
-
 const PM_QUIPS = [
   "Identifying pain points\u2026",
   "Collecting research documents\u2026",
@@ -77,7 +75,9 @@ type MascotState = "idle" | "running" | "presenting";
 const readStoredFlag = (key: string, fallback = false) => {
   if (typeof window === "undefined") return fallback;
   try {
-    return localStorage.getItem(key) === "1";
+    const v = localStorage.getItem(key);
+    if (v === null) return fallback;
+    return v === "1";
   } catch {
     return fallback;
   }
@@ -89,7 +89,6 @@ export function AstronautMascot() {
   const pathname = usePathname() || "/";
   const shouldReduceMotion = useReducedMotion();
   const activeTour = TOUR_CONFIGS[pathname] ?? null;
-  const isPageHidden = HIDDEN_PAGES.has(pathname);
 
   /* --- State --- */
   const [mascotState, setMascotState] = useState<MascotState>("idle");
@@ -97,11 +96,17 @@ export function AstronautMascot() {
   const [direction, setDirection] = useState<"left" | "right">("right");
   const [bubbleMessage, setBubbleMessage] = useState<string | null>(null);
   const [isHidden, setIsHidden] = useState(() =>
-    readStoredFlag("astronaut-mascot-hidden")
+    readStoredFlag("astronaut-mascot-hidden", true)
   );
   const [isDocumentVisible, setIsDocumentVisible] = useState(true);
   const [viewportWidth, setViewportWidth] = useState(1200);
   const [activeSection, setActiveSection] = useState<string>("");
+  const [isTouch] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      ("ontouchstart" in window || navigator.maxTouchPoints > 0)
+  );
+  const [buttonOpacity, setButtonOpacity] = useState(() => (isTouch ? 0.15 : 0));
 
   /* --- Refs --- */
   const currentXRef = useRef(40);
@@ -111,6 +116,7 @@ export function AstronautMascot() {
   const lastPoiIndexRef = useRef(-1);
   const quipTimerRef = useRef<number | null>(null);
   const pmQuipIndexRef = useRef(0);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   /* --- Pose --- */
   const pose: "mascot-idle" | "mascot-running" | "mascot-presenting" =
@@ -385,22 +391,57 @@ export function AstronautMascot() {
     currentXRef.current = xTarget;
   }, [xTarget]);
 
-  /* ── Render ── */
+  /* ── Effect: Proximity fade for restore button ── */
 
-  if (isPageHidden) return null;
+  useEffect(() => {
+    if (!isHidden || isTouch) return;
+
+    let frame = 0;
+    let mx = -9999;
+    let my = -9999;
+
+    const onMove = (e: MouseEvent) => {
+      mx = e.clientX;
+      my = e.clientY;
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        const btn = buttonRef.current;
+        if (!btn) return;
+        const r = btn.getBoundingClientRect();
+        const cx = r.left + r.width / 2;
+        const cy = r.top + r.height / 2;
+        const d = Math.hypot(mx - cx, my - cy);
+        const NEAR = 60;
+        const FAR = 220;
+        const o = Math.max(0, Math.min(1, (FAR - d) / (FAR - NEAR)));
+        setButtonOpacity(shouldReduceMotion ? (d < 120 ? 1 : 0) : o);
+      });
+    };
+
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, [isHidden, isTouch, shouldReduceMotion]);
+
+  /* ── Render ── */
 
   if (isHidden) {
     return (
       <button
+        ref={buttonRef}
         type="button"
         onClick={() => {
           setIsHidden(false);
           setMascotState("idle");
         }}
-        className="fixed bottom-4 right-4 z-40 rounded-full border-2 border-bg-dark bg-bg-base/95 px-3 py-2 text-xs font-industrial uppercase tracking-wider text-text-primary shadow-lg backdrop-blur transition-colors hover:border-cta hover:text-cta"
-        aria-label="Restore astronaut mascot"
+        style={{ opacity: buttonOpacity }}
+        aria-label="Show guide mascot"
+        className="fixed bottom-4 right-4 z-40 grid h-11 w-11 place-items-center rounded-full border-2 border-bg-dark bg-bg-base/80 text-text-primary shadow-lg backdrop-blur transition-[opacity,border-color,color,transform] duration-300 ease-out hover:scale-105 hover:border-cta hover:text-cta focus:outline-none focus-visible:ring-2 focus-visible:ring-cta"
       >
-        Restore Guide
+        <SparklesIcon size={20} />
       </button>
     );
   }
