@@ -95,10 +95,10 @@ export function FlagshipFolder({ study, className }: FlagshipFolderProps) {
     <Link
       href={`/case-studies/${study.id}`}
       onClick={handleClick}
-      onMouseEnter={open}
-      onMouseLeave={close}
-      onFocus={open}
-      onBlur={close}
+      onMouseEnter={isTouch ? undefined : open}
+      onMouseLeave={isTouch ? undefined : close}
+      onFocus={isTouch ? undefined : open}
+      onBlur={isTouch ? undefined : close}
       onKeyDown={(e) => {
         if (e.key === "Escape") {
           close();

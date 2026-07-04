@@ -78,12 +78,13 @@ export function FeaturedWorkClient({
   }, []);
 
   useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth >= 768) return;
     const container = mobileScrollRef.current;
     if (!container || container.offsetWidth === 0) return;
     isAutoScrollRef.current = true;
     const target = container.children[rotationIndex] as HTMLElement | undefined;
     if (target) {
-      target.scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
+      container.scrollTo({ left: target.offsetLeft, behavior: "smooth" });
     }
     const t = setTimeout(() => {
       isAutoScrollRef.current = false;
