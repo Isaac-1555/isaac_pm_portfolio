@@ -1,64 +1,18 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
-import Image from "next/image";
-import RightChevron from "@/components/icons/right-chevron";
-import BrainCircuitIcon from "@/components/icons/brain-circuit-icon";
-import ScanBarcodeIcon from "@/components/icons/scan-barcode-icon";
 import TravelBag from "@/components/icons/travel-bag";
+import ScanBarcodeIcon from "@/components/icons/scan-barcode-icon";
 import FileDescriptionIcon from "@/components/icons/file-description-icon";
 import GamepadIcon from "@/components/icons/gamepad-icon";
 import RadioIcon from "@/components/icons/radio-icon";
 import SparklesIcon from "@/components/icons/sparkles-icon";
 import YoutubeIcon from "@/components/icons/youtube-icon";
 import CodeIcon from "@/components/icons/code-icon";
-import TerminalIcon from "@/components/icons/terminal-icon";
 import SendIcon from "@/components/icons/send-icon";
 import PlayIcon from "@/components/icons/play-icon";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 import { AccentWord } from "@/components/ui/AccentWord";
-
-const flagshipProjects = [
-  {
-    id: "satbrain",
-    title: "SatBrain",
-    company: "AI Study Platform",
-    role: "Software Developer & Product Manager",
-    description: "Led product strategy for a data-centric decision-support platform. Synthesized quantitative data into actionable insights for users.",
-    metrics: ["+30% Adoption", "Data-Driven"],
-    tags: ["AI/ML", "Product Strategy", "Dashboard"],
-    href: "/case-studies/satbrain",
-    gradient: "from-tech to-bg-accent",
-    image: "/Satbrain_Home.png",
-    icon: BrainCircuitIcon,
-  },
-  {
-    id: "tux",
-    title: "Tux",
-    company: "Developer Tooling (Personal)",
-    role: "Solo Developer & Designer",
-    description: "Barebones terminal IDE with split panes, session sidebar, and git-aware workflow. Built because Warp and VSCode buried the features I actually needed.",
-    metrics: ["Rust + Tauri", "Open Source"],
-    tags: ["Rust", "Tauri", "IDE", "Terminal"],
-    href: "/case-studies/tux",
-    gradient: "from-slate-900 to-bg-dark",
-    image: "/Tux_UI.png",
-    icon: TerminalIcon,
-  },
-  {
-    id: "pocket-resume",
-    title: "Pocket Resume",
-    company: "Consumer Tool",
-    role: "Software Developer & Technical PM",
-    description: "AI-powered tool that tailors resumes to job descriptions. Demonstrates rapid prototyping and LLM integration skills.",
-    metrics: ["AI Engineering", "Prototype"],
-    tags: ["GenAI", "Technical PM", "React"],
-    href: "/case-studies/pocket-resume",
-    gradient: "from-warning to-gold",
-    image: "/PocketResume_UI.png",
-    icon: FileDescriptionIcon,
-  },
-];
+import { FlagshipFolders } from "@/components/sections/FlagshipFolders";
 
 const technicalProjects = [
   {
@@ -161,90 +115,7 @@ export default function WorkPage() {
         <h2 className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 flex items-center gap-2">
           <TravelBag size={20} className="text-cta" /> Flagship Case Studies
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {flagshipProjects.map((project) => {
-            const Icon = project.icon;
-            return (
-              <Link
-                key={project.id}
-                href={project.href}
-                className="group block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cta rounded-sm"
-              >
-                <Card
-                  data-icon-hover-trigger
-                  className="h-full flex flex-col hover:border-cta transition-colors"
-                >
-                  <div data-cursor-spotlight className={`h-48 w-full bg-gradient-to-br ${project.gradient} relative overflow-hidden flex items-center justify-center`}>
-                    {project.image ? (
-                      <>
-                        <Image
-                          src={project.image}
-                          alt={project.title}
-                          fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
-                      </>
-                    ) : (
-                      <>
-                        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
-                        <IconHoverWrapper
-                          hoverTrigger="closest"
-                          className="transition-transform group-hover:scale-110 [&_svg]:transition-colors group-hover:[&_svg]:text-white/40"
-                        >
-                          <Icon size={64} color="rgba(255,255,255,0.2)" />
-                        </IconHoverWrapper>
-                      </>
-                    )}
-                    <Badge variant="outline" className="absolute top-4 right-4 bg-black/50 backdrop-blur text-white border-white/20 z-10">
-                      {project.company}
-                    </Badge>
-                  </div>
-
-                  <CardHeader>
-                    <CardTitle className="group-hover:text-cta transition-colors text-xl">
-                      {project.title}
-                    </CardTitle>
-                    <div className="text-xs font-mono text-text-secondary uppercase tracking-widest mt-1">
-                      {project.role}
-                    </div>
-                  </CardHeader>
-
-                  <CardContent className="flex-grow space-y-6">
-                    <p className="text-text-secondary leading-relaxed text-sm">
-                      {project.description}
-                    </p>
-
-                    <div className="flex flex-wrap gap-2">
-                      {project.tags.map((tag) => (
-                        <Badge key={tag} variant="secondary" className="text-[10px]">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2">
-                      {project.metrics.map((metric) => (
-                        <div key={metric} className="bg-bg-accent/10 border border-bg-dark/20 p-2 text-center rounded-sm">
-                          <div className="text-gold font-bold font-industrial text-[10px] whitespace-nowrap">{metric}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-
-                  <CardFooter className="mt-auto pt-6 border-t border-divider/50">
-                    <div className="w-full inline-flex items-center justify-center group-hover:bg-cta group-hover:text-white transition-all uppercase tracking-widest font-industrial border-2 border-transparent h-10 px-4 py-2 rounded-sm">
-                      View Project
-                      <IconHoverWrapper hoverTrigger="closest">
-                        <RightChevron size={16} className="ml-2" />
-                      </IconHoverWrapper>
-                    </div>
-                  </CardFooter>
-                </Card>
-              </Link>
-            );
-          })}
-        </div>
+        <FlagshipFolders />
       </section>
 
       {/* Technical Projects Section */}

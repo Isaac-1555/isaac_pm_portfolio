@@ -272,7 +272,7 @@ export const caseStudies: CaseStudy[] = [
     title: "Pocket Resume",
     subtitle: "Context-aware AI browser extension for tailoring resumes to any job description.",
     company: "Consumer Tool",
-    role: "Software Developer & Technical Product Manager",
+    role: "Software Developer & Technical PM",
     timeline: "4 Weeks",
     team: "Solo",
     status: "Live in Store",

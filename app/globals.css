@@ -366,4 +366,28 @@
     animation: none;
     opacity: 1;
   }
+  /* Flagship folders: no animation, show content directly */
+  .folder-reveal-item {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ── Flagship folder ── */
+
+/* Info items inside the extracted card: staggered fade+slide.
+   Delay computed from --reveal-index set per-item in JSX. */
+.folder-reveal-item {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(380ms + var(--reveal-index, 0) * 80ms);
+}
+.group:hover .folder-reveal-item,
+:focus-visible .folder-reveal-item {
+  opacity: 1;
+  transform: translateY(0);
 }
