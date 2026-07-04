@@ -184,6 +184,136 @@
   100% { opacity: 1; transform: scale(1); }
 }
 
+/* ── Featured Work HUD ── */
+
+@keyframes scanline-sweep {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+
+@keyframes bracket-fade {
+  0%   { opacity: 0; transform: scale(0.6); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes reticle-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50%      { transform: scale(1.08); opacity: 1; }
+}
+
+@keyframes hud-slide-up {
+  0%   { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Boot reveal: opacity + translateY + blur, staggered via --boot-delay */
+.boot-reveal {
+  opacity: 0;
+  transform: translateY(10px);
+  filter: blur(6px);
+  transition:
+    opacity 480ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 480ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 480ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--boot-delay, 0ms);
+}
+[data-booted="true"] .boot-reveal {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* KPI bar slides up from bottom edge */
+.boot-slide-up {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 520ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--boot-delay, 0ms);
+}
+[data-booted="true"] .boot-slide-up {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Corner brackets: scale-in via keyframe, gated by data-booted */
+.boot-bracket {
+  opacity: 0;
+  transform-origin: center;
+}
+[data-booted="true"] .boot-bracket {
+  animation: bracket-fade 360ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--boot-delay, 0ms);
+}
+
+/* Scanline sweep over screenshots, one-shot on boot + repeatable on hover */
+.hud-scanline {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(242, 95, 92, 0.22) 48%,
+    rgba(242, 95, 92, 0.4) 50%,
+    rgba(242, 95, 92, 0.22) 52%,
+    transparent 100%
+  );
+  opacity: 0;
+  transform: translateY(-100%);
+}
+[data-booted="true"] .hud-scanline {
+  animation: scanline-sweep 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--boot-delay, 120ms);
+}
+.group:hover .hud-scanline {
+  animation: scanline-sweep 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 0ms;
+}
+
+/* HUD backdrop-blur pill/bar */
+.hud-blur {
+  background: rgba(62, 76, 77, 0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* Reticle: center crosshair, hover-driven + pulse */
+.hud-reticle {
+  opacity: 0;
+  transition: opacity 240ms ease-out;
+}
+.group:hover .hud-reticle {
+  opacity: 1;
+  animation: reticle-pulse 2.4s ease-in-out infinite;
+}
+
+/* Edge ticks: small ruler marks along screenshot border */
+.hud-edge-tick {
+  position: absolute;
+  background: rgba(242, 95, 92, 0.55);
+}
+
+/* Subtle scanline grid overlay on canvas (persistent) */
+.hud-grid {
+  background-image:
+    linear-gradient(to right, rgba(224, 122, 95, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(224, 122, 95, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Rotation fade: screenshot crossfade when projects rotate */
+@keyframes rotate-fade {
+  0%   { opacity: 0; transform: scale(1.04); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.rotate-fade {
+  animation: rotate-fade 600ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
 /* ── Footer SVG parallax ── */
 
 @keyframes footer-hue-cycle {
@@ -213,5 +343,27 @@
   }
   .mascot-presenting .mascot-arm-r {
     transform: none;
+  }
+  .boot-reveal,
+  .boot-slide-up {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+  .boot-bracket {
+    opacity: 1;
+    animation: none;
+  }
+  .hud-scanline {
+    display: none;
+  }
+  .hud-reticle {
+    opacity: 0.85;
+    animation: none;
+  }
+  .rotate-fade {
+    animation: none;
+    opacity: 1;
   }
 }

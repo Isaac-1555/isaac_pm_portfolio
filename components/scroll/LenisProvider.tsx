@@ -25,9 +25,9 @@ export function LenisProvider({ children }: { children: ReactNode }) {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const instance = new Lenis({
-      lerp: 0.1,
+      lerp: 0.07,
       smoothWheel: true,
-      syncTouch: false,
+      syncTouch: true,
       anchors: { offset: -96 },
       autoRaf: true,
     });
