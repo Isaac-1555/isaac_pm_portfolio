@@ -1,3 +1,7 @@
+"use client";
+
+import { use } from "react";
+import { motion, type MotionProps } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
@@ -21,6 +25,7 @@ import { caseStudies } from "../data";
 import { notFound } from "next/navigation";
 import type { AnimatedIconProps } from "@/components/icons/types";
 import { TechPillField } from "@/components/case-study/TechPillField";
+import { revealProps, useRevealMotion } from "@/lib/motion";
 
 function SectionHeader({ icon: Icon, title }: { icon: React.ComponentType<AnimatedIconProps>, title: string }) {
   return (
@@ -30,13 +35,24 @@ function SectionHeader({ icon: Icon, title }: { icon: React.ComponentType<Animat
   );
 }
 
-export default async function CaseStudyDetail({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default function CaseStudyDetail({ params }: { params: Promise<{ slug: string }> }) {
+  const reduced = useRevealMotion();
+  const { slug } = use(params);
   const project = caseStudies.find(p => p.id === slug);
 
   if (!project) {
     notFound();
   }
+
+  const reveal = (i: number): MotionProps => {
+    if (reduced) {
+      return { initial: false };
+    }
+    return {
+      ...revealProps(false),
+      transition: { delay: i * 0.04, duration: 0.5 },
+    };
+  };
 
   return (
     <article className="min-h-screen pb-24 bg-bg-base">
@@ -83,17 +99,17 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
       <div className="container mx-auto px-6 md:px-8 py-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
         {/* Main Content */}
         <div className="lg:col-span-8 space-y-16">
-          
+
           {/* 2. Context / Overview */}
-          <section>
+          <motion.section {...reveal(0)} className="will-change-transform">
             <SectionHeader icon={TargetIcon} title="Context & Overview" />
             <p className="text-lg leading-relaxed text-text-primary">
               {project.context}
             </p>
-          </section>
+          </motion.section>
 
           {/* 3. Problem / Challenge */}
-          <section>
+          <motion.section {...reveal(1)} className="will-change-transform">
             <SectionHeader icon={SparklesIcon} title="The Challenge" />
             <div className="bg-bg-accent/5 p-8 border-l-4 border-cta rounded-r-sm space-y-6">
               <div>
@@ -113,10 +129,10 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
                 </ul>
               </div>
             </div>
-          </section>
+          </motion.section>
 
           {/* 4. Goal / Success Metrics */}
-          <section>
+          <motion.section {...reveal(2)} className="will-change-transform">
             <SectionHeader icon={TargetIcon} title="Goals & Metrics" />
             <div className="grid md:grid-cols-2 gap-8">
               <div>
@@ -142,10 +158,10 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
                 </ul>
               </div>
             </div>
-          </section>
+          </motion.section>
 
           {/* 5. Research & Discovery */}
-          <section>
+          <motion.section {...reveal(3)} className="will-change-transform">
             <SectionHeader icon={MagnifierIcon} title="Research & Discovery" />
             <div className="space-y-6">
               <div>
@@ -168,10 +184,10 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
                 </ul>
               </div>
             </div>
-          </section>
+          </motion.section>
 
           {/* 6. Approach / Process */}
-          <section>
+          <motion.section {...reveal(4)} className="will-change-transform">
             <SectionHeader icon={GearIcon} title="Approach & Strategy" />
             <p className="text-text-secondary mb-6 leading-relaxed">
               {project.approach.strategy}
@@ -186,13 +202,13 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
                 <p className="text-sm text-text-secondary">{project.approach.collaboration}</p>
               </div>
             </div>
-          </section>
+          </motion.section>
 
           {/* 7. Solution (With Carousel) */}
-          <section>
+          <motion.section {...reveal(5)} className="will-change-transform">
             <SectionHeader icon={CodeIcon} title="The Solution" />
             <p className="text-lg text-text-primary mb-6">{project.solution.description}</p>
-            
+
             {/* Features Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
               {project.solution.features.map((feature, i) => (
@@ -209,7 +225,6 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
               <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-cta scrollbar-track-bg-dark">
                 {project.screenshots.map((src, i) => (
                   <div key={i} className="snap-center shrink-0 w-[85vw] md:w-[600px] aspect-video bg-bg-dark/50 rounded-sm border border-divider flex items-center justify-center relative overflow-hidden group">
-                     {/* Placeholder logic: If src contains 'placeholder', show text. Else img */}
                      {src.includes('placeholder') ? (
                        <div className="text-text-secondary font-industrial uppercase tracking-widest text-center p-4">
                          <span className="block text-4xl mb-2 opacity-20">{i + 1}</span>
@@ -233,10 +248,10 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
               <h4 className="font-bold text-sm uppercase tracking-wider text-gold mb-2">Design Rationale</h4>
               <p className="text-sm text-text-secondary">{project.solution.rationale}</p>
             </div>
-          </section>
+          </motion.section>
 
           {/* 8. Execution */}
-          <section>
+          <motion.section {...reveal(6)} className="will-change-transform">
             <SectionHeader icon={RocketIcon} title="Execution" />
             <div className="space-y-6">
               <div>
@@ -264,10 +279,10 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
                 </ul>
               </div>
             </div>
-          </section>
+          </motion.section>
 
           {/* 9. Outcome */}
-          <section>
+          <motion.section {...reveal(7)} className="will-change-transform">
             <SectionHeader icon={ChartLineIcon} title="Outcomes & Impact" />
             <div className="grid md:grid-cols-2 gap-8">
               <div className="bg-bg-accent/5 p-6 rounded-sm">
@@ -292,10 +307,10 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
                 </div>
               </div>
             </div>
-          </section>
+          </motion.section>
 
           {/* 10. Learnings */}
-          <section>
+          <motion.section {...reveal(8)} className="will-change-transform">
             <SectionHeader icon={BrainCircuitIcon} title="Learnings & Future" />
             <div className="grid md:grid-cols-2 gap-8">
               <div>
@@ -311,7 +326,7 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
                 </ul>
               </div>
             </div>
-          </section>
+          </motion.section>
 
         </div>
 
@@ -321,7 +336,7 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
             <h3 className="text-xl font-industrial uppercase tracking-widest mb-6 text-bg-dark border-b border-bg-dark/10 pb-4">
               Project Actions
             </h3>
-            
+
             <div className="space-y-4">
               <Link href={project.websiteUrl} target="_blank" data-icon-hover-trigger className="block">
                 <Button className="w-full gap-2 h-12 text-lg font-bold uppercase tracking-widest" size="lg">
@@ -331,7 +346,7 @@ export default async function CaseStudyDetail({ params }: { params: Promise<{ sl
                   </IconHoverWrapper>
                 </Button>
               </Link>
-              
+
               <Link href={project.repoUrl} target="_blank" data-icon-hover-trigger className="block">
                 <Button variant="outline" className="w-full gap-2 border-bg-dark text-bg-dark hover:bg-bg-dark hover:text-white">
                   View Source Code

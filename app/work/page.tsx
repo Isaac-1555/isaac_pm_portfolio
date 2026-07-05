@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import TravelBag from "@/components/icons/travel-bag";
@@ -13,6 +15,13 @@ import PlayIcon from "@/components/icons/play-icon";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 import { AccentWord } from "@/components/ui/AccentWord";
 import { FlagshipFolders } from "@/components/sections/FlagshipFolders";
+import { motion } from "framer-motion";
+import {
+  revealProps,
+  staggerContainer,
+  staggerItem,
+  useRevealMotion,
+} from "@/lib/motion";
 
 const technicalProjects = [
   {
@@ -99,35 +108,69 @@ const technicalProjects = [
 ];
 
 export default function WorkPage() {
+  const reduced = useRevealMotion();
+  const header = revealProps(reduced);
+  const flagshipHeader = revealProps(reduced);
+  const techHeader = revealProps(reduced);
+  const folderGrid = revealProps(reduced);
+  const techGrid = revealProps(reduced);
+
   return (
     <div className="container mx-auto px-4 py-24">
-      <div id="mission-work-header" className="mb-16">
+      <motion.div
+        {...header}
+        id="mission-work-header"
+        className="mb-16 will-change-transform"
+      >
         <h1 className="text-4xl md:text-6xl font-industrial font-bold uppercase tracking-widest text-text-primary mb-4">
           Selected <AccentWord text="Works" />
         </h1>
         <p className="text-text-secondary max-w-2xl text-lg leading-relaxed">
           A collection of product initiatives, from enterprise workflow transformations to AI-powered prototypes.
         </p>
-      </div>
+      </motion.div>
 
       {/* Flagship Section */}
       <section id="mission-work-flagship" className="mb-24">
-        <h2 className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 flex items-center gap-2">
+        <motion.h2
+          {...flagshipHeader}
+          className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 flex items-center gap-2 will-change-transform"
+        >
           <TravelBag size={20} className="text-cta" /> Flagship Case Studies
-        </h2>
-        <FlagshipFolders />
+        </motion.h2>
+        <motion.div
+          {...folderGrid}
+          variants={staggerContainer}
+          className="will-change-transform"
+        >
+          <FlagshipFolders />
+        </motion.div>
       </section>
 
       {/* Technical Projects Section */}
       <section id="mission-work-technical">
-        <h2 className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 flex items-center gap-2">
+        <motion.h2
+          {...techHeader}
+          className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 flex items-center gap-2 will-change-transform"
+        >
           <SparklesIcon size={20} className="text-cta" /> Technical Prototypes & Labs
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        </motion.h2>
+        <motion.div
+          {...techGrid}
+          variants={staggerContainer}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 will-change-transform"
+        >
           {technicalProjects.map((project) => {
             const Icon = project.icon;
             return (
-              <a key={project.id} href={project.href} target="_blank" rel="noopener noreferrer" className="block h-full">
+              <motion.a
+                key={project.id}
+                variants={staggerItem}
+                href={project.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block h-full"
+              >
                 <Card
                   data-icon-hover-trigger
                   className="group h-full flex flex-col hover:border-cta transition-colors bg-bg-accent/5"
@@ -145,7 +188,7 @@ export default function WorkPage() {
                       <Icon size={24} className="text-text-secondary transition-colors group-hover:text-cta" />
                     </IconHoverWrapper>
                   </CardHeader>
-                  
+
                   <CardContent className="flex-grow pt-2">
                     <p className="text-sm text-text-secondary mb-4 line-clamp-2">
                       {project.description}
@@ -159,10 +202,10 @@ export default function WorkPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </a>
+              </motion.a>
             );
           })}
-        </div>
+        </motion.div>
       </section>
     </div>
   );

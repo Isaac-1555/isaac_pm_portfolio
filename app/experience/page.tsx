@@ -1,3 +1,5 @@
+"use client";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AccentWord } from "@/components/ui/AccentWord";
@@ -10,6 +12,14 @@ import TrophyIcon from "@/components/icons/trophy-icon";
 import CodeIcon from "@/components/icons/code-icon";
 import FileDescriptionIcon from "@/components/icons/file-description-icon";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
+import { motion } from "framer-motion";
+import {
+  revealProps,
+  staggerContainer,
+  staggerItem,
+  staggerItemFast,
+  useRevealMotion,
+} from "@/lib/motion";
 
 const skills = [
   { 
@@ -79,22 +89,46 @@ const education = [
 ];
 
 export default function AboutPage() {
+  const reduced = useRevealMotion();
+  const intro = revealProps(reduced);
+  const competenciesHeader = revealProps(reduced);
+  const competenciesGrid = revealProps(reduced);
+  const experienceHeader = revealProps(reduced);
+  const experienceList = revealProps(reduced);
+  const educationHeader = revealProps(reduced);
+  const educationGrid = revealProps(reduced);
+  const certificationsHeader = revealProps(reduced);
+  const certificationsRow = revealProps(reduced);
+
   return (
     <div className="container mx-auto px-4 py-24">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl md:text-6xl font-industrial font-bold uppercase tracking-widest text-text-primary mb-12">
+        <motion.h1
+          {...intro}
+          className="text-4xl md:text-6xl font-industrial font-bold uppercase tracking-widest text-text-primary mb-12 will-change-transform"
+        >
           Professional <AccentWord text="Profile" />
-        </h1>
+        </motion.h1>
 
-        <div className="prose prose-invert max-w-none mb-16">
-          <p className="text-xl text-text-secondary leading-relaxed">
+        <motion.div
+          {...intro}
+          variants={staggerContainer}
+          className="prose prose-invert max-w-none mb-16 will-change-transform"
+        >
+          <motion.p
+            variants={staggerItem}
+            className="text-xl text-text-secondary leading-relaxed"
+          >
             Software Developer and Product Manager with 5+ years of experience designing, building, and shipping AI-enhanced, workflow-heavy B2B software products from discovery through launch and iteration.
-          </p>
-          <p className="text-lg text-text-secondary leading-relaxed mt-4">
+          </motion.p>
+          <motion.p
+            variants={staggerItem}
+            className="text-lg text-text-secondary leading-relaxed mt-4"
+          >
             Strong background in full-stack development, AI tooling integration, customer research, and cross-functional execution across engineering, design, and business stakeholders. Proven ability to translate complex operational workflows into scalable product solutions, define success metrics, and continuously improve adoption and outcomes.
-          </p>
-          <div className="mt-8">
-<Link href="/Isaac_Daniel_Sudakar_Resume.pdf" download target="_blank" data-icon-hover-trigger>
+          </motion.p>
+          <motion.div variants={staggerItem} className="mt-8">
+            <Link href="/Isaac_Daniel_Sudakar_Resume.pdf" download target="_blank" data-icon-hover-trigger>
               <Button variant="outline" className="gap-2">
                 <IconHoverWrapper hoverTrigger="closest">
                   <FileDescriptionIcon size={16} />
@@ -102,18 +136,25 @@ export default function AboutPage() {
                 Download Resume
               </Button>
             </Link>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         <section className="mb-24">
-          <h2 className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4">
+          <motion.h2
+            {...competenciesHeader}
+            className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 will-change-transform"
+          >
             Core Competencies
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          </motion.h2>
+          <motion.div
+            {...competenciesGrid}
+            variants={staggerContainer}
+            className="grid grid-cols-1 md:grid-cols-2 gap-8 will-change-transform"
+          >
             {skills.map((skill) => {
               const Icon = skill.icon;
               return (
-                <div key={skill.category} data-icon-hover-trigger className="group">
+                <motion.div key={skill.category} variants={staggerItem} data-icon-hover-trigger className="group">
                   <div className="flex items-center gap-3 mb-4">
                     <IconHoverWrapper hoverTrigger="closest">
                       <Icon size={24} className="text-cta transition-transform group-hover:scale-110" />
@@ -129,19 +170,26 @@ export default function AboutPage() {
                       </Badge>
                     ))}
                   </div>
-                </div>
+                </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         </section>
 
         <section className="mb-24">
-          <h2 className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4">
+          <motion.h2
+            {...experienceHeader}
+            className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 will-change-transform"
+          >
             Professional Experience
-          </h2>
-          <div className="space-y-12 relative border-l-2 border-divider ml-4 md:ml-8 pl-8 md:pl-12 py-4">
+          </motion.h2>
+          <motion.div
+            {...experienceList}
+            variants={staggerContainer}
+            className="space-y-12 relative border-l-2 border-divider ml-4 md:ml-8 pl-8 md:pl-12 py-4 will-change-transform"
+          >
             {experience.map((job, index) => (
-              <div key={index} className="relative">
+              <motion.div key={index} variants={staggerItem} className="relative">
                 <div className="absolute -left-[41px] md:-left-[59px] top-2 h-6 w-6 rounded-full bg-bg-dark border-4 border-bg-base flex items-center justify-center">
                   <div className="h-2 w-2 bg-cta rounded-full animate-pulse" />
                 </div>
@@ -155,40 +203,60 @@ export default function AboutPage() {
                 <p className="text-text-secondary max-w-2xl leading-relaxed mt-2">
                   {job.description}
                 </p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </section>
 
         <section>
-          <h2 className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4">
+          <motion.h2
+            {...educationHeader}
+            className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 will-change-transform"
+          >
             Education
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          </motion.h2>
+          <motion.div
+            {...educationGrid}
+            variants={staggerContainer}
+            className="grid grid-cols-1 md:grid-cols-2 gap-6 will-change-transform"
+          >
             {education.map((edu, index) => (
-              <div key={index} className="flex items-start gap-4 p-4 border border-divider/50 rounded-sm bg-bg-accent/5">
+              <motion.div
+                key={index}
+                variants={staggerItem}
+                className="flex items-start gap-4 p-4 border border-divider/50 rounded-sm bg-bg-accent/5"
+              >
                 <TrophyIcon size={24} className="text-text-secondary mt-1" />
                 <div>
                   <h3 className="font-bold text-text-primary">{edu.degree}</h3>
                   <div className="text-sm text-text-secondary">{edu.school}</div>
                   <div className="text-xs font-mono text-cta mt-1">{edu.year}</div>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </section>
 
         <section className="mt-24">
-          <h2 className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4">
+          <motion.h2
+            {...certificationsHeader}
+            className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 will-change-transform"
+          >
             Certifications
-          </h2>
-          <div className="flex flex-wrap gap-3">
+          </motion.h2>
+          <motion.div
+            {...certificationsRow}
+            variants={staggerContainer}
+            className="flex flex-wrap gap-3 will-change-transform"
+          >
             {["Agile & Scrum", "Prompt Engineering", "Context Engineering"].map((cert) => (
-              <Badge key={cert} variant="outline" className="text-sm px-4 py-2 border-cta/50 text-text-secondary">
-                {cert}
-              </Badge>
+              <motion.div key={cert} variants={staggerItemFast}>
+                <Badge variant="outline" className="text-sm px-4 py-2 border-cta/50 text-text-secondary">
+                  {cert}
+                </Badge>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </section>
       </div>
     </div>
