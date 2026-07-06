@@ -153,7 +153,7 @@ export function FlagshipFolder({ study, className }: FlagshipFolderProps) {
             Extends well beyond folder bounds for a dominant visual. */}
         <div
           className={cn(
-            "absolute -left-[10%] -right-[10%] top-0 aspect-video z-20",
+            "absolute left-[clamp(-12px,-10%,0px)] right-[clamp(-12px,-10%,0px)] top-0 aspect-video z-20",
             "transition-all duration-[600ms] ease-out",
             isOpen
               ? "opacity-100 translate-y-0 scale-100"
