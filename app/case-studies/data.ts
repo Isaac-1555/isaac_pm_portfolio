@@ -76,6 +76,8 @@ export interface CaseStudy {
   websiteUrl: string;
   repoUrl: string;
   screenshots: string[]; // URLs
+  imageWidth: number;
+  imageHeight: number;
 }
 
 export const caseStudies: CaseStudy[] = [
@@ -195,7 +197,9 @@ export const caseStudies: CaseStudy[] = [
     screenshots: [
       "/Tux_UI.png",
       "/Tux_Panes.png"
-    ]
+    ],
+    imageWidth: 2880,
+    imageHeight: 1800
   },
   {
     id: "satbrain",
@@ -265,7 +269,9 @@ export const caseStudies: CaseStudy[] = [
     screenshots: [
       "/Satbrain_Home.png",
       "/Satbrain_Mapview.png"
-    ]
+    ],
+    imageWidth: 1919,
+    imageHeight: 916
   },
   {
     id: "pocket-resume",
@@ -336,6 +342,8 @@ export const caseStudies: CaseStudy[] = [
     screenshots: [
       "/PocketResume_UI.png",
       "/PocketResume_Settings.png"
-    ]
+    ],
+    imageWidth: 2880,
+    imageHeight: 1576
   }
 ];

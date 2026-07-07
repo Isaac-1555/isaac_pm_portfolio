@@ -1,36 +1,31 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { AccentWord } from "@/components/ui/AccentWord";
 import RightChevron from "@/components/icons/right-chevron";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 import type { CaseStudy } from "@/app/case-studies/data";
-import { HudCanvas } from "./featured/HudCanvas";
+import { cn } from "@/lib/utils";
 
 interface FeaturedWorkClientProps {
   studies: [CaseStudy, CaseStudy, CaseStudy];
   missionIds: readonly [string, string, string];
 }
 
-const ROTATION_INTERVAL_MS = 6000;
+const EASE = [0.4, 0, 0.2, 1] as const;
+const DUR = 0.75;
 
 export function FeaturedWorkClient({
   studies,
   missionIds,
 }: FeaturedWorkClientProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  const mobileScrollRef = useRef<HTMLDivElement>(null);
-  const isAutoScrollRef = useRef(false);
-  const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
   const [booted, setBooted] = useState(false);
-  const [rotationIndex, setRotationIndex] = useState(0);
-  const [hoverCount, setHoverCount] = useState(0);
-
-  const isHovered = hoverCount > 0;
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -51,177 +46,398 @@ export function FeaturedWorkClient({
     return () => io.disconnect();
   }, []);
 
-  const rotate = useCallback(
-    (dir: 1 | -1 = 1) => setRotationIndex((i) => (i + dir + 3) % 3),
-    []
-  );
-
-  useEffect(() => {
-    if (!booted || isHovered) return;
-    const id = setInterval(() => rotate(1), ROTATION_INTERVAL_MS);
-    return () => clearInterval(id);
-  }, [booted, isHovered, rotate]);
-
-  const handleHoverChange = useCallback((h: boolean) => {
-    setHoverCount((c) => Math.max(0, c + (h ? 1 : -1)));
-  }, []);
-
-  const handleMobileScroll = useCallback(() => {
-    if (isAutoScrollRef.current) return;
-    const container = mobileScrollRef.current;
-    if (!container || container.offsetWidth === 0) return;
-    if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-    scrollTimeoutRef.current = setTimeout(() => {
-      const idx = Math.round(container.scrollLeft / container.clientWidth);
-      if (idx >= 0 && idx < 3) setRotationIndex(idx);
-    }, 150);
-  }, []);
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.innerWidth >= 768) return;
-    const container = mobileScrollRef.current;
-    if (!container || container.offsetWidth === 0) return;
-    isAutoScrollRef.current = true;
-    const target = container.children[rotationIndex] as HTMLElement | undefined;
-    if (target) {
-      container.scrollTo({ left: target.offsetLeft, behavior: "smooth" });
-    }
-    const t = setTimeout(() => {
-      isAutoScrollRef.current = false;
-    }, 600);
-    return () => clearTimeout(t);
-  }, [rotationIndex]);
-
-  useEffect(() => {
-    return () => {
-      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-    };
-  }, []);
-
-  const flagship = studies[rotationIndex];
-  const sat1 = studies[(rotationIndex + 1) % 3];
-  const sat2 = studies[(rotationIndex + 2) % 3];
-  const flagshipId = missionIds[rotationIndex];
-  const sat1Id = missionIds[(rotationIndex + 1) % 3];
-  const sat2Id = missionIds[(rotationIndex + 2) % 3];
-
-  const d = (offset: number) =>
-    ({ "--boot-delay": `${offset}ms` } as React.CSSProperties);
+  const isAnyOpen = openIndex !== null;
+  const handleToggle = (i: number) =>
+    setOpenIndex((cur) => (cur === i ? null : i));
 
   return (
     <section
       ref={sectionRef}
       id="mission-home-featured"
       data-booted={booted ? "true" : "false"}
-      className="relative h-[calc(100dvh-3.5rem)] md:h-[calc(100dvh-4rem)] flex flex-col overflow-hidden bg-gradient-to-b from-bg-dark to-tech"
+      className="relative h-[calc(100dvh-3.5rem)] md:h-[calc(100dvh-4rem)] flex flex-col overflow-hidden bg-bg-base"
     >
-      {/* Theme texture: diagonal stripes + noise */}
-      <div className="absolute inset-0 diagonal-stripes opacity-10 pointer-events-none" />
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-15 pointer-events-none" />
-
-      <div className="container mx-auto px-6 md:px-8 py-4 md:py-6 relative z-10 flex flex-col min-h-0 flex-1">
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-4 md:mb-6 gap-4 shrink-0">
-          <div className="boot-reveal" style={d(0)}>
-            <Badge variant="warning" className="mb-2">
-              Selected Case Studies
-            </Badge>
-            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-industrial font-bold uppercase tracking-wide md:tracking-widest text-white">
+      <div className="container mx-auto px-6 md:px-8 py-6 md:py-10 relative z-10 flex flex-col min-h-0 flex-1">
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 md:mb-8 gap-4 shrink-0">
+          <div>
+            <h2 className="font-mono text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium uppercase tracking-tight text-text-primary">
               Featured <AccentWord text="Works" />
             </h2>
-            {/* Rotation indicator dots */}
-            <div className="mt-3 flex items-center gap-2" role="tablist" aria-label="Rotate featured projects">
-              {studies.map((s, i) => (
-                <button
-                  key={s.id}
-                  role="tab"
-                  aria-selected={rotationIndex === i}
-                  aria-label={`Show ${s.title} in flagship slot`}
-                  onClick={() => setRotationIndex(i)}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    rotationIndex === i
-                      ? "w-8 bg-cta"
-                      : "w-3 bg-white/30 hover:bg-white/60"
-                  }`}
-                />
-              ))}
-            </div>
+            <p className="mt-2 text-xs md:text-sm font-mono text-text-secondary uppercase tracking-widest">
+              {isAnyOpen ? "Selected case file" : "Select a project"}
+              <span className="text-cta">_</span>
+            </p>
           </div>
           <Link
             href="/work"
-            className="hidden md:block boot-reveal shrink-0"
-            style={d(120)}
+            className="hidden md:block shrink-0"
+            aria-label="View full portfolio"
           >
-            <Button variant="outline" data-icon-hover-trigger className="text-white border-white before:bg-white hover:text-bg-dark">
+            <Button
+              variant="outline"
+              data-icon-hover-trigger
+              className="text-text-primary border-divider before:bg-text-primary hover:text-bg-base font-mono uppercase tracking-widest text-xs"
+            >
               View Full Portfolio
               <IconHoverWrapper hoverTrigger="closest">
-                <RightChevron size={16} className="ml-2" />
+                <RightChevron size={14} className="ml-2" />
               </IconHoverWrapper>
             </Button>
           </Link>
-        </div>
+        </header>
 
-        {/* Desktop layout: flagship + satellites row */}
-        <div className="hidden md:flex flex-col min-h-0 flex-1 gap-4">
-          {/* Flagship full-width */}
-          <div className="flex-1 min-h-0">
-            <HudCanvas
-              key={`flagship-${flagship.id}-${rotationIndex}`}
-              study={flagship}
-              missionId={flagshipId}
-              variant="flagship"
-              booted={booted}
-              bootDelay={200}
-              onHoverChange={handleHoverChange}
-            />
-          </div>
-
-          {/* Satellites side-by-side */}
-          <div className="grid grid-cols-2 gap-6 shrink-0 h-[35%]">
-            <HudCanvas
-              key={`sat1-${sat1.id}-${rotationIndex}`}
-              study={sat1}
-              missionId={sat1Id}
-              variant="satellite"
-              booted={booted}
-              bootDelay={440}
-              onHoverChange={handleHoverChange}
-            />
-            <HudCanvas
-              key={`sat2-${sat2.id}-${rotationIndex}`}
-              study={sat2}
-              missionId={sat2Id}
-              variant="satellite"
-              booted={booted}
-              bootDelay={560}
-              onHoverChange={handleHoverChange}
-            />
-          </div>
-        </div>
-
-        {/* Mobile layout: horizontal scroll-snap row */}
-        <div
-          ref={mobileScrollRef}
-          onScroll={handleMobileScroll}
-          className="flex md:hidden flex-1 min-h-0 overflow-x-auto snap-x snap-mandatory gap-4 -mx-1 px-1 pb-2"
-        >
-          {studies.map((study, i) => (
-            <div
-              key={`mobile-${study.id}-${i}`}
-              className="w-full shrink-0 snap-center h-full"
-            >
-              <HudCanvas
-                study={study}
-                missionId={missionIds[i]}
-                variant="flagship"
-                booted={booted}
-                bootDelay={200 + i * 120}
-                onHoverChange={handleHoverChange}
+        <div className="flex-1 min-h-0 flex flex-col md:block">
+          <div className="relative h-full w-full">
+            <div className="hidden md:block absolute inset-0">
+              {/* Background hints — fade out when a project opens */}
+              <motion.span
+                initial={false}
+                animate={{ opacity: isAnyOpen ? 0 : 1 }}
+                transition={{ duration: 0.4, ease: EASE }}
+                className="absolute left-6 lg:left-10 top-1/2 -translate-y-1/2 font-mono text-[10px] uppercase tracking-widest text-text-secondary pointer-events-none select-none whitespace-nowrap z-0"
+              >
+                Click to see project →
+              </motion.span>
+              <motion.span
+                initial={false}
+                animate={{ opacity: isAnyOpen ? 0 : 1 }}
+                transition={{ duration: 0.4, ease: EASE }}
+                className="absolute right-6 lg:right-10 top-1/2 -translate-y-1/2 font-mono text-[10px] uppercase tracking-widest text-text-secondary pointer-events-none select-none whitespace-nowrap z-0"
+              >
+                ← Click to see project
+              </motion.span>
+              <DesktopAccordion
+                studies={studies}
+                missionIds={missionIds}
+                openIndex={openIndex}
+                onToggle={handleToggle}
               />
             </div>
-          ))}
+            <div className="md:hidden h-full">
+              <MobileAccordion
+                studies={studies}
+                missionIds={missionIds}
+                openIndex={openIndex}
+                onToggle={handleToggle}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </section>
+  );
+}
+
+/* ───────────────────────── Desktop accordion ───────────────────────── */
+
+function DesktopAccordion({
+  studies,
+  missionIds,
+  openIndex,
+  onToggle,
+}: {
+  studies: [CaseStudy, CaseStudy, CaseStudy];
+  missionIds: readonly [string, string, string];
+  openIndex: number | null;
+  onToggle: (i: number) => void;
+}) {
+  return (
+    <div className="flex h-full w-full items-stretch justify-center gap-3">
+      {studies.map((study, i) => (
+        <DesktopColumn
+          key={study.id}
+          study={study}
+          missionId={missionIds[i]}
+          index={i}
+          isOpen={openIndex === i}
+          onToggle={() => onToggle(i)}
+        />
+      ))}
+    </div>
+  );
+}
+
+function DesktopColumn({
+  study,
+  missionId,
+  index,
+  isOpen,
+  onToggle,
+}: {
+  study: CaseStudy;
+  missionId: string;
+  index: number;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <motion.div
+      layout
+      transition={{ layout: { duration: DUR, ease: EASE } }}
+      style={{ willChange: "width, transform" }}
+      className={cn(
+        "relative h-full shrink-0 rounded-sm border border-divider bg-bg-accent/5 overflow-hidden transition-colors duration-300",
+        "group",
+        isOpen
+          ? "w-[clamp(760px,62vw,980px)] shrink-0 border-cta/40"
+          : "w-[56px] shrink-0 hover:border-cta/60"
+      )}
+    >
+      <AnimatePresence initial={false}>
+        {isOpen ? (
+          <motion.div
+            key="open"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: EASE }}
+            className="absolute inset-0 z-10"
+          >
+            <OpenPanel
+              study={study}
+              missionId={missionId}
+              index={index}
+              onClose={onToggle}
+            />
+          </motion.div>
+        ) : (
+          <motion.button
+            key="closed"
+            type="button"
+            onClick={onToggle}
+            aria-label={`Open ${study.title}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, ease: EASE }}
+            className="absolute left-0 inset-y-0 w-[56px] z-10 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cta"
+          >
+            <span className="font-mono uppercase tracking-widest text-sm text-text-primary whitespace-nowrap -rotate-90 select-none group-hover:text-cta transition-colors">
+              {study.title}
+            </span>
+            <span className="absolute bottom-3 left-1/2 -translate-x-1/2 font-mono text-[9px] uppercase tracking-widest text-text-secondary">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+          </motion.button>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
+/* ───────────────────────── Mobile accordion ───────────────────────── */
+
+function MobileAccordion({
+  studies,
+  missionIds,
+  openIndex,
+  onToggle,
+}: {
+  studies: [CaseStudy, CaseStudy, CaseStudy];
+  missionIds: readonly [string, string, string];
+  openIndex: number | null;
+  onToggle: (i: number) => void;
+}) {
+  return (
+    <div className="flex flex-col gap-2 h-full">
+      {studies.map((study, i) => (
+        <MobileRow
+          key={study.id}
+          study={study}
+          missionId={missionIds[i]}
+          index={i}
+          isOpen={openIndex === i}
+          onToggle={() => onToggle(i)}
+        />
+      ))}
+    </div>
+  );
+}
+
+function MobileRow({
+  study,
+  missionId,
+  index,
+  isOpen,
+  onToggle,
+}: {
+  study: CaseStudy;
+  missionId: string;
+  index: number;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <motion.div
+      layout
+      transition={{ layout: { duration: DUR, ease: EASE } }}
+      className={cn(
+        "relative rounded-sm border border-divider bg-bg-accent/5 overflow-hidden transition-colors",
+        isOpen
+          ? "flex-1 min-h-0 border-cta/40"
+          : "h-12 shrink-0"
+      )}
+    >
+      <AnimatePresence initial={false}>
+        {isOpen ? (
+          <motion.div
+            key="open"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: EASE }}
+            className="absolute inset-0 z-10"
+          >
+            <OpenPanel
+              study={study}
+              missionId={missionId}
+              index={index}
+              onClose={onToggle}
+            />
+          </motion.div>
+        ) : (
+          <motion.button
+            key="closed"
+            type="button"
+            onClick={onToggle}
+            aria-label={`Open ${study.title}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, ease: EASE }}
+            className="absolute inset-x-0 top-0 h-12 z-10 flex items-center justify-between px-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cta"
+          >
+            <span className="font-mono uppercase tracking-widest text-xs text-text-primary">
+              {study.title}
+            </span>
+            <span className="font-mono text-[10px] uppercase tracking-widest text-text-secondary">
+              {String(index + 1).padStart(2, "0")} / 03
+            </span>
+          </motion.button>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
+/* ───────────────────────── Shared open panel ───────────────────────── */
+
+function OpenPanel({
+  study,
+  missionId,
+  index,
+  onClose,
+}: {
+  study: CaseStudy;
+  missionId: string;
+  index: number;
+  onClose: () => void;
+}) {
+  const screenshot = study.screenshots[0];
+  const stats = study.outcome.quantifiable;
+
+  return (
+    <div className="w-full h-full flex flex-col md:flex-row md:items-stretch gap-3 md:gap-5 bg-bg-base p-3 md:p-0">
+      {/* Screenshot frame — aspect-matched to image (no letterbox bars) */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
+        style={{ aspectRatio: `${study.imageWidth} / ${study.imageHeight}` }}
+        className="relative order-1 self-stretch md:self-center md:flex-1 min-w-0 max-h-full rounded-sm overflow-hidden bg-bg-dark border border-divider"
+      >
+        {screenshot && (
+          <Image
+            src={screenshot}
+            alt={study.title}
+            fill
+            className="object-contain"
+            sizes="(max-width: 768px) 100vw, 980px"
+            priority
+          />
+        )}
+        <div className="absolute top-2 left-2 font-mono text-[9px] uppercase tracking-widest text-text-primary bg-bg-base/80 backdrop-blur px-1.5 py-0.5 rounded-sm">
+          {missionId}
+        </div>
+      </motion.div>
+
+      {/* Right content */}
+      <div className="order-2 md:w-[300px] md:shrink-0 md:h-full min-w-0 flex flex-col justify-between p-4 md:p-5 md:overflow-y-auto">
+        {/* Header */}
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0 flex-1">
+            <motion.h3
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              transition={{ duration: DUR, ease: EASE }}
+              className="font-mono text-xl md:text-2xl font-medium uppercase tracking-tight text-text-primary origin-left will-change-transform"
+            >
+              {study.title}
+            </motion.h3>
+            <p className="mt-1 font-mono text-[11px] text-text-secondary leading-snug">
+              {study.subtitle}
+            </p>
+          </div>
+          <div className="flex items-center gap-2 shrink-0 pt-1">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-text-secondary">
+              {String(index + 1).padStart(2, "0")} / 03
+            </span>
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close"
+              className="text-text-secondary hover:text-text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cta rounded-sm p-0.5"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                aria-hidden
+              >
+                <path d="M2 2L12 12M12 2L2 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Outcomes + CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.25, ease: EASE }}
+          className="mt-4 md:mt-6"
+        >
+          <div className="font-mono text-[9px] uppercase tracking-widest text-text-secondary mb-1.5">
+            Outcomes
+          </div>
+          <ul className="space-y-1 mb-4">
+            {stats.map((s, i) => (
+              <li
+                key={i}
+                className="flex gap-2 font-mono text-[11px] text-text-primary leading-snug"
+              >
+                <span className="text-cta shrink-0">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span>{s}</span>
+              </li>
+            ))}
+          </ul>
+          <Button
+            asChild
+            size="sm"
+            className="font-mono gap-1.5 text-[11px] tracking-widest"
+          >
+            <Link href={`/case-studies/${study.id}`}>
+              View case study <RightChevron size={12} />
+            </Link>
+          </Button>
+        </motion.div>
+      </div>
+    </div>
   );
 }
