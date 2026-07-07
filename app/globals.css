@@ -55,6 +55,17 @@
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-industrial: var(--font-orbitron), ui-sans-serif, system-ui, sans-serif;
   --font-tech: var(--font-rajdhani), ui-monospace, monospace;
+  --font-jetbrains: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", "Menlo", "Monaco", "Consolas", monospace;
+  --font-vt323: var(--font-vt323), ui-monospace, monospace;
+}
+
+@layer utilities {
+  .font-jb {
+    font-family: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", "Menlo", "Monaco", "Consolas", monospace;
+  }
+  .font-vt323 {
+    font-family: var(--font-vt323), ui-monospace, monospace;
+  }
 }
 
 @layer base {

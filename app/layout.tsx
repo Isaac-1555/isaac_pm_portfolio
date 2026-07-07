@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Orbitron, Rajdhani, Inter } from "next/font/google";
+import { Orbitron, Rajdhani, Inter, JetBrains_Mono, VT323 } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -25,6 +25,20 @@ const rajdhani = Rajdhani({
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+});
+
+const vt323 = VT323({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-vt323",
   display: "swap",
 });
 
@@ -62,7 +76,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${orbitron.variable} ${rajdhani.variable} ${inter.variable} antialiased bg-bg-base text-text-primary font-sans flex flex-col min-h-screen`}
+        className={`${orbitron.variable} ${rajdhani.variable} ${inter.variable} ${jetbrainsMono.variable} ${vt323.variable} antialiased bg-bg-base text-text-primary font-sans flex flex-col min-h-screen`}
       >
         <CursorProvider>
           <LenisProvider>
