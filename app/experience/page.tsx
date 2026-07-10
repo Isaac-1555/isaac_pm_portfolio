@@ -44,7 +44,7 @@ const skills = [
   },
   { 
     category: "Languages", 
-    items: ["TypeScript", "Python", "Rust", "SQL", "Kotlin", "Swift", "React"], 
+    items: ["TypeScript", "Python", "Rust", "SQL", "Kotlin", "Swift", "React", "C++", "Java", "HTML 5", "CSS 3", "Tailwind", "Node.js", "Express.js", "Next.js", "Django", "Flask"], 
     icon: CodeIcon 
   },
 ];
@@ -144,7 +144,7 @@ export default function AboutPage() {
             {...competenciesHeader}
             className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 will-change-transform"
           >
-            Core Competencies
+            Core Skills
           </motion.h2>
           <motion.div
             {...competenciesGrid}
