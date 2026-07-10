@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import ScrambleText from '@/components/fancy/text/scramble-text';
+import { MediaBetweenText } from '@/components/fancy/blocks/media-between-text';
 import RightChevron from '@/components/icons/right-chevron';
 import FileDescriptionIcon from '@/components/icons/file-description-icon';
 import IconHoverWrapper from '@/components/icons/IconHoverWrapper';
@@ -75,13 +76,38 @@ export default function HeroContent() {
         </span>
       </motion.h1>
 
-      <motion.p
+      <motion.div
         variants={staggerItem}
-        className="max-w-xl text-base sm:text-lg md:text-xl text-text-secondary font-sans leading-relaxed"
+        className="max-w-xl text-base sm:text-lg md:text-xl text-text-primary font-sans leading-relaxed"
       >
-        Transforming ambiguous problems into scalable, user-centric solutions. 5+ years driving adoption
-        and workflow efficiency through data-driven strategy.
-      </motion.p>
+        I turn vague problems into shipped, measurable wins. I figure out what
+        people need, then I make it easy enough that they don&apos;t need me
+        anymore.{" "}
+        <MediaBetweenText
+          as="span"
+          firstText="<!-- Insert clever dev joke here ("
+          secondText=") -->"
+          mediaUrl="/where.gif"
+          mediaType="image"
+          triggerType="hover"
+          alt="where"
+          className="inline-flex items-center align-middle"
+          leftTextClassName="font-mono text-text-primary/80"
+          rightTextClassName="font-mono text-text-primary/80"
+          mediaContainerClassName="h-[1.4em] overflow-hidden mx-1"
+          animationVariants={{
+            initial: { width: 0 },
+            animate: {
+              width: "1.4em",
+              transition: {
+                duration: 0.45,
+                type: "spring",
+                bounce: 0.15,
+              },
+            },
+          }}
+        />
+      </motion.div>
 
       <motion.div
         variants={staggerItem}
