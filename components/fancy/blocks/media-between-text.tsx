@@ -151,8 +151,8 @@ export const MediaBetweenText = forwardRef<
             <Image
               src={mediaUrl}
               alt={alt || `${firstText} ${secondText}`}
-              width={36}
-              height={36}
+              width={64}
+              height={64}
               unoptimized
               className="w-full h-full object-cover"
             />

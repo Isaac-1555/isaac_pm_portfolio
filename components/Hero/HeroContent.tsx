@@ -94,11 +94,11 @@ export default function HeroContent() {
           className="inline-flex items-center align-middle"
           leftTextClassName="font-mono text-text-primary/80"
           rightTextClassName="font-mono text-text-primary/80"
-          mediaContainerClassName="h-[1.4em] overflow-hidden mx-1"
+          mediaContainerClassName="h-[2.25em] overflow-hidden mx-1"
           animationVariants={{
             initial: { width: 0 },
             animate: {
-              width: "1.4em",
+              width: "2.25em",
               transition: {
                 duration: 0.45,
                 type: "spring",
