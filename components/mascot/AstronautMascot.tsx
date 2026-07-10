@@ -24,7 +24,7 @@ const TOUR_CONFIGS: Record<string, PageTourConfig> = {
     sections: ["mission-home-hero", "mission-home-featured", "mission-home-about"],
     pois: [
       { sectionId: "mission-home-featured", message: "Check out these flagship projects!" },
-      { sectionId: "mission-home-about", message: "Here\u2019s the profile \u2014 years of impact at a glance!" },
+      { sectionId: "mission-home-about", message: "About me: years of building, shipping, and solving messy problems at a glance!" },
       { sectionId: "mission-home-hero", message: "Back to base \u2014 grab the resume up here!" },
     ],
   },

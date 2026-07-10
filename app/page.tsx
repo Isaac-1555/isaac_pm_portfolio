@@ -37,20 +37,17 @@ export default function Home() {
             variants={staggerContainer}
             className="will-change-transform"
           >
-            <motion.div variants={staggerItem} className="mb-4 font-industrial text-gold uppercase tracking-widest text-sm">
-              Profile Summary
-            </motion.div>
             <motion.h2
               variants={staggerItem}
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-industrial font-bold uppercase tracking-wide md:tracking-widest text-white mb-6"
             >
-              Engineering <AccentWord text="Impact" />
+              About <AccentWord text="Me" />
             </motion.h2>
             <motion.p
               variants={staggerItem}
               className="text-white leading-relaxed mb-8 max-w-lg font-sans text-sm md:text-base"
             >
-              With over 5 years of experience in software development, AI integration, and product management, I specialize in transforming ambiguous problems into scalable, AI-powered solutions. My approach combines rigorous data analysis with intuitive design principles.
+              With over 5 years of experience in software development, AI integration, and product management, I specialize in transforming ambiguous problems into scalable, AI-powered solutions. My approach pairs rigorous data analysis with intuitive design, shipping systems that work in production and feel obvious to the people using them.
             </motion.p>
             <motion.div variants={staggerItem}>
               <ProfileSummaryStats />
