@@ -113,13 +113,48 @@ export function FeaturedWorkClient({
                 onToggle={handleToggle}
               />
             </div>
-            <div className="md:hidden h-full">
+            <div className="md:hidden h-full relative">
               <MobileAccordion
                 studies={studies}
                 missionIds={missionIds}
                 openIndex={openIndex}
                 onToggle={handleToggle}
               />
+              <motion.div
+                initial={false}
+                animate={{ opacity: isAnyOpen ? 0 : 1 }}
+                transition={{ duration: 0.4, ease: EASE }}
+                aria-hidden
+                className="pointer-events-none select-none absolute top-1/2 left-0 right-0 -translate-y-1/2 z-0 flex flex-col items-center gap-2"
+              >
+                <motion.span
+                  aria-hidden
+                  className="font-mono text-[10px] uppercase tracking-widest text-text-secondary"
+                  animate={{ y: [0, -3, 0] }}
+                  transition={{
+                    duration: 1.6,
+                    ease: "easeInOut",
+                    repeat: Infinity,
+                  }}
+                >
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden
+                  >
+                    <path d="M6 10V2M2 6l4-4 4 4" />
+                  </svg>
+                </motion.span>
+                <span className="font-mono text-[10px] uppercase tracking-widest text-text-secondary">
+                  Click see project
+                </span>
+              </motion.div>
             </div>
           </div>
         </div>
