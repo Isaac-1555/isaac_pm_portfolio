@@ -1,6 +1,9 @@
 import type { CaseStudy } from "@/app/case-studies/data";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 import { cn } from "@/lib/utils";
+import { SatbrainAnimation } from "./FolderAnimations/SatbrainAnimation";
+import { TuxAnimation } from "./FolderAnimations/TuxAnimation";
+import { PocketResumeAnimation } from "./FolderAnimations/PocketResumeAnimation";
 
 interface FolderArtProps {
   study: CaseStudy;
@@ -8,28 +11,47 @@ interface FolderArtProps {
 }
 
 /**
- * Per-project pixel art registry.
+ * Per-project animation registry.
  *
- * Drop a custom pixel SVG component in here later:
+ * Each entry is a React component that renders a custom animated scene
+ * inside the folder cover. Components are responsible for handling their
+ * own reduced-motion fallback (via `useReducedMotion` from motion/react).
  *
- *   const REGISTRY: Record<string, React.ComponentType<{ className?: string }>> = {
- *     satbrain: SatbrainPixelArt,
- *     tux: TuxPixelArt,
- *     "pocket-resume": PocketResumePixelArt,
+ * To override or add new animations, add an entry keyed by `study.id`:
+ *
+ *   const ANIMATION_REGISTRY: Record<string, React.ComponentType> = {
+ *     satbrain: SatbrainAnimation,
+ *     tux: TuxAnimation,
+ *     "pocket-resume": PocketResumeAnimation,
  *   };
  *
- * Each entry should be a 32x32 (or 16x16) grid SVG with
- * `shape-rendering="crispEdges"` and CSS-keyframe animation on hover via the
- * `.group:hover` selector. Until then, the project's default icon from
+ * If a study has no animation registered, the project's default icon from
  * `data.ts` is rendered as a placeholder that animates on hover via
  * IconHoverWrapper.
  */
 
-const REGISTRY: Record<string, React.ComponentType<{ className?: string }>> = {};
+type AnimationComponent = React.ComponentType;
+
+const ANIMATION_REGISTRY: Record<string, AnimationComponent> = {
+  satbrain: SatbrainAnimation,
+  tux: TuxAnimation,
+  "pocket-resume": PocketResumeAnimation,
+};
 
 export function FolderArt({ study, className }: FolderArtProps) {
-  const Custom = REGISTRY[study.id];
-  if (Custom) return <Custom className={className} />;
+  const Animation = ANIMATION_REGISTRY[study.id];
+
+  if (Animation) {
+    return (
+      <div
+        role="img"
+        aria-label={`${study.title} animated illustration`}
+        className={cn("flex items-center justify-center w-full h-full", className)}
+      >
+        <Animation />
+      </div>
+    );
+  }
 
   const Icon = study.icon;
   return (
