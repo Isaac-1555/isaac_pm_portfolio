@@ -161,9 +161,9 @@ export const caseStudies: CaseStudy[] = [
 
     outcome: {
       quantifiable: [
-        "6 commits, 1 day from PRD to working binary",
-        "All 5 PRD core features shipped (sessions, terminal, file tree, git, editor, diff, persistence)",
-        "Open source on GitHub — full Rust + TS source available"
+        "Terminal, editor, and git state visible at a glance: no menu diving",
+        "Single binary replaces 2-tool setup (Warp + VSCode) for daily sessions",
+        "Dogfooded from commit 1: every feature used the same day it was built"
       ],
       qualitative: [
         "Feels native, not browser-y",
