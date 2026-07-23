@@ -20,6 +20,7 @@ import RocketIcon from "@/components/icons/rocket-icon";
 import BulbSvg from "@/components/icons/bulb-svg";
 import ChartLineIcon from "@/components/icons/chart-line-icon";
 import BrainCircuitIcon from "@/components/icons/brain-circuit-icon";
+import DownloadIcon from "@/components/icons/download-icon";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 import { caseStudies } from "../data";
 import { notFound } from "next/navigation";
@@ -355,6 +356,17 @@ export default function CaseStudyDetail({ params }: { params: Promise<{ slug: st
                   </IconHoverWrapper>
                 </Button>
               </Link>
+
+              {project.apkUrl && (
+                <Link href={project.apkUrl} download data-icon-hover-trigger className="block">
+                  <Button variant="outline" className="w-full gap-2 border-bg-dark text-bg-dark hover:bg-bg-dark hover:text-white">
+                    Download APK (109 MB)
+                    <IconHoverWrapper hoverTrigger="closest">
+                      <DownloadIcon size={16} />
+                    </IconHoverWrapper>
+                  </Button>
+                </Link>
+              )}
             </div>
 
             <div className="mt-8 pt-8 border-t border-bg-dark/10">

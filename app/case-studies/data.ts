@@ -76,6 +76,8 @@ export interface CaseStudy {
   techStack: string[];
   websiteUrl: string;
   repoUrl: string;
+  /** Optional path to downloadable APK (placed in public/) */
+  apkUrl?: string;
   screenshots: string[]; // URLs
   imageWidth: number;
   imageHeight: number;
@@ -478,6 +480,7 @@ export const caseStudies: CaseStudy[] = [
     techStack: ["Kotlin", "Jetpack Compose", "Material 3", "Room", "Hilt", "llama.cpp", "BGE-small", "WorkManager", "Coil", "NDK/CMake"],
     websiteUrl: "https://github.com/Isaac-1555/NoteBucket",
     repoUrl: "https://github.com/Isaac-1555/NoteBucket",
+    apkUrl: "https://github.com/Isaac-1555/isaac_pm_portfolio/releases/download/notebucket-v0.3.0/notebucket.apk",
     screenshots: [
       "/NoteBucket_Hero.png",
       "/NoteBucket_Dashboard.jpeg",

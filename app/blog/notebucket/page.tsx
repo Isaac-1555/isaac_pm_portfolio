@@ -14,6 +14,7 @@ import RocketIcon from "@/components/icons/rocket-icon";
 import ChartLineIcon from "@/components/icons/chart-line-icon";
 import CheckedIcon from "@/components/icons/checked-icon";
 import ExternalLinkIcon from "@/components/icons/external-link-icon";
+import DownloadIcon from "@/components/icons/download-icon";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 
 export const metadata = {
@@ -132,6 +133,18 @@ export default function NoteBucketArticle() {
                     Technical Case Study
                     <IconHoverWrapper hoverTrigger="closest">
                       <ExternalLinkIcon size={14} className="ml-2" />
+                    </IconHoverWrapper>
+                  </Button>
+                </Link>
+                <Link
+                  href="https://github.com/Isaac-1555/isaac_pm_portfolio/releases/download/notebucket-v0.3.0/notebucket.apk"
+                  download
+                  data-icon-hover-trigger
+                >
+                  <Button variant="secondary" className="w-full text-xs">
+                    Download APK (109 MB)
+                    <IconHoverWrapper hoverTrigger="closest">
+                      <DownloadIcon size={14} className="ml-2" />
                     </IconHoverWrapper>
                   </Button>
                 </Link>
@@ -490,22 +503,37 @@ export default function NoteBucketArticle() {
                       </IconHoverWrapper>
                     </Button>
                   </Link>
-                  <Link
-                    href="https://github.com/Isaac-1555/NoteBucket"
-                    target="_blank"
-                    data-icon-hover-trigger
+                <Link
+                  href="https://github.com/Isaac-1555/NoteBucket"
+                  target="_blank"
+                  data-icon-hover-trigger
+                >
+                  <Button
+                    variant="outline"
+                    className="text-white border-white/30 hover:bg-white/10"
                   >
-                    <Button
-                      variant="outline"
-                      className="text-white border-white/30 hover:bg-white/10"
-                    >
-                      View on GitHub
-                      <IconHoverWrapper hoverTrigger="closest">
-                        <ExternalLinkIcon size={16} className="ml-2" />
-                      </IconHoverWrapper>
-                    </Button>
-                  </Link>
-                </div>
+                    View on GitHub
+                    <IconHoverWrapper hoverTrigger="closest">
+                      <ExternalLinkIcon size={16} className="ml-2" />
+                    </IconHoverWrapper>
+                  </Button>
+                </Link>
+                <Link
+                  href="https://github.com/Isaac-1555/isaac_pm_portfolio/releases/download/notebucket-v0.3.0/notebucket.apk"
+                  download
+                  data-icon-hover-trigger
+                >
+                  <Button
+                    variant="outline"
+                    className="text-white border-white/30 hover:bg-white/10"
+                  >
+                    Download APK (109 MB)
+                    <IconHoverWrapper hoverTrigger="closest">
+                      <DownloadIcon size={16} className="ml-2" />
+                    </IconHoverWrapper>
+                  </Button>
+                </Link>
+              </div>
               </div>
             </section>
 

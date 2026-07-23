@@ -40,6 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# large binaries (hosted via GitHub Releases)
+*.apk
+
 # AI
 AGENTS.md
 .playwright-mcp
