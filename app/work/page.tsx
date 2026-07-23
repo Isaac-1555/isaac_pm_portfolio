@@ -116,11 +116,11 @@ export default function WorkPage() {
   const techGrid = revealProps(reduced);
 
   return (
-    <div className="container mx-auto px-4 py-24">
+    <div className="container mx-auto px-4 py-8">
       <motion.div
         {...header}
         id="mission-work-header"
-        className="mb-16 will-change-transform"
+        className="mb-4 will-change-transform"
       >
         <h1 className="text-4xl md:text-6xl font-industrial font-bold uppercase tracking-widest text-text-primary mb-4">
           Selected <AccentWord text="Works" />
@@ -131,10 +131,10 @@ export default function WorkPage() {
       </motion.div>
 
       {/* Flagship Section */}
-      <section id="mission-work-flagship" className="mb-24">
+      <section id="mission-work-flagship" className="mb-6">
         <motion.h2
           {...flagshipHeader}
-          className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 flex items-center gap-2 will-change-transform"
+          className="text-2xl font-industrial uppercase tracking-widest mb-2 border-b border-divider pb-3 flex items-center gap-2 will-change-transform"
         >
           <TravelBag size={20} className="text-cta" /> Flagship Case Studies
         </motion.h2>

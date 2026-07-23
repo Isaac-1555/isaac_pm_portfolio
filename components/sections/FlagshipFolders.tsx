@@ -12,7 +12,7 @@ const FLAGSHIP_IDS = ["satbrain", "tux", "pocket-resume", "notebucket"] as const
 export function FlagshipFolders() {
   const studies = FLAGSHIP_IDS.map(pick);
   return (
-    <div className="pt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 lg:gap-4">
       {studies.map((study) => (
         <FlagshipFolder key={study.id} study={study} />
       ))}

@@ -113,7 +113,7 @@ export function FlagshipFolder({ study, className }: FlagshipFolderProps) {
       )}
     >
       {/* ── Folder visual area ── */}
-      <div className="relative aspect-[4/3] overflow-visible">
+      <div className="relative aspect-[8/3] overflow-visible">
         {/* Folder back — silhouette with tab + fold line */}
         <div className="absolute inset-0 z-0">
           <FolderBackShape className="w-full h-full drop-shadow-[0_3px_6px_rgba(0,0,0,0.3)]" />
@@ -153,7 +153,7 @@ export function FlagshipFolder({ study, className }: FlagshipFolderProps) {
             Extends well beyond folder bounds for a dominant visual. */}
         <div
           className={cn(
-            "absolute left-[clamp(-12px,-10%,0px)] right-[clamp(-12px,-10%,0px)] top-0 aspect-video z-20",
+            "absolute left-[clamp(-12px,-10%,0px)] right-[clamp(-12px,-10%,0px)] top-0 aspect-[8/3] z-20",
             "transition-all duration-[600ms] ease-out",
             isOpen
               ? "opacity-100 translate-y-0 scale-100"

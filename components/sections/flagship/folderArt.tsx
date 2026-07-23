@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { SatbrainAnimation } from "./FolderAnimations/SatbrainAnimation";
 import { TuxAnimation } from "./FolderAnimations/TuxAnimation";
 import { PocketResumeAnimation } from "./FolderAnimations/PocketResumeAnimation";
+import { NotebucketAnimation } from "./FolderAnimations/NotebucketAnimation";
 
 interface FolderArtProps {
   study: CaseStudy;
@@ -36,6 +37,7 @@ const ANIMATION_REGISTRY: Record<string, AnimationComponent> = {
   satbrain: SatbrainAnimation,
   tux: TuxAnimation,
   "pocket-resume": PocketResumeAnimation,
+  notebucket: NotebucketAnimation,
 };
 
 export function FolderArt({ study, className }: FolderArtProps) {
