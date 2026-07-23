@@ -231,13 +231,13 @@ export default function CaseStudyDetail({ params }: { params: Promise<{ slug: st
                          Screenshot Placeholder
                        </div>
                      ) : (
-                       <Image
-                         src={src}
-                         alt={`Screenshot ${i + 1}`}
-                         fill
-                         sizes="(max-width: 768px) 85vw, 600px"
-                         className="object-cover"
-                       />
+                     <Image
+                          src={src}
+                          alt={`Screenshot ${i + 1}`}
+                          fill
+                          sizes="(max-width: 768px) 85vw, 600px"
+                          className={project.carouselFit === "contain" ? "object-contain" : "object-cover"}
+                        />
                      )}
                   </div>
                 ))}

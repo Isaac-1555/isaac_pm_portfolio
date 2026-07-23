@@ -7,7 +7,7 @@ function pick(id: string): CaseStudy {
   return found;
 }
 
-const FLAGSHIP_IDS = ["satbrain", "tux", "pocket-resume"] as const;
+const FLAGSHIP_IDS = ["satbrain", "tux", "pocket-resume", "notebucket"] as const;
 
 export function FlagshipFolders() {
   const studies = FLAGSHIP_IDS.map(pick);

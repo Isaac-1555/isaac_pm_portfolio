@@ -2,6 +2,7 @@ import React from "react";
 import BrainCircuitIcon from "@/components/icons/brain-circuit-icon";
 import FileDescriptionIcon from "@/components/icons/file-description-icon";
 import TerminalIcon from "@/components/icons/terminal-icon";
+import BucketIcon from "@/components/icons/bucket-icon";
 import type { AnimatedIconProps } from "@/components/icons/types";
 
 export interface CaseStudy {
@@ -78,6 +79,8 @@ export interface CaseStudy {
   screenshots: string[]; // URLs
   imageWidth: number;
   imageHeight: number;
+  /** How carousel images fit: 'cover' (default, crops) or 'contain' (full frame) */
+  carouselFit?: "cover" | "contain";
 }
 
 export const caseStudies: CaseStudy[] = [
@@ -345,5 +348,144 @@ export const caseStudies: CaseStudy[] = [
     ],
     imageWidth: 2880,
     imageHeight: 1576
+  },
+  {
+    id: "notebucket",
+    title: "NoteBucket",
+    subtitle: "Local-first note organizer — BGE-small embeddings + llama.cpp classify notes into folders by semantic similarity. 100% offline.",
+    company: "Android App",
+    role: "Solo Developer",
+    timeline: "8 Days (Spike → v0.3.0)",
+    team: "Solo",
+    status: "Open Source (GitHub)",
+
+    context: "Note-taking apps either rely on cloud sync, require accounts, or use keyword-based folders. I wanted something that organizes notes by meaning — not by keywords — and runs entirely on-device with zero network calls.",
+
+    problem: {
+      statement: "Manual folder management breaks down at scale. Users either dump everything into one bucket or spend more time organizing than writing.",
+      importance: "Semantic routing removes the organizational friction entirely — you write, the app files.",
+      constraints: [
+        "Must run 100% offline — no cloud, no accounts, no analytics",
+        "On-device inference only (BGE-small via llama.cpp JNI)",
+        "Android arm64-v8a only (emulator not supported)",
+        "Model + app must fit in a reasonable APK size"
+      ]
+    },
+
+    goals: {
+      objectives: [
+        "Embed notes on-device and route to folders by cosine similarity",
+        "Semantic search with folder + date range filters",
+        "Crash-safe draft persistence",
+        "File/image attachments",
+        "Hidden folders + bulk operations"
+      ],
+      kpis: [
+        "Routing accuracy (correct folder assignment)",
+        "Inference latency per note",
+        "APK size with bundled model"
+      ]
+    },
+
+    research: {
+      methods: [
+        "Evaluated on-device embedding models: BGE-small (33M, 384-dim) vs MiniLM vs custom fine-tunes",
+        "Prototyped LLM-based classification first, replaced with embedding routing for speed + privacy",
+        "Tested cosine similarity thresholds against manual folder assignments"
+      ],
+      insights: [
+        "BGE-small gives 384-dim embeddings at ~33MB — small enough to bundle in APK, accurate enough for folder routing",
+        "LLM classification was too slow and privacy-violating for an offline-first app",
+        "Ambiguous notes (margin ≤ 0.03 between top-2 folders) need a disambiguation dialog, not a guess"
+      ]
+    },
+
+    approach: {
+      strategy: "Spike-first: prove BGE + llama.cpp JNI works on Android in day 1, then build the full app around it. Every feature is additive from the core embedding pipeline.",
+      frameworks: [
+        "Jetpack Compose + Material 3 (UI)",
+        "Room (persistence: folders, notes, drafts, attachments, embeddings as BLOB)",
+        "Hilt (DI)",
+        "WorkManager + ProcessLifecycleObserver (background draft commits)",
+        "Coil (image loading)",
+        "llama.cpp via NDK + CMake (inference runtime)"
+      ],
+      collaboration: "Solo. PRD-driven development — architecture decisions locked before code."
+    },
+
+    solution: {
+      description: "A standalone Android app where notes are embedded on-device (BGE-small-en-v1.5, 384-dim, L2-normalized), cosine-scored against folder name embeddings, and filed automatically. Ambiguous matches show a disambiguation dialog. Unmatched notes go to 'Unsorted'. Drafts persist to Room on every keystroke and auto-commit after 1 minute in background.",
+      features: [
+        "On-device note routing via BGE-small embeddings + cosine similarity",
+        "Semantic search with folder + date range filters (top-5 results)",
+        "Crash-safe drafts (persisted to Room, debounced 500ms, auto-commit on background)",
+        "File/image attachments (internal storage, Coil thumbnails)",
+        "Hidden folders + bulk move/delete",
+        "10 folder color options, rename, recolor",
+        "Settings: threshold slider, theme mode, model reload, storage stats"
+      ],
+      rationale: "Kotlin + Jetpack Compose for native Android feel. Room for structured persistence (embeddings stored as BLOB). llama.cpp via JNI for on-device inference — no cloud dependency. Hilt for DI. WorkManager for reliable background draft commits."
+    },
+
+    execution: {
+      roadmap: [
+        { label: "Day 1", description: "Spike: BGE-small + llama.cpp JNI scaffold on Android" },
+        { label: "Day 2", description: "Full app: pages, onboarding, Room persistence, folder/note CRUD" },
+        { label: "Days 3-4", description: "BGE routing, UI overhaul (dark mode, folder colors, notion-style editor)" },
+        { label: "Day 5", description: "Search with filters, note input UX, disambiguation dialog, bulk ops" },
+        { label: "Days 6-7", description: "Hidden folders, settings, UI polish, keyboard fixes" },
+        { label: "Day 8", description: "v0.3.0: onboarding flow, voice removal, MIT license" }
+      ],
+      challenges: [
+        "Replacing LLM classifier with BGE embedding routing mid-development required rewriting the core sort pipeline",
+        "JNI bridge between Kotlin and llama.cpp needed careful memory management for 384-dim float arrays",
+        "Draft auto-commit on background required ProcessLifecycleObserver + WorkManager coordination to avoid data loss",
+        "Disambiguation dialog when cosine margin ≤ 0.03 — too ambiguous to auto-route, too close to ignore"
+      ]
+    },
+
+    outcome: {
+      quantifiable: [
+        "20 commits across 8 days (spike → v0.3.0 release)",
+        "4 Room tables: folders, notes, drafts, attachments",
+        "33MB BGE model bundled in APK assets",
+        "Zero network permissions — fully offline"
+      ],
+      qualitative: [
+        "Notes route to the correct folder without manual organization",
+        "Semantic search finds notes by meaning, not keywords",
+        "Draft system is crash-safe — no lost work"
+      ]
+    },
+
+    learnings: {
+      takeaways: [
+        "Embedding-based routing is faster and more private than LLM classification for this use case",
+        "On-device ML is viable when you pick the right model size (33MB BGE-small, not a 7B LLM)",
+        "Ambiguity needs a UI solution (disambiguation dialog), not a higher threshold"
+      ],
+      nextSteps: [
+        "Export/import notes across devices",
+        "Widget for quick note capture",
+        "Tags system alongside folder routing",
+        "Folder embedding fine-tuning from user corrections"
+      ]
+    },
+
+    icon: BucketIcon,
+    gradient: "from-cyan-900 to-slate-900",
+    tags: ["Android", "On-Device AI", "Local-First"],
+    techStack: ["Kotlin", "Jetpack Compose", "Material 3", "Room", "Hilt", "llama.cpp", "BGE-small", "WorkManager", "Coil", "NDK/CMake"],
+    websiteUrl: "https://github.com/Isaac-1555/NoteBucket",
+    repoUrl: "https://github.com/Isaac-1555/NoteBucket",
+    screenshots: [
+      "/NoteBucket_Hero.png",
+      "/NoteBucket_Dashboard.jpeg",
+      "/NoteBucket_Editor.jpeg",
+      "/NoteBucket_Settings.jpeg"
+    ],
+    imageWidth: 1536,
+    imageHeight: 1024,
+    carouselFit: "contain"
   }
 ];

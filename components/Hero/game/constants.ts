@@ -154,6 +154,17 @@ export const GAME_PROJECTS: GameProject[] = [
     repoUrl: 'https://github.com/Isaac-1555/coachgg',
     color: COLORS.cta,
   },
+  {
+    id: 'notebucket',
+    title: 'NoteBucket',
+    subtitle: 'Local-First Note Organizer',
+    description:
+      'On-device BGE-small embeddings + llama.cpp classify notes into folders by semantic similarity. 100% offline.',
+    tags: ['Android', 'On-Device AI', 'Local-First'],
+    websiteUrl: '',
+    repoUrl: 'https://github.com/Isaac-1555/NoteBucket',
+    color: COLORS.tech,
+  },
 ];
 
 export function getWaveInterval(waveNumber: number): number {

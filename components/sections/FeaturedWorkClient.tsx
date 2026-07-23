@@ -12,8 +12,8 @@ import type { CaseStudy } from "@/app/case-studies/data";
 import { cn } from "@/lib/utils";
 
 interface FeaturedWorkClientProps {
-  studies: [CaseStudy, CaseStudy, CaseStudy];
-  missionIds: readonly [string, string, string];
+  studies: CaseStudy[];
+  missionIds: readonly string[];
 }
 
 const EASE = [0.4, 0, 0.2, 1] as const;
@@ -171,8 +171,8 @@ function DesktopAccordion({
   openIndex,
   onToggle,
 }: {
-  studies: [CaseStudy, CaseStudy, CaseStudy];
-  missionIds: readonly [string, string, string];
+  studies: CaseStudy[];
+  missionIds: readonly string[];
   openIndex: number | null;
   onToggle: (i: number) => void;
 }) {
@@ -268,8 +268,8 @@ function MobileAccordion({
   openIndex,
   onToggle,
 }: {
-  studies: [CaseStudy, CaseStudy, CaseStudy];
-  missionIds: readonly [string, string, string];
+  studies: CaseStudy[];
+  missionIds: readonly string[];
   openIndex: number | null;
   onToggle: (i: number) => void;
 }) {
@@ -346,7 +346,7 @@ function MobileRow({
               {study.title}
             </span>
             <span className="font-mono text-[10px] uppercase tracking-widest text-text-secondary">
-              {String(index + 1).padStart(2, "0")} / 03
+              {String(index + 1).padStart(2, "0")} / 04
             </span>
           </motion.button>
         )}
@@ -415,7 +415,7 @@ function OpenPanel({
           </div>
           <div className="flex items-center gap-2 shrink-0 pt-1">
             <span className="font-mono text-[10px] uppercase tracking-widest text-text-secondary">
-              {String(index + 1).padStart(2, "0")} / 03
+              {String(index + 1).padStart(2, "0")} / 04
             </span>
             <button
               type="button"

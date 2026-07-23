@@ -8,12 +8,13 @@ function pick(id: string): CaseStudy {
 }
 
 export function FeaturedWork() {
-  const studies: [CaseStudy, CaseStudy, CaseStudy] = [
+  const studies = [
     pick("satbrain"),
     pick("tux"),
     pick("pocket-resume"),
+    pick("notebucket"),
   ];
-  const missionIds = ["MSSN-01", "MSSN-02", "MSSN-03"] as const;
+  const missionIds = ["MSSN-01", "MSSN-02", "MSSN-03", "MSSN-04"] as const;
   return (
     <FeaturedWorkClient
       studies={studies}
