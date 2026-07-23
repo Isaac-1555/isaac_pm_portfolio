@@ -9,6 +9,18 @@ import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 
 const posts = [
   {
+    slug: "notebucket",
+    title: "NoteBucket: Lessons from Building an Offline-First Semantic Note Organizer",
+    subtitle:
+      "Why I built it, the all-night rabbit hole that went nowhere, the pivot that saved the project, the bug that taught me about edge cases, and what I'd do differently next time.",
+    date: "June 2026",
+    readTime: "9 min",
+    author: "Isaac",
+    tags: ["Android", "AI/ML", "Open Source", "Local-First"],
+    image: "/NoteBucket_Hero.png",
+    gradient: "from-cyan-900 to-slate-900",
+  },
+  {
     slug: "barcode-lists",
     title:
       "Barcode Lists: A Shared Workflow for Calgary Coop",
