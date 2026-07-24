@@ -49,6 +49,8 @@ export function FeaturedWorkClient({
   const isAnyOpen = openIndex !== null;
   const handleToggle = (i: number) =>
     setOpenIndex((cur) => (cur === i ? null : i));
+  const handleHover = (i: number) => setOpenIndex(i);
+  const handleLeave = () => setOpenIndex(null);
 
   return (
     <section
@@ -88,7 +90,10 @@ export function FeaturedWorkClient({
 
         <div className="flex-1 min-h-0 flex flex-col md:block">
           <div className="relative h-full w-full">
-            <div className="hidden md:block absolute inset-0">
+            <div
+              className="hidden md:block absolute inset-0"
+              onMouseLeave={handleLeave}
+            >
               {/* Background hints — fade out when a project opens */}
               <motion.span
                 initial={false}
@@ -96,7 +101,7 @@ export function FeaturedWorkClient({
                 transition={{ duration: 0.4, ease: EASE }}
                 className="absolute left-6 lg:left-10 top-1/2 -translate-y-1/2 font-mono text-[10px] uppercase tracking-widest text-text-secondary pointer-events-none select-none whitespace-nowrap z-0"
               >
-                Click to see project →
+                Hover to see project →
               </motion.span>
               <motion.span
                 initial={false}
@@ -104,13 +109,14 @@ export function FeaturedWorkClient({
                 transition={{ duration: 0.4, ease: EASE }}
                 className="absolute right-6 lg:right-10 top-1/2 -translate-y-1/2 font-mono text-[10px] uppercase tracking-widest text-text-secondary pointer-events-none select-none whitespace-nowrap z-0"
               >
-                ← Click to see project
+                ← Hover to see project
               </motion.span>
               <DesktopAccordion
                 studies={studies}
                 missionIds={missionIds}
                 openIndex={openIndex}
                 onToggle={handleToggle}
+                onHover={handleHover}
               />
             </div>
             <div className="md:hidden h-full relative">
@@ -170,11 +176,13 @@ function DesktopAccordion({
   missionIds,
   openIndex,
   onToggle,
+  onHover,
 }: {
   studies: CaseStudy[];
   missionIds: readonly string[];
   openIndex: number | null;
   onToggle: (i: number) => void;
+  onHover: (i: number) => void;
 }) {
   return (
     <div className="flex h-full w-full items-stretch justify-center gap-3">
@@ -186,6 +194,7 @@ function DesktopAccordion({
           index={i}
           isOpen={openIndex === i}
           onToggle={() => onToggle(i)}
+          onHover={() => onHover(i)}
         />
       ))}
     </div>
@@ -198,16 +207,19 @@ function DesktopColumn({
   index,
   isOpen,
   onToggle,
+  onHover,
 }: {
   study: CaseStudy;
   missionId: string;
   index: number;
   isOpen: boolean;
   onToggle: () => void;
+  onHover: () => void;
 }) {
   return (
     <motion.div
       layout
+      onMouseEnter={onHover}
       transition={{ layout: { duration: DUR, ease: EASE } }}
       style={{ willChange: "width, transform" }}
       className={cn(
