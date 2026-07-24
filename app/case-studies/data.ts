@@ -76,8 +76,12 @@ export interface CaseStudy {
   techStack: string[];
   websiteUrl: string;
   repoUrl: string;
-  /** Optional path to downloadable APK (placed in public/) */
+  /** Optional APK download URL (prefer GitHub Releases — not public/) */
   apkUrl?: string;
+  /** Human size label shown on download button, e.g. "43 MB" */
+  apkSizeLabel?: string;
+  /** Optional SHA-256 of the APK for verify-after-download */
+  apkSha256?: string;
   screenshots: string[]; // URLs
   imageWidth: number;
   imageHeight: number;
@@ -481,6 +485,8 @@ export const caseStudies: CaseStudy[] = [
     websiteUrl: "https://github.com/Isaac-1555/NoteBucket",
     repoUrl: "https://github.com/Isaac-1555/NoteBucket",
     apkUrl: "https://github.com/Isaac-1555/isaac_pm_portfolio/releases/download/notebucket-v0.3.0/notebucket.apk",
+    apkSizeLabel: "43 MB",
+    apkSha256: "78bd9e3edfb21438da12032d1cd243054574f12e1c7f67dfc1add833554b1c64",
     screenshots: [
       "/NoteBucket_Hero.png",
       "/NoteBucket_Dashboard.jpeg",

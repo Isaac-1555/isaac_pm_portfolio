@@ -358,14 +358,32 @@ export default function CaseStudyDetail({ params }: { params: Promise<{ slug: st
               </Link>
 
               {project.apkUrl && (
-                <Link href={project.apkUrl} download data-icon-hover-trigger className="block">
-                  <Button variant="outline" className="w-full gap-2 border-bg-dark text-bg-dark hover:bg-bg-dark hover:text-white">
-                    Download APK (109 MB)
-                    <IconHoverWrapper hoverTrigger="closest">
-                      <DownloadIcon size={16} />
-                    </IconHoverWrapper>
-                  </Button>
-                </Link>
+                <div className="space-y-2">
+                  <a
+                    href={project.apkUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-icon-hover-trigger
+                    className="block"
+                  >
+                    <Button variant="outline" className="w-full gap-2 border-bg-dark text-bg-dark hover:bg-bg-dark hover:text-white">
+                      Download APK{project.apkSizeLabel ? ` (${project.apkSizeLabel})` : ""}
+                      <IconHoverWrapper hoverTrigger="closest">
+                        <DownloadIcon size={16} />
+                      </IconHoverWrapper>
+                    </Button>
+                  </a>
+                  <p className="text-xs text-text-secondary leading-relaxed">
+                    Android 12+ · arm64 only · enable Install unknown apps.
+                    {project.apkSha256 && (
+                      <>
+                        {" "}
+                        SHA-256:{" "}
+                        <span className="font-mono break-all">{project.apkSha256.slice(0, 16)}…</span>
+                      </>
+                    )}
+                  </p>
+                </div>
               )}
             </div>
 

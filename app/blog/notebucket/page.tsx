@@ -136,18 +136,22 @@ export default function NoteBucketArticle() {
                     </IconHoverWrapper>
                   </Button>
                 </Link>
-                <Link
+                <a
                   href="https://github.com/Isaac-1555/isaac_pm_portfolio/releases/download/notebucket-v0.3.0/notebucket.apk"
-                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
                   data-icon-hover-trigger
                 >
                   <Button variant="secondary" className="w-full text-xs">
-                    Download APK (109 MB)
+                    Download APK (43 MB)
                     <IconHoverWrapper hoverTrigger="closest">
                       <DownloadIcon size={14} className="ml-2" />
                     </IconHoverWrapper>
                   </Button>
-                </Link>
+                </a>
+                <p className="text-[10px] text-text-secondary leading-snug">
+                  Android 12+ · arm64 only · Install unknown apps
+                </p>
               </div>
             </nav>
           </aside>
@@ -518,21 +522,22 @@ export default function NoteBucketArticle() {
                     </IconHoverWrapper>
                   </Button>
                 </Link>
-                <Link
+                <a
                   href="https://github.com/Isaac-1555/isaac_pm_portfolio/releases/download/notebucket-v0.3.0/notebucket.apk"
-                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
                   data-icon-hover-trigger
                 >
                   <Button
                     variant="outline"
                     className="text-white border-white/30 hover:bg-white/10"
                   >
-                    Download APK (109 MB)
+                    Download APK (43 MB)
                     <IconHoverWrapper hoverTrigger="closest">
                       <DownloadIcon size={16} className="ml-2" />
                     </IconHoverWrapper>
                   </Button>
-                </Link>
+                </a>
               </div>
               </div>
             </section>
