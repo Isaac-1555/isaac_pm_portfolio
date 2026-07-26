@@ -484,9 +484,9 @@ export const caseStudies: CaseStudy[] = [
     techStack: ["Kotlin", "Jetpack Compose", "Material 3", "Room", "Hilt", "llama.cpp", "BGE-small", "WorkManager", "Coil", "NDK/CMake"],
     websiteUrl: "https://github.com/Isaac-1555/NoteBucket",
     repoUrl: "https://github.com/Isaac-1555/NoteBucket",
-    apkUrl: "https://github.com/Isaac-1555/NoteBucket/releases/download/v0.3.1/app-release.apk",
-    apkSizeLabel: "43 MB",
-    apkSha256: "20508880d9f5ea854cfc344393c12e23ded21280d7b8db78fde7def6d946d05d",
+    apkUrl: "https://github.com/Isaac-1555/NoteBucket/releases/download/v0.3.2/app-release.apk",
+    apkSizeLabel: "41 MB",
+    apkSha256: "b280d28990c92cb17911d6eb80191531e95cc7d75ca2f0378bca1859924c157b",
     screenshots: [
       "/NoteBucket_Hero.png",
       "/NoteBucket_Dashboard.jpeg",

@@ -137,7 +137,7 @@ export default function NoteBucketArticle() {
                   </Button>
                 </Link>
                 <a
-                  href="https://github.com/Isaac-1555/NoteBucket/releases/download/v0.3.1/app-release.apk"
+                  href="https://github.com/Isaac-1555/NoteBucket/releases/download/v0.3.2/app-release.apk"
                   target="_blank"
                   rel="noopener noreferrer"
                   data-icon-hover-trigger
@@ -523,7 +523,7 @@ export default function NoteBucketArticle() {
                   </Button>
                 </Link>
                 <a
-                  href="https://github.com/Isaac-1555/NoteBucket/releases/download/v0.3.1/app-release.apk"
+                  href="https://github.com/Isaac-1555/NoteBucket/releases/download/v0.3.2/app-release.apk"
                   target="_blank"
                   rel="noopener noreferrer"
                   data-icon-hover-trigger
