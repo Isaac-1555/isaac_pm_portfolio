@@ -91,7 +91,7 @@ export default function HeroContent() {
           mediaType="image"
           triggerType="hover"
           alt="where"
-          className="inline-flex items-center align-middle"
+          className="hidden sm:inline-flex items-center align-middle"
           leftTextClassName="font-mono text-text-primary/80"
           rightTextClassName="font-mono text-text-primary/80"
           mediaContainerClassName="h-[2.25em] overflow-hidden mx-1"

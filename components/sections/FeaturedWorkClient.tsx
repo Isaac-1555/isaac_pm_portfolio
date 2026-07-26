@@ -62,7 +62,7 @@ export function FeaturedWorkClient({
       <div className="container mx-auto px-6 md:px-8 py-6 md:py-10 relative z-10 flex flex-col min-h-0 flex-1">
         <header className="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 md:mb-8 gap-4 shrink-0">
           <div>
-            <h2 className="font-mono text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium uppercase tracking-tight text-text-primary">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-industrial font-bold uppercase tracking-wide md:tracking-widest text-text-primary">
               Featured <AccentWord text="Works" />
             </h2>
             <p className="mt-2 text-xs md:text-sm font-mono text-text-secondary uppercase tracking-widest">
