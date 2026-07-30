@@ -5,6 +5,13 @@ import { FeaturedWork } from "@/components/sections/FeaturedWork";
 import { ProfileSummaryBackground } from "@/components/sections/ProfileSummaryBackground";
 import { ProfileSummaryStats } from "@/components/sections/ProfileSummaryStats";
 import { AccentWord } from "@/components/ui/AccentWord";
+import { ScrollPauseTrigger } from "@/components/scroll/ScrollPauseTrigger";
+import ScrambleIn from "@/components/fancy/scramble-in";
+import VerticalCutReveal from "@/components/fancy/vertical-cut-reveal";
+import LetterSwapPingPong from "@/components/fancy/letter-swap-pingpong";
+import ScrambleHover from "@/components/fancy/scramble-hover";
+import ComesInGoesOutUnderline from "@/components/fancy/underline-comes-in-goes-out";
+import Typewriter from "@/components/fancy/typewriter";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
@@ -26,7 +33,7 @@ export default function Home() {
 
       <section
         id="mission-home-about"
-        className="py-16 md:py-24 bg-bg-dark text-bg-base relative overflow-hidden"
+        className="min-h-[calc(100dvh-3.5rem)] md:min-h-[calc(100dvh-4rem)] flex items-center bg-bg-dark text-bg-base relative overflow-hidden"
       >
         <ProfileSummaryBackground />
         <div className="absolute inset-0 z-[1] bg-bg-dark/40 pointer-events-none" />
@@ -47,7 +54,46 @@ export default function Home() {
               variants={staggerItem}
               className="text-white leading-relaxed mb-8 max-w-lg font-sans text-sm md:text-base"
             >
-              I&apos;m a software developer and product builder who&apos;s always looking for a better way to do things. My mind gravitates toward inefficiencies, broken workflows, and the question of why something works the way it does. With 5+ years across software development, AI integration, and product management, I turn complex problems into tools that are faster, easier, and more intuitive for the people using them. I&apos;d rather build and test than explain and promise; I let the work speak for itself. And I&apos;ve learned that good problem-solving isn&apos;t just knowing what to build, it&apos;s knowing what&apos;s worth building.
+              I&apos;m a software developer and product builder who&apos;s always
+              looking for{" "}
+              <ScrambleIn
+                text="a better way"
+                className="text-white"
+                autoStart
+              />{" "}
+              to do things. My mind gravitates toward{" "}
+              <VerticalCutReveal
+                splitBy="words"
+                staggerDuration={0.15}
+                containerClassName="inline text-white"
+              >
+                inefficiencies, broken workflows
+              </VerticalCutReveal>
+              , and the question of why something works the way it does. With 5+
+              years across software development, AI integration, and product
+              management, I turn complex problems into tools that are{" "}
+              <LetterSwapPingPong label="faster, easier, and more intuitive" />
+              {" "}for the people using them. I&apos;d rather{" "}
+              <ScrambleHover
+                text="build and test"
+                sequential
+                revealDirection="start"
+              />{" "}
+              than{" "}
+              <ComesInGoesOutUnderline direction="left">
+                explain and promise
+              </ComesInGoesOutUnderline>
+              ; I let the work speak for itself. And I&apos;ve learned that good
+              problem-solving isn&apos;t just knowing what to build, it&apos;s
+              knowing{" "}
+              <Typewriter
+                text="what's worth building"
+                as="span"
+                loop={false}
+                showCursor={false}
+                initialDelay={2000}
+              />
+              .
             </motion.p>
             <motion.div variants={staggerItem}>
               <ProfileSummaryStats />
@@ -68,6 +114,7 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+      <ScrollPauseTrigger />
     </>
   );
 }
