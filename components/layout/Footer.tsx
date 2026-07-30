@@ -7,14 +7,14 @@ import { FooterParallax } from "@/components/layout/FooterParallax";
 
 export function Footer() {
   return (
-    <footer className="sticky bottom-0 z-0 w-full border-t-2 border-bg-base/20 bg-text-primary text-bg-base min-h-[60vh] md:min-h-[75vh] flex flex-col justify-between relative overflow-hidden">
+    <footer className="sticky bottom-0 z-0 w-full border-t-2 border-bg-base/20 bg-text-primary text-bg-base h-dvh flex flex-col justify-between relative overflow-hidden pb-[clamp(3rem,22vw,18rem)]">
       {/* Parallax SVG layer (clickable to toggle color) */}
       <FooterParallax />
 
       {/* Wordmark — solid cta fill, bottom half clipped by overflow-hidden */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 left-1/2 z-0 -translate-x-1/2 font-industrial font-black uppercase tracking-wide leading-none text-[length:12vw] md:text-[length:10vw] xl:text-[length:7vw] whitespace-nowrap text-cta/40 select-none"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-0 font-industrial font-black uppercase tracking-wide leading-none text-[length:clamp(2rem,11vw,14rem)] whitespace-nowrap text-center w-full text-cta/40 select-none"
       >
         LET&apos;S CONNECT
       </span>
@@ -23,7 +23,7 @@ export function Footer() {
       <div className="flex-none pt-12 md:pt-16" />
 
       {/* Middle: centered social row — container passes clicks through to SVG layer */}
-      <div className="container relative z-20 mx-auto px-6 md:px-8 flex-grow flex items-center justify-center pointer-events-none">
+      <div className="container relative z-20 mx-auto px-6 md:px-8 flex-grow flex items-center justify-center pt-[18vh] pointer-events-none">
         <ul className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 pointer-events-auto">
           <li>
             <Link
@@ -66,12 +66,7 @@ export function Footer() {
         </ul>
       </div>
 
-      {/* Bottom: Copyright */}
-      <div className="container relative z-20 mx-auto px-6 md:px-8 pb-10 md:pb-12 flex-none pointer-events-none">
-        <div className="pt-8 border-t border-bg-base/10 text-center text-xs text-text-secondary font-sans pointer-events-auto">
-          &copy; {new Date().getFullYear()} Isaac Daniel Sudakar. All rights reserved.
-        </div>
-      </div>
+      
     </footer>
   );
 }
