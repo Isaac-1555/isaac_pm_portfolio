@@ -15,7 +15,7 @@ export function ProfileSummaryStats() {
           key={stat.label}
           targetTextColor="#ffffff"
           underlineHeightRatio={0.08}
-          className="block pl-4"
+            className="block"
         >
           <div className="text-3xl md:text-4xl font-industrial font-bold text-white leading-none">
             {stat.value}

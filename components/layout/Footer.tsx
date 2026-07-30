@@ -14,7 +14,7 @@ export function Footer() {
       {/* Wordmark — solid cta fill, bottom half clipped by overflow-hidden */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 left-1/2 z-0 -translate-x-1/2 translate-y-[40%] font-industrial font-black uppercase tracking-wide leading-none text-[length:14vw] md:text-[length:12vw] whitespace-nowrap text-cta/40 select-none"
+        className="pointer-events-none absolute bottom-0 left-1/2 z-0 -translate-x-1/2 font-industrial font-black uppercase tracking-wide leading-none text-[length:12vw] md:text-[length:10vw] xl:text-[length:7vw] whitespace-nowrap text-cta/40 select-none"
       >
         LET&apos;S CONNECT
       </span>

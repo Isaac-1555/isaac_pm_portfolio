@@ -47,7 +47,7 @@ export default function Home() {
               variants={staggerItem}
               className="text-white leading-relaxed mb-8 max-w-lg font-sans text-sm md:text-base"
             >
-              With over 5 years of experience in software development, AI integration, and product management, I specialize in transforming ambiguous problems into scalable, AI-powered solutions. My approach pairs rigorous data analysis with intuitive design, shipping systems that work in production and feel obvious to the people using them.
+              I&apos;m a software developer and product builder who&apos;s always looking for a better way to do things. My mind gravitates toward inefficiencies, broken workflows, and the question of why something works the way it does. With 5+ years across software development, AI integration, and product management, I turn complex problems into tools that are faster, easier, and more intuitive for the people using them. I&apos;d rather build and test than explain and promise; I let the work speak for itself. And I&apos;ve learned that good problem-solving isn&apos;t just knowing what to build, it&apos;s knowing what&apos;s worth building.
             </motion.p>
             <motion.div variants={staggerItem}>
               <ProfileSummaryStats />
