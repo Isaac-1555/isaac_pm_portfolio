@@ -20,6 +20,8 @@ import {
   staggerItemFast,
   useRevealMotion,
 } from "@/lib/motion";
+import { ScrambleIn } from "@/components/fancy/text/scramble-in";
+import { TextHighlighter } from "@/components/fancy/text/text-highlighter";
 
 const skills = [
   { 
@@ -119,13 +121,25 @@ export default function AboutPage() {
             variants={staggerItem}
             className="text-xl text-text-secondary leading-relaxed"
           >
-            Software Developer and Product Manager with 5+ years of experience designing, building, and shipping AI-enhanced, workflow-heavy B2B software products from discovery through launch and iteration.
+            <ScrambleIn
+              text="I have a simple rule: if it's boring to do, a computer should do it."
+              scrambleSpeed={30}
+              scrambledLetterCount={3}
+              className="text-text-primary font-semibold"
+              scrambledClassName="text-cta/40"
+            />
           </motion.p>
           <motion.p
             variants={staggerItem}
             className="text-lg text-text-secondary leading-relaxed mt-4"
           >
-            Strong background in full-stack development, AI tooling integration, customer research, and cross-functional execution across engineering, design, and business stakeholders. Proven ability to translate complex operational workflows into scalable product solutions, define success metrics, and continuously improve adoption and outcomes.
+            I&apos;m a software developer and product manager who likes <TextHighlighter highlightColor="hsla(1, 85%, 65%, 0.7)" highlightTextColor="#2B3233" direction="ltr">digging into messy problems</TextHighlighter>, understanding how people actually work, and turning &quot;there has to be a better way&quot; moments into products people love using.
+          </motion.p>
+          <motion.p
+            variants={staggerItem}
+            className="text-lg text-text-secondary leading-relaxed mt-4"
+          >
+            No matter the industry, the problem is usually the same: people are <TextHighlighter highlightColor="hsla(1, 85%, 65%, 0.7)" highlightTextColor="#2B3233" direction="ltr">stuck doing things the hard way</TextHighlighter>. My work has always revolved around finding those moments, understanding why they exist, and building solutions that make work faster, simpler, and more enjoyable. I&apos;ve been able to move between engineering, product, and business teams because I enjoy <TextHighlighter highlightColor="hsla(1, 85%, 65%, 0.7)" highlightTextColor="#2B3233" direction="ltr">speaking both languages</TextHighlighter>: the technical details and the human side of the problem. I&apos;m at my best when I&apos;m collaborating with people, earning their trust, and <TextHighlighter highlightColor="hsla(1, 85%, 65%, 0.7)" highlightTextColor="#2B3233" direction="ltr">turning messy ideas into something teams can actually use</TextHighlighter>.
           </motion.p>
           <motion.div variants={staggerItem} className="mt-8">
             <Link href="/Isaac_Daniel_Sudakar_Resume.pdf" download target="_blank" data-icon-hover-trigger>
