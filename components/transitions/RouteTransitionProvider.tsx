@@ -4,29 +4,27 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useReducedMotion } from "framer-motion";
-import { MosaicOverlay } from "./MosaicOverlay";
+import { DissolveOverlay } from "./DissolveOverlay";
 import type {
-  MosaicAnimationHandle,
-  MosaicOverlayOptions,
-  MosaicOrigin,
-} from "./MosaicOverlay";
+  DissolveAnimationHandle,
+  DissolveOverlayOptions,
+} from "./DissolveOverlay";
 
 export type RouteTransitionOptions = Readonly<{
-  mosaic?: MosaicOverlayOptions;
+  dissolve?: DissolveOverlayOptions;
   settleDelay?: number;
 }>;
 
-const DEFAULT_MOSAIC: MosaicOverlayOptions = {
-  columns: 7,
-  rows: 5,
-  duration: 340,
-  stagger: 520,
-  rotation: 9,
-  origin: "center",
+const DEFAULT_DISSOLVE: DissolveOverlayOptions = {
+  duration: 680,
+  grainSize: 7,
+  softness: 0.12,
 };
 
-function normalizeMosaic(options?: MosaicOverlayOptions): MosaicOverlayOptions {
-  return { ...DEFAULT_MOSAIC, ...(options ?? {}) };
+function normalizeDissolve(
+  options?: DissolveOverlayOptions,
+): DissolveOverlayOptions {
+  return { ...DEFAULT_DISSOLVE, ...(options ?? {}) };
 }
 
 function isModifiedClick(event: MouseEvent): boolean {
@@ -39,8 +37,6 @@ function isModifiedClick(event: MouseEvent): boolean {
   );
 }
 
-type ClickPosition = Readonly<{ x: number; y: number }>;
-
 export function RouteTransitionProvider({
   children,
   options,
@@ -52,21 +48,17 @@ export function RouteTransitionProvider({
   const pathname = usePathname();
   const reducedMotion = useReducedMotion() ?? false;
 
-  const mosaicOptions = normalizeMosaic(options?.mosaic);
-  const origin = (mosaicOptions.origin as MosaicOrigin | undefined) ?? "center";
+  const dissolveOptions = normalizeDissolve(options?.dissolve);
   const settleDelay = options?.settleDelay ?? 200;
 
-  const overlayRef = useRef<MosaicAnimationHandle | null>(null);
-  const [overlay, setOverlay] = useState<{
-    key: number;
-    clickPosition?: ClickPosition;
-  } | null>(null);
+  const overlayRef = useRef<DissolveAnimationHandle | null>(null);
+  const [overlay, setOverlay] = useState<{ key: number } | null>(null);
   const pendingTargetRef = useRef<string | null>(null);
   const originalPathnameRef = useRef<string | null>(null);
   const runningRef = useRef(false);
 
   const runTransition = useCallback(
-    (destination: string, clickPosition?: ClickPosition) => {
+    (destination: string) => {
       if (runningRef.current) {
         return;
       }
@@ -80,44 +72,18 @@ export function RouteTransitionProvider({
 
       originalPathnameRef.current = pathname;
       pendingTargetRef.current = destination;
-      setOverlay({ key: Date.now(), clickPosition });
+      setOverlay({ key: Date.now() });
     },
     [reducedMotion, router, pathname],
   );
 
-  useEffect(() => {
-    if (!overlay) {
-      return;
-    }
-
+  const handleCovered = useCallback(() => {
     const destination = pendingTargetRef.current;
     if (!destination) {
       return;
     }
-
-    let cancelled = false;
-
-    const commit = async () => {
-      try {
-        await overlayRef.current?.cover();
-        if (cancelled || pendingTargetRef.current !== destination) {
-          return;
-        }
-        router.push(destination);
-      } catch {
-        if (!cancelled) {
-          setOverlay(null);
-          runningRef.current = false;
-        }
-      }
-    };
-
-    void commit();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [overlay, router]);
+    router.push(destination);
+  }, [router]);
 
   useEffect(() => {
     if (!overlay || !pendingTargetRef.current) {
@@ -125,8 +91,9 @@ export function RouteTransitionProvider({
     }
 
     const target = new URL(pendingTargetRef.current, window.location.href);
+    const destination = target.pathname + target.search + target.hash;
 
-    if (pathname !== originalPathnameRef.current && pathname !== target.pathname) {
+    if (pathname !== originalPathnameRef.current && pathname !== destination) {
       pendingTargetRef.current = null;
       originalPathnameRef.current = null;
       queueMicrotask(() => {
@@ -136,7 +103,7 @@ export function RouteTransitionProvider({
       return;
     }
 
-    if (pathname !== target.pathname) {
+    if (pathname !== destination) {
       return;
     }
 
@@ -208,7 +175,7 @@ export function RouteTransitionProvider({
       }
 
       event.preventDefault();
-      runTransition(destination, { x: event.clientX, y: event.clientY });
+      runTransition(destination);
     };
 
     document.addEventListener("click", handleClick, true);
@@ -219,11 +186,11 @@ export function RouteTransitionProvider({
     <>
       {children}
       {overlay && (
-        <MosaicOverlay
+        <DissolveOverlay
           key={overlay.key}
           ref={overlayRef}
-          options={{ ...mosaicOptions, origin }}
-          clickPosition={origin === "cursor" ? overlay.clickPosition : undefined}
+          options={dissolveOptions}
+          onCovered={handleCovered}
         />
       )}
     </>
