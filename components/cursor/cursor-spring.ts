@@ -2,13 +2,22 @@ export function createSpring(initial: number, stiffness: number, damping: number
   let pos = initial;
   let vel = 0;
 
+  const MAX_STABLE_DT = 0.016;
+
   return {
     update(target: number, dt: number): number {
-      const fSpring = -stiffness * (pos - target);
-      const fDamp = -damping * vel;
-      const acc = (fSpring + fDamp) / mass;
-      vel += acc * dt;
-      pos += vel * dt;
+      if (dt <= 0) return pos;
+
+      const steps = Math.max(1, Math.ceil(dt / MAX_STABLE_DT));
+      const stepDt = dt / steps;
+
+      for (let i = 0; i < steps; i++) {
+        const fSpring = -stiffness * (pos - target);
+        const fDamp = -damping * vel;
+        const acc = (fSpring + fDamp) / mass;
+        vel += acc * stepDt;
+        pos += vel * stepDt;
+      }
       return pos;
     },
     snap(value: number) {

@@ -9,7 +9,7 @@ const stats = [
 
 export function ProfileSummaryStats() {
   return (
-    <div className="grid grid-cols-2 gap-6 mb-8">
+    <div className="grid grid-cols-2 gap-6">
       {stats.map((stat) => (
         <UnderlineToBackground
           key={stat.label}

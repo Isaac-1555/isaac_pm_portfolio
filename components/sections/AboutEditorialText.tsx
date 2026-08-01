@@ -16,7 +16,7 @@ const OBSTACLE_RADIUS = 48;
 const OBSTACLE_HPAD = 10;
 const OBSTACLE_VPAD = 4;
 const MIN_SLOT_WIDTH = 50;
-const LINE_HEIGHT_RATIO = 1.625;
+const LINE_HEIGHT_RATIO = 1.82;
 
 type Interval = { left: number; right: number };
 
@@ -78,9 +78,10 @@ function layoutLines(
   regionH: number,
   lineHeight: number,
   obstacle: CircleObstacle,
+  topPad: number,
 ): PositionedLine[] {
   let cursor: LayoutCursor = { segmentIndex: 0, graphemeIndex: 0 };
-  let lineTop = 0;
+  let lineTop = topPad;
   const lines: PositionedLine[] = [];
   let textExhausted = false;
 
@@ -288,7 +289,7 @@ export function AboutEditorialText() {
           hPad: OBSTACLE_HPAD,
           vPad: OBSTACLE_VPAD,
         };
-        const lines = layoutLines(prepared, width, regionH, lineHeight, obstacle);
+        const lines = layoutLines(prepared, width, regionH, lineHeight, obstacle, HEADROOM / 2);
         if (!positionedLinesEqual(prevLines, lines)) {
           syncSpans(lines);
           prevLines = lines;
@@ -317,9 +318,9 @@ export function AboutEditorialText() {
     <div
       ref={wrapperRef}
       data-cursor-wrap
-      className="relative max-w-lg text-white font-sans leading-relaxed text-sm md:text-base"
+      className="relative max-w-lg text-white font-sans leading-[1.82] text-sm md:text-base"
     >
-      {ready ? null : <p className="leading-relaxed text-sm md:text-base">{ABOUT_TEXT}</p>}
+      {ready ? null : <p className="leading-[1.82] text-sm md:text-base">{ABOUT_TEXT}</p>}
       <div ref={stageRef} className="absolute inset-0 pointer-events-none" />
     </div>
   );

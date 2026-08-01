@@ -41,7 +41,7 @@ export default function Home() {
           >
             <motion.h2
               variants={staggerItem}
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-industrial font-bold uppercase tracking-wide md:tracking-widest text-white mb-6"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-industrial font-bold uppercase tracking-wide md:tracking-widest text-white mb-12"
             >
               About <AccentWord text="Me" />
             </motion.h2>
