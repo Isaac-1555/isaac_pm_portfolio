@@ -1,4 +1,4 @@
-export type CursorVariant = 'default' | 'button' | 'spotlight' | 'disabled' | 'loading';
+export type CursorVariant = 'default' | 'button' | 'spotlight' | 'disabled' | 'loading' | 'wrap';
 
 export interface CursorTargetInfo {
   rect: DOMRect;

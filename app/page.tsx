@@ -4,14 +4,9 @@ import { Hero } from "@/components/Hero/Hero";
 import { FeaturedWork } from "@/components/sections/FeaturedWork";
 import { ProfileSummaryBackground } from "@/components/sections/ProfileSummaryBackground";
 import { ProfileSummaryStats } from "@/components/sections/ProfileSummaryStats";
+import { AboutEditorialText } from "@/components/sections/AboutEditorialText";
 import { AccentWord } from "@/components/ui/AccentWord";
 import { ScrollPauseTrigger } from "@/components/scroll/ScrollPauseTrigger";
-import ScrambleIn from "@/components/fancy/scramble-in";
-import VerticalCutReveal from "@/components/fancy/vertical-cut-reveal";
-import LetterSwapPingPong from "@/components/fancy/letter-swap-pingpong";
-import ScrambleHover from "@/components/fancy/scramble-hover";
-import ComesInGoesOutUnderline from "@/components/fancy/underline-comes-in-goes-out";
-import Typewriter from "@/components/fancy/typewriter";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
@@ -50,51 +45,12 @@ export default function Home() {
             >
               About <AccentWord text="Me" />
             </motion.h2>
-            <motion.p
+            <motion.div
               variants={staggerItem}
               className="text-white leading-relaxed mb-8 max-w-lg font-sans text-sm md:text-base"
             >
-              I&apos;m a software developer and product builder who&apos;s always
-              looking for{" "}
-              <ScrambleIn
-                text="a better way"
-                className="text-white"
-                autoStart
-              />{" "}
-              to do things. My mind gravitates toward{" "}
-              <VerticalCutReveal
-                splitBy="words"
-                staggerDuration={0.15}
-                containerClassName="inline text-white"
-              >
-                inefficiencies, broken workflows
-              </VerticalCutReveal>
-              , and the question of why something works the way it does. With 5+
-              years across software development, AI integration, and product
-              management, I turn complex problems into tools that are{" "}
-              <LetterSwapPingPong label="faster, easier, and more intuitive" />
-              {" "}for the people using them. I&apos;d rather{" "}
-              <ScrambleHover
-                text="build and test"
-                sequential
-                revealDirection="start"
-              />{" "}
-              than{" "}
-              <ComesInGoesOutUnderline direction="left">
-                explain and promise
-              </ComesInGoesOutUnderline>
-              ; I let the work speak for itself. And I&apos;ve learned that good
-              problem-solving isn&apos;t just knowing what to build, it&apos;s
-              knowing{" "}
-              <Typewriter
-                text="what's worth building"
-                as="span"
-                loop={false}
-                showCursor={false}
-                initialDelay={2000}
-              />
-              .
-            </motion.p>
+              <AboutEditorialText />
+            </motion.div>
             <motion.div variants={staggerItem}>
               <ProfileSummaryStats />
             </motion.div>

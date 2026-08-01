@@ -251,7 +251,7 @@ export function CursorProvider({ children }: Props) {
 
     const handleMouseOver = (e: MouseEvent) => {
       const el = (e.target as Element).closest(
-        "[data-cursor-target], [data-cursor-spotlight]"
+        "[data-cursor-target], [data-cursor-spotlight], [data-cursor-wrap]"
       );
       if (!el) return;
       if (el === enteredRef.current) return;
@@ -259,6 +259,7 @@ export function CursorProvider({ children }: Props) {
       enteredRef.current = el;
 
       const isSpotlight = el.hasAttribute("data-cursor-spotlight");
+      const isWrap = el.hasAttribute("data-cursor-wrap");
       const isLoading = el.hasAttribute("data-cursor-loading");
       const isDisabled =
         el.hasAttribute("disabled") || el.getAttribute("aria-disabled") === "true";
@@ -276,6 +277,11 @@ export function CursorProvider({ children }: Props) {
       if (isSpotlight) {
         setVariant("spotlight");
         setTargetRect(el.getBoundingClientRect());
+        return;
+      }
+      if (isWrap) {
+        setVariant("wrap");
+        setTargetRect(null);
         return;
       }
       setVariant("button");

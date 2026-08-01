@@ -74,6 +74,8 @@ export function Cursor() {
         >
           {variant === "spotlight" ? (
             <div className="w-[100px] h-[100px] rounded-full -translate-x-1/2 -translate-y-1/2 bg-white/10 shadow-[0_0_40px_rgba(255,255,255,0.12)]" />
+          ) : variant === "wrap" ? (
+            <div className="w-[96px] h-[96px] rounded-full -translate-x-1/2 -translate-y-1/2 border border-white/70" />
           ) : variant === "loading" ? (
             <div
               className="w-[30px] h-[30px] rounded-full -translate-x-1/2 -translate-y-1/2 border-2 border-transparent border-t-white animate-spin"
