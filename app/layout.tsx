@@ -8,6 +8,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { CursorProvider } from "@/components/cursor/cursor-context";
 import { Cursor } from "@/components/cursor/Cursor";
 import { LenisProvider } from "@/components/scroll/LenisProvider";
+import { TabTitleManager } from "@/components/layout/TabTitleManager";
 
 const orbitron = Orbitron({
   subsets: ["latin"],
@@ -81,6 +82,7 @@ export default function RootLayout({
         <CursorProvider>
           <LenisProvider>
             <Header />
+            <TabTitleManager />
             <main className="relative z-10 flex-grow min-h-[100vh] bg-bg-base">
               {children}
             </main>
