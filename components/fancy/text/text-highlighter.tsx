@@ -123,10 +123,8 @@ export const TextHighlighter = forwardRef<
       backgroundImage: `linear-gradient(${highlightColor}, ${highlightColor})`,
       backgroundRepeat: "no-repeat",
       backgroundPosition: backgroundPosition,
-      backgroundSize: animatedSize,
       boxDecorationBreak: "clone",
       WebkitBoxDecorationBreak: "clone",
-      ...(highlightTextColor ? { color: shouldAnimate ? highlightTextColor : "currentColor" } : {}),
     } as React.CSSProperties
 
     return (
