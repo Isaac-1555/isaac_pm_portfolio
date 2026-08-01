@@ -5,7 +5,6 @@ import { motion, type MotionProps } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import Image from "next/image";
 import ArrowBackIcon from "@/components/icons/arrow-back-icon";
 import ExternalLinkIcon from "@/components/icons/external-link-icon";
 import GithubIcon from "@/components/icons/github-icon";
@@ -26,6 +25,7 @@ import { caseStudies } from "../data";
 import { notFound } from "next/navigation";
 import type { AnimatedIconProps } from "@/components/icons/types";
 import { TechPillField } from "@/components/case-study/TechPillField";
+import { ScreenshotGrid } from "@/components/image/ScreenshotGrid";
 import { revealProps, useRevealMotion } from "@/lib/motion";
 
 function SectionHeader({ icon: Icon, title }: { icon: React.ComponentType<AnimatedIconProps>, title: string }) {
@@ -220,29 +220,18 @@ export default function CaseStudyDetail({ params }: { params: Promise<{ slug: st
               ))}
             </div>
 
-            {/* Simple CSS Scroll Snap Carousel for Screenshots */}
+            {/* App Visuals — grid + lightbox (no horizontal scroll) */}
             <div className="my-12">
               <h3 className="font-industrial uppercase tracking-wide text-sm text-text-secondary mb-4">App Visuals</h3>
-              <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-cta scrollbar-track-bg-dark">
-                {project.screenshots.map((src, i) => (
-                  <div key={i} className="snap-center shrink-0 w-[85vw] md:w-[600px] aspect-video bg-bg-dark/50 rounded-sm border border-divider flex items-center justify-center relative overflow-hidden group">
-                     {src.includes('placeholder') ? (
-                       <div className="text-text-secondary font-industrial uppercase tracking-widest text-center p-4">
-                         <span className="block text-4xl mb-2 opacity-20">{i + 1}</span>
-                         Screenshot Placeholder
-                       </div>
-                     ) : (
-                     <Image
-                          src={src}
-                          alt={`Screenshot ${i + 1}`}
-                          fill
-                          sizes="(max-width: 768px) 85vw, 600px"
-                          className={project.carouselFit === "contain" ? "object-contain" : "object-cover"}
-                        />
-                     )}
-                  </div>
-                ))}
-              </div>
+              <ScreenshotGrid
+                items={project.screenshots.map((src, i) => ({
+                  src,
+                  alt: `Screenshot ${i + 1}`,
+                }))}
+                aspect={`${project.imageWidth} / ${project.imageHeight}`}
+                fit={project.carouselFit}
+                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 600px"
+              />
             </div>
 
             <div className="bg-bg-accent/10 p-6 rounded-sm border-l-2 border-gold">

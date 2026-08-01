@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { GalleryProvider, Figure } from "@/components/image/gallery-context";
 import ArrowBackIcon from "@/components/icons/arrow-back-icon";
 import ClockIcon from "@/components/icons/clock-icon";
 import UserIcon from "@/components/icons/user-icon";
@@ -138,7 +138,8 @@ const FIXES = [
 
 export default function BarcodeListsArticle() {
   return (
-    <article className="pb-24">
+    <GalleryProvider>
+      <article className="pb-24">
       <header className="relative w-full bg-gradient-to-br from-slate-800 to-slate-950 overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10" />
 
@@ -285,22 +286,13 @@ export default function BarcodeListsArticle() {
               </p>
             </section>
 
-            <figure className="my-12 -mx-4 md:mx-0">
-              <div className="relative w-full aspect-video rounded-sm overflow-hidden border-2 border-bg-dark bg-bg-dark shadow-lg">
-                <Image
-                  src="/BarcodeLists_1.png"
-                  alt="Barcode Lists popup showing a saved list of barcodes with action buttons"
-                  fill
-                  sizes="(max-width: 768px) 92vw, 800px"
-                  className="object-contain"
-                  priority
-                />
-              </div>
-              <figcaption className="text-xs text-text-secondary font-tech uppercase tracking-widest mt-3 text-center">
-                Fig 1 — Barcode Lists popup. Lists on the left, barcodes on the
-                right, AI extraction button at the bottom.
-              </figcaption>
-            </figure>
+            <Figure
+              src="/BarcodeLists_1.png"
+              alt="Barcode Lists popup showing a saved list of barcodes with action buttons"
+              caption="Fig 1 — Barcode Lists popup. Lists on the left, barcodes on the right, AI extraction button at the bottom."
+              priority
+              sizes="(max-width: 768px) 92vw, 800px"
+            />
 
             <section id="why" className="mb-16 scroll-mt-24">
               <SectionHeading icon={BulbSvg} title="Why I Built It" />
@@ -431,21 +423,12 @@ export default function BarcodeListsArticle() {
                 />
               </div>
 
-              <figure className="my-12 -mx-4 md:mx-0">
-                <div className="relative w-full aspect-video rounded-sm overflow-hidden border-2 border-bg-dark bg-bg-dark shadow-lg">
-                  <Image
-                    src="/BarcodeLists_2.png"
-                    alt="Barcode Lists showing a list with important indicator, status states, and action buttons"
-                    fill
-                    sizes="(max-width: 768px) 92vw, 800px"
-                    className="object-contain"
-                  />
-                </div>
-                <figcaption className="text-xs text-text-secondary font-tech uppercase tracking-widest mt-3 text-center">
-                  Fig 2 — A list with the &quot;important&quot; glow, opened
-                  status, and copy action visible.
-                </figcaption>
-              </figure>
+              <Figure
+                src="/BarcodeLists_2.png"
+                alt="Barcode Lists showing a list with important indicator, status states, and action buttons"
+                caption="Fig 2 — A list with the &quot;important&quot; glow, opened status, and copy action visible."
+                sizes="(max-width: 768px) 92vw, 800px"
+              />
             </section>
 
             <section id="bugs" className="mb-16 scroll-mt-24">
@@ -615,6 +598,7 @@ export default function BarcodeListsArticle() {
         </div>
       </div>
     </article>
+    </GalleryProvider>
   );
 }
 

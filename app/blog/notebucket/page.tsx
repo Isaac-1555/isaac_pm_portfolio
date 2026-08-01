@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { GalleryProvider, Figure } from "@/components/image/gallery-context";
 import ArrowBackIcon from "@/components/icons/arrow-back-icon";
 import RightChevron from "@/components/icons/right-chevron";
 import ClockIcon from "@/components/icons/clock-icon";
@@ -35,7 +35,8 @@ const TOC = [
 
 export default function NoteBucketArticle() {
   return (
-    <article className="pb-24">
+    <GalleryProvider>
+      <article className="pb-24">
       <header className="relative w-full bg-gradient-to-br from-cyan-900 to-slate-900 overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10" />
 
@@ -207,21 +208,12 @@ export default function NoteBucketArticle() {
               </PullQuote>
             </section>
 
-            <figure className="my-12 -mx-4 md:mx-0">
-              <div className="relative w-full aspect-video rounded-sm overflow-hidden border-2 border-bg-dark bg-bg-dark shadow-lg">
-                <Image
-                  src="/NoteBucket_Hero.png"
-                  alt="NoteBucket hero screen showing the main interface"
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              </div>
-              <figcaption className="text-xs text-text-secondary font-tech uppercase tracking-widest mt-3 text-center">
-                NoteBucket&apos;s main interface — a bucket that routes notes
-                into folders by meaning.
-              </figcaption>
-            </figure>
+            <Figure
+              src="/NoteBucket_Hero.png"
+              alt="NoteBucket hero screen showing the main interface"
+              caption="NoteBucket's main interface — a bucket that routes notes into folders by meaning."
+              priority
+            />
 
             <section id="wrong-path" className="mb-16 scroll-mt-24">
               <SectionHeading icon={TriangleAlertIcon} title="The Wrong Path" />
@@ -264,20 +256,11 @@ export default function NoteBucketArticle() {
               </p>
             </section>
 
-            <figure className="my-12 -mx-4 md:mx-0">
-              <div className="relative w-full aspect-video rounded-sm overflow-hidden border-2 border-bg-dark bg-bg-dark shadow-lg">
-                <Image
-                  src="/NoteBucket_Dashboard.jpeg"
-                  alt="NoteBucket dashboard showing folder grid with color-coded labels"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <figcaption className="text-xs text-text-secondary font-tech uppercase tracking-widest mt-3 text-center">
-                User-defined folders with color coding — the model routes notes
-                by similarity to folder names.
-              </figcaption>
-            </figure>
+            <Figure
+              src="/NoteBucket_Dashboard.jpeg"
+              alt="NoteBucket dashboard showing folder grid with color-coded labels"
+              caption="User-defined folders with color coding — the model routes notes by similarity to folder names."
+            />
 
             <section id="pivot" className="mb-16 scroll-mt-24">
               <SectionHeading icon={GearIcon} title="The Pivot" />
@@ -397,20 +380,11 @@ export default function NoteBucketArticle() {
               </PullQuote>
             </section>
 
-            <figure className="my-12 -mx-4 md:mx-0">
-              <div className="relative w-full aspect-video rounded-sm overflow-hidden border-2 border-bg-dark bg-bg-dark shadow-lg">
-                <Image
-                  src="/NoteBucket_Editor.jpeg"
-                  alt="NoteBucket editor screen with notion-style formatting"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <figcaption className="text-xs text-text-secondary font-tech uppercase tracking-widest mt-3 text-center">
-                The note editor with notion-style formatting and crash-safe
-                draft persistence.
-              </figcaption>
-            </figure>
+            <Figure
+              src="/NoteBucket_Editor.jpeg"
+              alt="NoteBucket editor screen with notion-style formatting"
+              caption="The note editor with notion-style formatting and crash-safe draft persistence."
+            />
 
             <section id="future" className="mb-16 scroll-mt-24">
               <SectionHeading icon={ChartLineIcon} title="Room to Grow" />
@@ -558,6 +532,7 @@ export default function NoteBucketArticle() {
         </div>
       </div>
     </article>
+    </GalleryProvider>
   );
 }
 

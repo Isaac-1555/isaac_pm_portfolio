@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { GalleryProvider, Figure } from "@/components/image/gallery-context";
 import ArrowBackIcon from "@/components/icons/arrow-back-icon";
 import RightChevron from "@/components/icons/right-chevron";
 import ClockIcon from "@/components/icons/clock-icon";
@@ -35,7 +35,8 @@ const TOC = [
 
 export default function D4CArticle() {
   return (
-    <article className="pb-24">
+    <GalleryProvider>
+      <article className="pb-24">
       <header className="relative w-full bg-gradient-to-br from-indigo-900 to-purple-900 overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10" />
 
@@ -209,21 +210,12 @@ export default function D4CArticle() {
               </PullQuote>
             </section>
 
-            <figure className="my-12 -mx-4 md:mx-0">
-              <div className="relative w-full aspect-video rounded-sm overflow-hidden border-2 border-bg-dark bg-bg-dark shadow-lg">
-                <Image
-                  src="/D4C_PlanMode.png"
-                  alt="D4C plan mode showing structured task breakdown and execution plan"
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              </div>
-              <figcaption className="text-xs text-text-secondary font-tech uppercase tracking-widest mt-3 text-center">
-                Fig 1 — D4C plan mode: structured task breakdown before any code
-                is written.
-              </figcaption>
-            </figure>
+            <Figure
+              src="/D4C_PlanMode.png"
+              alt="D4C plan mode showing structured task breakdown and execution plan"
+              caption="Fig 1 — D4C plan mode: structured task breakdown before any code is written."
+              priority
+            />
 
             <section id="features" className="mb-16 scroll-mt-24">
               <SectionHeading icon={SparklesIcon} title="Key Features" />
@@ -292,20 +284,11 @@ export default function D4CArticle() {
               </div>
             </section>
 
-            <figure className="my-12 -mx-4 md:mx-0">
-              <div className="relative w-full aspect-video rounded-sm overflow-hidden border-2 border-bg-dark bg-bg-dark shadow-lg">
-                <Image
-                  src="/D4C_BuildMode.png"
-                  alt="D4C build mode executing a planned implementation step by step"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <figcaption className="text-xs text-text-secondary font-tech uppercase tracking-widest mt-3 text-center">
-                Fig 2 — Build mode in action: executing each step from the plan
-                with progress tracking.
-              </figcaption>
-            </figure>
+            <Figure
+              src="/D4C_BuildMode.png"
+              alt="D4C build mode executing a planned implementation step by step"
+              caption="Fig 2 — Build mode in action: executing each step from the plan with progress tracking."
+            />
 
             <section id="setup" className="mb-16 scroll-mt-24">
               <SectionHeading icon={CodeIcon} title="Setup & Architecture" />
@@ -362,20 +345,11 @@ export default function D4CArticle() {
                 </div>
               </div>
 
-              <figure className="my-10 -mx-4 md:mx-0">
-                <div className="relative w-full aspect-video rounded-sm overflow-hidden border-2 border-bg-dark bg-bg-dark shadow-lg">
-                  <Image
-                    src="/D4C_MCPServers.png"
-                    alt="D4C configuration showing permanent MCP server setup"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-                <figcaption className="text-xs text-text-secondary font-tech uppercase tracking-widest mt-3 text-center">
-                  Fig 3 — Permanent MCP server configuration: Context7 and
-                  Playwright always available.
-                </figcaption>
-              </figure>
+              <Figure
+                src="/D4C_MCPServers.png"
+                alt="D4C configuration showing permanent MCP server setup"
+                caption="Fig 3 — Permanent MCP server configuration: Context7 and Playwright always available."
+              />
             </section>
 
             <section id="challenges" className="mb-16 scroll-mt-24">
@@ -416,20 +390,11 @@ export default function D4CArticle() {
               </PullQuote>
             </section>
 
-            <figure className="my-12 -mx-4 md:mx-0">
-              <div className="relative w-full aspect-video rounded-sm overflow-hidden border-2 border-bg-dark bg-bg-dark shadow-lg">
-                <Image
-                  src="/D4C_UpdateSkill.png"
-                  alt="D4C /update skill output showing the pull-and-layer process"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <figcaption className="text-xs text-text-secondary font-tech uppercase tracking-widest mt-3 text-center">
-                Fig 4 — The /update skill in action: pulling upstream changes and
-                layering D4C features on top.
-              </figcaption>
-            </figure>
+            <Figure
+              src="/D4C_UpdateSkill.png"
+              alt="D4C /update skill output showing the pull-and-layer process"
+              caption="Fig 4 — The /update skill in action: pulling upstream changes and layering D4C features on top."
+            />
 
             <section id="roadmap" className="mb-16 scroll-mt-24">
               <SectionHeading icon={RocketIcon} title="What's Next" />
@@ -507,6 +472,7 @@ export default function D4CArticle() {
         </div>
       </div>
     </article>
+    </GalleryProvider>
   );
 }
 
