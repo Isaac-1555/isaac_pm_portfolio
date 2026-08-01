@@ -1,6 +1,7 @@
 "use client";
 
 import Lenis from "lenis";
+import { usePathname } from "next/navigation";
 import {
   createContext,
   useContext,
@@ -20,6 +21,16 @@ export function useLenis(): LenisRef | null {
 
 export function LenisProvider({ children }: { children: ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
+  const isTraversal = useRef(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const onPopState = () => {
+      isTraversal.current = true;
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -39,6 +50,14 @@ export function LenisProvider({ children }: { children: ReactNode }) {
       lenisRef.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    if (isTraversal.current) {
+      isTraversal.current = false;
+      return;
+    }
+    lenisRef.current?.scrollTo(0, { immediate: true });
+  }, [pathname]);
 
   return (
     <LenisContext.Provider value={lenisRef}>{children}</LenisContext.Provider>
