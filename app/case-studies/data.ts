@@ -85,6 +85,11 @@ export interface CaseStudy {
   screenshots: string[]; // URLs
   imageWidth: number;
   imageHeight: number;
+  /** Dedicated image for cursor-follow / featured previews (optional) */
+  previewImage?: string;
+  /** Optional aspect ratio for the preview image */
+  previewWidth?: number;
+  previewHeight?: number;
   /** How carousel images fit: 'cover' (default, crops) or 'contain' (full frame) */
   carouselFit?: "cover" | "contain";
 }
@@ -208,7 +213,10 @@ export const caseStudies: CaseStudy[] = [
       "/Tux_Panes.png"
     ],
     imageWidth: 2880,
-    imageHeight: 1800
+    imageHeight: 1800,
+    previewImage: "/Tux_Preview.png",
+    previewWidth: 2880,
+    previewHeight: 1750
   },
   {
     id: "satbrain",
@@ -280,7 +288,10 @@ export const caseStudies: CaseStudy[] = [
       "/Satbrain_Mapview.png"
     ],
     imageWidth: 1919,
-    imageHeight: 916
+    imageHeight: 916,
+    previewImage: "/SatBrain_Preview_v2.png",
+    previewWidth: 1672,
+    previewHeight: 941
   },
   {
     id: "pocket-resume",
@@ -353,7 +364,10 @@ export const caseStudies: CaseStudy[] = [
       "/PocketResume_Settings.png"
     ],
     imageWidth: 2880,
-    imageHeight: 1576
+    imageHeight: 1576,
+    previewImage: "/PocketResume_Preview.png",
+    previewWidth: 1536,
+    previewHeight: 1024
   },
   {
     id: "notebucket",
@@ -495,6 +509,9 @@ export const caseStudies: CaseStudy[] = [
     ],
     imageWidth: 1536,
     imageHeight: 1024,
+    previewImage: "/NoteBucket_Preview_v2.png",
+    previewWidth: 1920,
+    previewHeight: 1080,
     carouselFit: "contain"
   }
 ];

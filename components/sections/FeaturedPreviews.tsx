@@ -162,12 +162,12 @@ export function FeaturedPreviews() {
             className="pointer-events-none fixed left-0 top-0 z-[9000] w-[320px] will-change-transform"
           >
             <div
-              style={{ aspectRatio: `${active.imageWidth} / ${active.imageHeight}` }}
+              style={{ aspectRatio: `${active.previewWidth ?? active.imageWidth} / ${active.previewHeight ?? active.imageHeight}` }}
               className="relative w-full overflow-hidden rounded-sm border border-divider bg-bg-dark shadow-[0_12px_40px_rgba(0,0,0,0.55)]"
             >
-              {active.screenshots[0] && (
+              {active.previewImage && (
                 <Image
-                  src={active.screenshots[0]}
+                  src={active.previewImage}
                   alt={active.title}
                   fill
                   sizes="320px"

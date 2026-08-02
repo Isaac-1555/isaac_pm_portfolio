@@ -380,7 +380,7 @@ function OpenPanel({
   index: number;
   onClose: () => void;
 }) {
-  const screenshot = study.screenshots[0];
+  const screenshot = study.previewImage ?? study.screenshots[0];
   const stats = study.outcome.quantifiable;
 
   return (
@@ -390,7 +390,7 @@ function OpenPanel({
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
-        style={{ aspectRatio: `${study.imageWidth} / ${study.imageHeight}` }}
+        style={{ aspectRatio: `${study.previewWidth ?? study.imageWidth} / ${study.previewHeight ?? study.imageHeight}` }}
         className="relative order-1 self-stretch md:self-center md:flex-1 min-w-0 max-h-full rounded-sm overflow-hidden bg-bg-dark border border-divider"
       >
         {screenshot && (
