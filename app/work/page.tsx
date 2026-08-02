@@ -1,5 +1,6 @@
 "use client";
 
+import { useLayoutEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import TravelBag from "@/components/icons/travel-bag";
@@ -14,14 +15,19 @@ import SendIcon from "@/components/icons/send-icon";
 import PlayIcon from "@/components/icons/play-icon";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 import { AccentWord } from "@/components/ui/AccentWord";
-import { FlagshipFolders } from "@/components/sections/FlagshipFolders";
+import { FeaturedPreviews } from "@/components/sections/FeaturedPreviews";
 import { motion } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useLenis } from "@/components/scroll/LenisProvider";
 import {
   revealProps,
   staggerContainer,
   staggerItem,
   useRevealMotion,
 } from "@/lib/motion";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const technicalProjects = [
   {
@@ -109,42 +115,94 @@ const technicalProjects = [
 
 export default function WorkPage() {
   const reduced = useRevealMotion();
-  const header = revealProps(reduced);
-  const flagshipHeader = revealProps(reduced);
   const techHeader = revealProps(reduced);
-  const folderGrid = revealProps(reduced);
   const techGrid = revealProps(reduced);
 
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const flagshipH2Ref = useRef<HTMLHeadingElement>(null);
+  const flagshipSectionRef = useRef<HTMLElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const lenisRef = useLenis();
+
+  useLayoutEffect(() => {
+    if (reduced) {
+      rootRef.current
+        ?.querySelectorAll<HTMLElement>("[data-reveal-hide]")
+        .forEach((el) => el.classList.remove("opacity-0"));
+      return;
+    }
+
+    const lenis = lenisRef?.current;
+    const onScroll = () => ScrollTrigger.update();
+    lenis?.on("scroll", onScroll);
+
+    const ctx = gsap.context(() => {
+      gsap
+        .timeline({
+          defaults: { duration: 0.7, ease: "power3.out" },
+          scrollTrigger: {
+            trigger: flagshipSectionRef.current,
+            start: "top 85%",
+            once: true,
+          },
+        })
+        .fromTo(titleRef.current, { y: 24, autoAlpha: 0 }, { y: 0, autoAlpha: 1 })
+        .fromTo(
+          subtitleRef.current,
+          { y: 16, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1 },
+          "-=0.5",
+        )
+        .fromTo(
+          flagshipH2Ref.current,
+          { y: 12, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1 },
+          "-=0.55",
+        )
+        .fromTo(
+          "[data-fp-row]",
+          { y: 32, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1, stagger: 0.09 },
+          "-=0.55",
+        );
+    }, flagshipSectionRef);
+
+    return () => {
+      ctx.revert();
+      lenis?.off("scroll", onScroll);
+    };
+  }, [reduced, lenisRef]);
+
   return (
-    <div className="container mx-auto px-4 py-24">
-      <motion.div
-        {...header}
-        id="mission-work-header"
-        className="mb-4 will-change-transform"
-      >
-        <h1 className="text-4xl md:text-6xl font-industrial font-bold uppercase tracking-widest text-text-primary mb-4">
+    <div ref={rootRef} className="container mx-auto px-4 py-24">
+      <div id="mission-work-header" className="mb-4">
+        <h1
+          ref={titleRef}
+          data-reveal-hide
+          className="text-4xl md:text-6xl font-industrial font-bold uppercase tracking-widest text-text-primary mb-4 opacity-0"
+        >
           Selected <AccentWord text="Works" />
         </h1>
-        <p className="text-text-secondary max-w-2xl text-lg leading-relaxed">
+        <p
+          ref={subtitleRef}
+          data-reveal-hide
+          className="text-text-secondary max-w-2xl text-lg leading-relaxed opacity-0"
+        >
           A collection of product initiatives, from enterprise workflow transformations to AI-powered prototypes.
         </p>
-      </motion.div>
+      </div>
 
       {/* Flagship Section */}
-      <section id="mission-work-flagship" className="mb-6">
-        <motion.h2
-          {...flagshipHeader}
-          className="text-2xl font-industrial uppercase tracking-widest mb-2 border-b border-divider pb-3 flex items-center gap-2 will-change-transform"
+      <section ref={flagshipSectionRef} id="mission-work-flagship" className="mb-6">
+        <h2
+          ref={flagshipH2Ref}
+          data-reveal-hide
+          className="text-2xl font-industrial uppercase tracking-widest mb-2 border-b border-divider pb-3 flex items-center gap-2 opacity-0"
         >
           <TravelBag size={20} className="text-cta" /> Flagship Case Studies
-        </motion.h2>
-        <motion.div
-          {...folderGrid}
-          variants={staggerContainer}
-          className="will-change-transform"
-        >
-          <FlagshipFolders />
-        </motion.div>
+        </h2>
+        <FeaturedPreviews />
       </section>
 
       {/* Technical Projects Section */}

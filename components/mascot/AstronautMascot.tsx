@@ -31,7 +31,7 @@ const TOUR_CONFIGS: Record<string, PageTourConfig> = {
   "/work": {
     sections: ["mission-work-header", "mission-work-flagship", "mission-work-technical"],
     pois: [
-      { sectionId: "mission-work-flagship", message: "Flagship case studies \u2014 click any card to dive deeper!" },
+      { sectionId: "mission-work-flagship", message: "Flagship case studies \u2014 hover a row for a live preview!" },
       { sectionId: "mission-work-technical", message: "Technical prototypes & labs \u2014 explore the repos!" },
       { sectionId: "mission-work-header", message: "Back to the top \u2014 ready for another tour!" },
     ],
