@@ -1,35 +1,38 @@
+'use client';
+
+import { useState } from 'react';
 import HeroContent from './HeroContent';
 import { HeroBackground } from './HeroBackground';
-import InteractivePortfolioGame from './InteractivePortfolioGame';
+import GameOverlay from './GameOverlay';
+import { Button } from '@/components/ui/button';
+import TrophyIcon from '@/components/icons/trophy-icon';
 
 export function Hero() {
+  const [isGameOpen, setIsGameOpen] = useState(false);
+
   return (
     <section
       id="mission-home-hero"
-      className="relative w-full min-h-[calc(100dvh-3.5rem)] md:min-h-[calc(100dvh-4rem)] bg-bg-base py-12 md:py-16 lg:py-24 overflow-hidden"
+      className="relative w-full min-h-[calc(100dvh-3.5rem)] md:min-h-[calc(100dvh-4rem)] bg-bg-base flex flex-col items-center justify-center [@media(max-height:680px)]:justify-start overflow-hidden"
     >
       <HeroBackground />
 
-      <div className="container mx-auto relative z-10 px-6 md:px-8">
-        <div className="relative">
-          {/* Hero Content */}
-          <div className="w-full lg:w-1/2 pb-[calc(300px+2rem)] lg:pb-0">
-            <HeroContent />
-          </div>
-
-          {/* Game Area - absolutely positioned, anchored to right (desktop) or bottom (mobile) */}
-          <div className="absolute z-10 left-0 right-0 bottom-0 lg:left-auto lg:right-0 lg:top-0 lg:bottom-auto lg:w-2/5">
-            <div className="border-2 border-bg-dark rounded-sm bg-card shadow-lg relative overflow-hidden min-h-[300px] lg:min-h-[360px]">
-              <InteractivePortfolioGame />
-            </div>
-
-            {/* Controls Hint */}
-            <div className="hidden lg:block mt-2 text-center font-tech text-[10px] text-text-secondary uppercase tracking-widest opacity-40">
-              [A/D] or [←/→] move &middot; [Space] shoot &middot; click loot to view projects
-            </div>
-          </div>
-        </div>
+      <div className="hero-wrap container mx-auto relative z-10 px-6 md:px-8">
+        <HeroContent />
       </div>
+
+      {/* Game Launch */}
+      <Button
+        variant="gold"
+        size="lg"
+        onClick={() => setIsGameOpen(true)}
+        className="hero-game-btn absolute bottom-6 left-6 z-20 group gap-2"
+      >
+        Beat the high score
+        <TrophyIcon size={16} className="transition-transform group-hover:translate-y-0.5" />
+      </Button>
+
+      {isGameOpen && <GameOverlay onClose={() => setIsGameOpen(false)} />}
 
       {/* Decorative Status */}
       <div className="absolute bottom-10 right-10 hidden lg:block text-right opacity-50 pointer-events-none z-20">

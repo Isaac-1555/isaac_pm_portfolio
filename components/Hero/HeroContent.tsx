@@ -51,38 +51,36 @@ export default function HeroContent() {
       variants={staggerContainer}
       initial={reduced ? false : 'hidden'}
       animate="visible"
-      className="flex flex-col items-start gap-6"
+      className="hero-compact flex flex-col items-center text-center gap-6"
     >
       <motion.p
         variants={staggerItem}
-        className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0 text-text-primary leading-none"
+        className="hero-line flex flex-wrap items-baseline justify-center gap-x-1.5 gap-y-0 text-text-primary leading-none"
       >
         <span className="font-jb text-base sm:text-lg md:text-xl font-medium">Hi, I&apos;m</span>
-        <span className="font-vt323 text-3xl sm:text-4xl md:text-5xl leading-none">Isaac,</span>
+        <span className="hero-isaac font-vt323 text-3xl sm:text-4xl md:text-5xl leading-none">Isaac,</span>
         <span className="font-jb text-base sm:text-lg md:text-xl font-medium">a</span>
       </motion.p>
 
       <motion.h1
         variants={staggerItem}
-        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-industrial uppercase font-bold tracking-wide md:tracking-widest text-text-primary leading-none select-none"
+        className="hero-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-industrial uppercase font-bold tracking-wide md:tracking-widest text-text-primary leading-none select-none"
       >
         {currentRole.title.split(' ').map((word, i) => (
           <span key={i} className="block">
             <ScrambleText text={word} />
           </span>
         ))}
-        <span className="block mt-2 text-xs sm:text-sm md:text-base lg:text-lg leading-none overflow-hidden normal-case tracking-normal font-sans text-text-secondary">
+        <span className="hero-subtitle block mt-2 text-xs sm:text-sm md:text-base lg:text-lg leading-none overflow-hidden normal-case tracking-normal font-sans text-text-secondary">
           <ScrambleText text={currentRole.subtitle} />
         </span>
       </motion.h1>
 
       <motion.div
         variants={staggerItem}
-        className="max-w-xl text-base sm:text-lg md:text-xl text-text-primary font-sans leading-relaxed"
+        className="hero-desc max-w-xl mx-auto text-base sm:text-lg md:text-xl text-text-primary font-sans leading-relaxed"
       >
-        I turn vague problems into shipped, measurable wins. I figure out what
-        people need, then I make it easy enough that they don&apos;t need me
-        anymore.{" "}
+        I turn vague problems into shipped, measurable wins. Code was born on localhost. It was never meant to die there{" "}
         <MediaBetweenText
           as="span"
           firstText="<!-- Insert clever dev joke here ("
@@ -111,7 +109,7 @@ export default function HeroContent() {
 
       <motion.div
         variants={staggerItem}
-        className="flex flex-col sm:flex-row gap-4 mt-4 md:mt-8 w-full sm:w-auto"
+        className="hero-cta-row flex flex-col sm:flex-row justify-center gap-4 mt-4 md:mt-8 w-full sm:w-auto"
       >
         <Link href="/work" data-icon-hover-trigger>
           <Button size="lg" className="group w-full sm:w-auto">
