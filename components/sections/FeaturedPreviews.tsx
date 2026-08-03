@@ -149,6 +149,31 @@ export function FeaturedPreviews() {
         ))}
       </ul>
 
+      <div
+        aria-hidden
+        className="pointer-events-none fixed -left-[10000px] top-0 z-[-50] opacity-0"
+      >
+        {studies.map((s) =>
+          s.previewImage ? (
+            <div
+              key={s.id}
+              className="relative w-[320px]"
+              style={{
+                aspectRatio: `${s.previewWidth ?? s.imageWidth} / ${s.previewHeight ?? s.imageHeight}`,
+              }}
+            >
+              <Image
+                src={s.previewImage}
+                alt=""
+                fill
+                sizes="320px"
+                loading="eager"
+              />
+            </div>
+          ) : null,
+        )}
+      </div>
+
       <AnimatePresence>
         {active && !isTouch && (
           <motion.div

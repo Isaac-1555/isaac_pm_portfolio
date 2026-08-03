@@ -59,6 +59,31 @@ export function FeaturedWorkClient({
       data-booted={booted ? "true" : "false"}
       className="relative h-[calc(100dvh-3.5rem)] md:h-[calc(100dvh-4rem)] flex flex-col overflow-hidden bg-bg-base"
     >
+      <div
+        aria-hidden
+        className="pointer-events-none fixed -left-[10000px] top-0 z-[-50] opacity-0"
+      >
+        {studies.map((s) => {
+          const preload = s.previewImage ?? s.screenshots[0];
+          return preload ? (
+            <div
+              key={s.id}
+              className="relative w-[980px]"
+              style={{
+                aspectRatio: `${s.previewWidth ?? s.imageWidth} / ${s.previewHeight ?? s.imageHeight}`,
+              }}
+            >
+              <Image
+                src={preload}
+                alt=""
+                fill
+                sizes="(max-width: 768px) 100vw, 980px"
+                loading="eager"
+              />
+            </div>
+          ) : null;
+        })}
+      </div>
       <div className="container mx-auto px-6 md:px-8 py-6 md:py-10 relative z-10 flex flex-col min-h-0 flex-1">
         <header className="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 md:mb-8 gap-4 shrink-0">
           <div>
