@@ -7,7 +7,7 @@ import FileDescriptionIcon from "@/components/icons/file-description-icon";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 const ROLES = [
   { title: "Software Developer", subtitle: "Web and mobile apps" },
@@ -18,20 +18,14 @@ const ROLES = [
 
 export function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
   const currentRole = ROLES[roleIndex];
-  const isHoveredRef = useRef(false);
-
-  useEffect(() => {
-    isHoveredRef.current = isHovered;
-  }, [isHovered]);
 
   useEffect(() => {
     let lastUpdate = performance.now();
     let rafId: number;
 
     const tick = (now: number) => {
-      if (!isHoveredRef.current && now - lastUpdate >= 5000) {
+      if (now - lastUpdate >= 5000) {
         setRoleIndex((i) => (i + 1) % ROLES.length);
         lastUpdate = now;
       }
@@ -44,8 +38,6 @@ export function Hero() {
   return (
     <section
       id="mission-home-hero"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       className="relative w-full min-h-[calc(100dvh-3.5rem)] md:min-h-[calc(100dvh-4rem)] flex items-center bg-bg-base overflow-hidden py-16 md:py-24"
     >
       {/* Background Pattern */}

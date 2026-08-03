@@ -30,7 +30,7 @@ export function Hero() {
         <span className="flex h-full w-11 shrink-0 items-center justify-center">
           <TrophyIcon size={18} />
         </span>
-        <span className="hero-game-btn-label max-w-0 overflow-hidden whitespace-nowrap font-industrial text-sm uppercase tracking-widest opacity-0 transition-all duration-300 ease-out group-hover:max-w-80 group-hover:pl-2 group-hover:pr-4 group-hover:opacity-100 group-focus-within:max-w-80 group-focus-within:pl-2 group-focus-within:pr-4 group-focus-within:opacity-100">
+        <span className="hero-game-btn-label max-w-0 overflow-hidden whitespace-nowrap font-industrial text-sm uppercase tracking-widest opacity-0 transition-all duration-500 ease-in-out group-hover:max-w-80 group-hover:pl-2 group-hover:pr-4 group-hover:opacity-100 group-focus-within:max-w-80 group-focus-within:pl-2 group-focus-within:pr-4 group-focus-within:opacity-100">
           Beat the high score
         </span>
       </button>

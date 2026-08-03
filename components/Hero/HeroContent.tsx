@@ -7,7 +7,7 @@ import RightChevron from '@/components/icons/right-chevron';
 import FileDescriptionIcon from '@/components/icons/file-description-icon';
 import IconHoverWrapper from '@/components/icons/IconHoverWrapper';
 import Link from 'next/link';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { staggerContainer, staggerItem, useRevealMotion } from '@/lib/motion';
 
@@ -19,21 +19,15 @@ const ROLES = [
 
 export default function HeroContent() {
   const [roleIndex, setRoleIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
   const currentRole = ROLES[roleIndex];
-  const isHoveredRef = useRef(false);
   const reduced = useRevealMotion();
-
-  useEffect(() => {
-    isHoveredRef.current = isHovered;
-  }, [isHovered]);
 
   useEffect(() => {
     let lastUpdate = performance.now();
     let rafId: number;
 
     const tick = (now: number) => {
-      if (!isHoveredRef.current && now - lastUpdate >= 5000) {
+      if (now - lastUpdate >= 5000) {
         setRoleIndex((i) => (i + 1) % ROLES.length);
         lastUpdate = now;
       }
@@ -46,8 +40,6 @@ export default function HeroContent() {
 
   return (
     <motion.div
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       variants={staggerContainer}
       initial={reduced ? false : 'hidden'}
       animate="visible"
