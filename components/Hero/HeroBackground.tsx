@@ -1,361 +1,375 @@
-import styles from './HeroBackground.module.css';
+'use client';
 
-type ShapeType = 'star4' | 'star5' | 'dot' | 'asteroid' | 'planet' | 'ringed' | 'comet' | 'constellation';
+import { useEffect, useRef } from 'react';
 
-interface Shape {
-  type: ShapeType;
-  size: number;
-  top: string;
-  delay: string;
-  opacity: number;
-  variant?: number;
-  rotation?: number;
-  detail?: 'bands' | 'craters';
+const TEXTURE_URL = '/hero_bg.png';
+const COLOR_A = '#171D20';
+const COLOR_B = '#525756';
+const RENDER_SCALE = 0.5;
+const MOUSE_EASE = 0.06;
+const SHIMMER = 0.08;
+
+const VERTEX_SHADER = `
+attribute vec2 a_position;
+varying vec2 v_uv;
+void main() {
+  gl_Position = vec4(a_position, 0.0, 1.0);
+  v_uv = vec2(a_position.x * 0.5 + 0.5, 0.5 - a_position.y * 0.5);
+}
+`;
+
+const FRAGMENT_SHADER = `
+precision highp float;
+
+varying vec2 v_uv;
+
+uniform vec2 u_resolution;
+uniform float u_time;
+uniform vec2 u_mouse;
+uniform vec3 u_colorA;
+uniform vec3 u_colorB;
+uniform vec2 u_crop;
+uniform float u_shimmer;
+uniform sampler2D u_tex;
+
+vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+vec3 permute(vec3 x) { return mod289(((x * 34.0) + 1.0) * x); }
+
+float snoise(vec2 v) {
+  const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
+  vec2 i = floor(v + dot(v, C.yy));
+  vec2 x0 = v - i + dot(i, C.xx);
+  vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+  vec4 x12 = x0.xyxy + C.xxzz;
+  x12.xy -= i1;
+  i = mod289(i);
+  vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0)) + i.x + vec3(0.0, i1.x, 1.0));
+  vec3 m = max(0.5 - vec3(dot(x0, x0), dot(x12.xy, x12.xy), dot(x12.zw, x12.zw)), 0.0);
+  m = m * m;
+  m = m * m;
+  vec3 x = 2.0 * fract(p * C.www) - 1.0;
+  vec3 h = abs(x) - 0.5;
+  vec3 ox = floor(x + 0.5);
+  vec3 a0 = x - ox;
+  m *= 1.79284291400159 - 0.85373472095314 * (a0 * a0 + h * h);
+  vec3 g;
+  g.x = a0.x * x0.x + h.x * x0.y;
+  g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+  return 130.0 * dot(m, g);
 }
 
-interface Layer {
-  color: string;
-  speedClass: 'slow' | 'mid' | 'fast';
-  shapes: Shape[];
-}
-
-/* ── Asteroid path variations (6) ── */
-
-const ASTEROID_PATHS = [
-  '0,-8 5,-4 8,1 4,6 -2,8 -6,3 -4,-4',
-  '0,-7 4,-3 7,2 3,6 -3,7 -6,1 -3,-5',
-  '0,-9 6,-5 9,2 5,7 -3,9 -7,3 -5,-6',
-  '0,-6 5,-2 7,3 2,7 -4,6 -5,1 -2,-4',
-  '0,-8 3,-5 8,0 5,5 -2,8 -7,2 -6,-5',
-  '0,-7 6,-3 8,3 4,8 -3,7 -8,1 -4,-6',
-];
-
-/* ── Constellation patterns (3) ── */
-
-interface ConstellationPattern {
-  dots: [number, number, number][];
-  lines: [number, number, number, number][];
-}
-
-const CONSTELLATION_PATTERNS: ConstellationPattern[] = [
-  {
-    dots: [[0, -6, 0.8], [4, 2, 1], [-3, 3, 0.7]],
-    lines: [[0, -6, 4, 2], [4, 2, -3, 3]],
-  },
-  {
-    dots: [[-5, -4, 0.9], [5, -4, 0.8], [0, 5, 1], [-2, 1.5, 0.6]],
-    lines: [[-5, -4, -2, 1.5], [-2, 1.5, 0, 5], [-2, 1.5, 5, -4]],
-  },
-  {
-    dots: [[0, -5, 1.1], [5, 0, 0.8], [0, 5, 0.9], [-5, 0, 0.8]],
-    lines: [[0, -5, 5, 0], [5, 0, 0, 5], [0, 5, -5, 0], [-5, 0, 0, -5]],
-  },
-];
-
-/* ── SVG path helpers ── */
-
-function star4Path(r: number): string {
-  const inner = r * 0.22;
-  return `M 0,${-r} L ${inner},${-inner} L ${r},0 L ${inner},${inner} L 0,${r} L ${-inner},${inner} L ${-r},0 L ${-inner},${-inner} Z`;
-}
-
-function star5Path(r: number): string {
-  const outer = r;
-  const inner = r * 0.382;
-  const sin18 = 0.309;
-  const cos18 = 0.9511;
-  const sin36 = 0.5878;
-  const cos36 = 0.809;
-  const sin54 = 0.809;
-  const cos54 = 0.5878;
-  const sin72 = 0.9511;
-  const cos72 = 0.309;
-
-  const pts: [number, number][] = [
-    [0, -outer],
-    [inner * sin36, -inner * cos36],
-    [outer * sin18, -outer * cos18],
-    [inner * sin72, inner * cos72],
-    [outer * sin54, outer * cos54],
-    [0, inner],
-    [-outer * sin54, outer * cos54],
-    [-inner * sin72, inner * cos72],
-    [-outer * sin18, -outer * cos18],
-    [-inner * sin36, -inner * cos36],
-  ];
-
-  return pts.map(([x, y], i) => `${i === 0 ? 'M' : 'L'} ${x.toFixed(2)},${y.toFixed(2)}`).join(' ') + ' Z';
-}
-
-/* ── Shape renderers ── */
-
-function renderStar4(size: number, color: string, opacity: number) {
-  const r = size;
-  const dim = r * 2;
-  return (
-    <svg width={dim} height={dim} viewBox={`${-r} ${-r} ${dim} ${dim}`} aria-hidden="true">
-      <path d={star4Path(r)} fill={color} opacity={opacity} />
-    </svg>
-  );
-}
-
-function renderStar5(size: number, color: string, opacity: number) {
-  const r = size;
-  const dim = r * 2;
-  return (
-    <svg width={dim} height={dim} viewBox={`${-r} ${-r} ${dim} ${dim}`} aria-hidden="true">
-      <path d={star5Path(r)} fill={color} opacity={opacity} />
-    </svg>
-  );
-}
-
-function renderDot(size: number, color: string, opacity: number) {
-  const dim = size * 2 + 2;
-  return (
-    <svg width={dim} height={dim} viewBox={`${-size - 1} ${-size - 1} ${dim} ${dim}`} aria-hidden="true">
-      <circle r={size} fill={color} opacity={opacity} />
-    </svg>
-  );
-}
-
-function renderAsteroid(size: number, color: string, opacity: number, variant: number) {
-  const r = size;
-  const pad = 3;
-  const dim = (r + pad) * 2;
-  return (
-    <svg width={dim} height={dim} viewBox={`${-r - pad} ${-r - pad} ${dim} ${dim}`} aria-hidden="true">
-      <polygon points={ASTEROID_PATHS[variant % ASTEROID_PATHS.length]} fill={color} opacity={opacity} />
-    </svg>
-  );
-}
-
-function renderPlanet(size: number, color: string, opacity: number, detail?: 'bands' | 'craters') {
-  const r = size;
-  const dim = (r + 2) * 2;
-  const darkerColor = color; // bands/craters use same color with lower opacity
-
-  return (
-    <svg width={dim} height={dim} viewBox={`${-r - 2} ${-r - 2} ${dim} ${dim}`} aria-hidden="true">
-      <circle r={r} fill={color} opacity={opacity} />
-      {detail === 'bands' && (
-        <>
-          <ellipse cx={0} cy={-r * 0.3} rx={r * 0.85} ry={r * 0.08} fill={darkerColor} opacity={opacity * 0.6} />
-          <ellipse cx={0} cy={r * 0.2} rx={r * 0.9} ry={r * 0.07} fill={darkerColor} opacity={opacity * 0.5} />
-          <ellipse cx={0} cy={r * 0.5} rx={r * 0.75} ry={r * 0.06} fill={darkerColor} opacity={opacity * 0.4} />
-        </>
-      )}
-      {detail === 'craters' && (
-        <>
-          <circle cx={-r * 0.35} cy={-r * 0.25} r={r * 0.18} fill={darkerColor} opacity={opacity * 0.45} />
-          <circle cx={r * 0.4} cy={r * 0.15} r={r * 0.13} fill={darkerColor} opacity={opacity * 0.4} />
-          <circle cx={r * 0.05} cy={-r * 0.5} r={r * 0.15} fill={darkerColor} opacity={opacity * 0.35} />
-          <circle cx={-r * 0.2} cy={r * 0.45} r={r * 0.1} fill={darkerColor} opacity={opacity * 0.35} />
-        </>
-      )}
-    </svg>
-  );
-}
-
-function renderRinged(
-  size: number,
-  color: string,
-  opacity: number,
-  rotation: number,
-  detail?: 'bands' | 'craters',
-) {
-  const r = size;
-  const rx = r * 1.8;
-  const ry = r * 0.25;
-  const pad = 4;
-  const dim = (r + rx + pad) * 2;
-
-  return (
-    <svg width={dim} height={dim} viewBox={`${-rx - r - pad} ${-r - rx - pad} ${dim} ${dim}`} aria-hidden="true">
-      <g transform={`rotate(${rotation})`}>
-        <ellipse cx={0} cy={0} rx={rx} ry={ry} fill="none" stroke={color} strokeWidth={0.8} opacity={opacity * 0.7} />
-        <circle r={r} fill={color} opacity={opacity} />
-        {detail === 'bands' && (
-          <>
-            <ellipse cx={0} cy={-r * 0.3} rx={r * 0.85} ry={r * 0.08} fill={color} opacity={opacity * 0.6} />
-            <ellipse cx={0} cy={r * 0.2} rx={r * 0.9} ry={r * 0.07} fill={color} opacity={opacity * 0.5} />
-          </>
-        )}
-        {detail === 'craters' && (
-          <>
-            <circle cx={-r * 0.3} cy={-r * 0.2} r={r * 0.15} fill={color} opacity={opacity * 0.4} />
-            <circle cx={r * 0.35} cy={r * 0.1} r={r * 0.12} fill={color} opacity={opacity * 0.35} />
-          </>
-        )}
-      </g>
-    </svg>
-  );
-}
-
-function renderComet(size: number, color: string, opacity: number, rotation: number) {
-  const headR = size * 0.35;
-  const tailW = size * 0.25;
-  const tailL = size * 2;
-  const pad = 4;
-  const totalW = headR + tailL + pad * 2;
-  const totalH = Math.max(headR * 2, tailW * 3) + pad * 2;
-
-  return (
-    <svg width={totalW} height={totalH} viewBox={`${-tailL - pad} ${-totalH / 2} ${totalW} ${totalH}`} aria-hidden="true">
-      <g transform={`rotate(${rotation})`}>
-        <path
-          d={`M ${headR},0 L ${-headR},${-tailW} L ${-tailL},${-tailW * 0.5} L ${-tailL * 1.15},0 L ${-tailL},${tailW * 0.5} L ${-headR},${tailW} Z`}
-          fill={color}
-          opacity={opacity * 0.8}
-        />
-        <circle cx={headR} cy={0} r={headR} fill={color} opacity={opacity} />
-      </g>
-    </svg>
-  );
-}
-
-function renderConstellation(size: number, color: string, opacity: number, variant: number) {
-  const pattern = CONSTELLATION_PATTERNS[variant % CONSTELLATION_PATTERNS.length];
-  const scale = size / 8;
-  const maxDim = 36;
-  return (
-    <svg width={maxDim} height={maxDim} viewBox={`${-maxDim / 2} ${-maxDim / 2} ${maxDim} ${maxDim}`} aria-hidden="true">
-      <g transform={`scale(${scale})`}>
-        {pattern.lines.map(([x1, y1, x2, y2], i) => (
-          <line key={`l-${i}`} x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth={0.6} opacity={opacity * 0.8} />
-        ))}
-        {pattern.dots.map(([cx, cy, cr], i) => (
-          <circle key={`d-${i}`} cx={cx} cy={cy} r={cr} fill={color} opacity={opacity} />
-        ))}
-      </g>
-    </svg>
-  );
-}
-
-function ShapeSVG({ shape, color }: { shape: Shape; color: string }) {
-  switch (shape.type) {
-    case 'star4':
-      return renderStar4(shape.size, color, shape.opacity);
-    case 'star5':
-      return renderStar5(shape.size, color, shape.opacity);
-    case 'dot':
-      return renderDot(shape.size, color, shape.opacity);
-    case 'asteroid':
-      return renderAsteroid(shape.size, color, shape.opacity, shape.variant ?? 0);
-    case 'planet':
-      return renderPlanet(shape.size, color, shape.opacity, shape.detail);
-    case 'ringed':
-      return renderRinged(shape.size, color, shape.opacity, shape.rotation ?? 15, shape.detail);
-    case 'comet':
-      return renderComet(shape.size, color, shape.opacity, shape.rotation ?? -10);
-    case 'constellation':
-      return renderConstellation(shape.size, color, shape.opacity, shape.variant ?? 0);
-    default:
-      return null;
+float fbm(vec2 p, float t) {
+  float value = 0.0;
+  float amplitude = 0.5;
+  float frequency = 1.0;
+  for (int i = 0; i < 3; i++) {
+    value += amplitude * snoise(p * frequency + vec2(t * (0.12 + 0.04 * float(i)), -t * 0.08));
+    frequency *= 2.0;
+    amplitude *= 0.5;
   }
+  return value;
 }
 
-/* ── Layer data ── */
+float select4(float a, float b, float c, float d, float i) {
+  return mix(mix(a, b, step(1.0, i)), mix(c, d, step(3.0, i)), step(2.0, i));
+}
 
-const LAYERS: Layer[] = [
-  {
-    color: '#1A2525',
-    speedClass: 'slow',
-    shapes: [
-      { type: 'dot', size: 1, top: '3%', delay: '0s', opacity: 0.08 },
-      { type: 'dot', size: 1.5, top: '8%', delay: '2s', opacity: 0.1 },
-      { type: 'dot', size: 1, top: '16%', delay: '4s', opacity: 0.08 },
-      { type: 'dot', size: 2, top: '22%', delay: '6s', opacity: 0.12 },
-      { type: 'dot', size: 1, top: '29%', delay: '8s', opacity: 0.09 },
-      { type: 'dot', size: 1.5, top: '36%', delay: '10s', opacity: 0.1 },
-      { type: 'star4', size: 4, top: '5%', delay: '1s', opacity: 0.12 },
-      { type: 'star4', size: 5, top: '19%', delay: '5s', opacity: 0.14 },
-      { type: 'star4', size: 3, top: '38%', delay: '9s', opacity: 0.11 },
-      { type: 'star4', size: 6, top: '53%', delay: '13s', opacity: 0.15 },
-      { type: 'star5', size: 4, top: '12%', delay: '3s', opacity: 0.13 },
-      { type: 'star5', size: 5, top: '45%', delay: '7s', opacity: 0.15 },
-      { type: 'star5', size: 3, top: '75%', delay: '11s', opacity: 0.12 },
-      { type: 'asteroid', size: 5, top: '58%', delay: '15s', opacity: 0.14, variant: 0 },
-      { type: 'asteroid', size: 4, top: '71%', delay: '17s', opacity: 0.13, variant: 1 },
-      { type: 'planet', size: 4, top: '82%', delay: '19s', opacity: 0.16 },
-      { type: 'planet', size: 3, top: '93%', delay: '21s', opacity: 0.15 },
-      { type: 'constellation', size: 9, top: '26%', delay: '23s', opacity: 0.12, variant: 0 },
-    ],
-  },
-  {
-    color: '#4B5555',
-    speedClass: 'mid',
-    shapes: [
-      { type: 'dot', size: 1.5, top: '2%', delay: '1s', opacity: 0.22 },
-      { type: 'dot', size: 2, top: '11%', delay: '4s', opacity: 0.25 },
-      { type: 'dot', size: 1.5, top: '24%', delay: '8s', opacity: 0.22 },
-      { type: 'dot', size: 2.5, top: '37%', delay: '12s', opacity: 0.28 },
-      { type: 'star4', size: 6, top: '7%', delay: '2s', opacity: 0.25 },
-      { type: 'star4', size: 7, top: '28%', delay: '6s', opacity: 0.28 },
-      { type: 'star4', size: 5, top: '63%', delay: '10s', opacity: 0.24 },
-      { type: 'star5', size: 6, top: '15%', delay: '3s', opacity: 0.26 },
-      { type: 'star5', size: 7, top: '51%', delay: '9s', opacity: 0.3 },
-      { type: 'asteroid', size: 7, top: '34%', delay: '5s', opacity: 0.27, variant: 2 },
-      { type: 'asteroid', size: 6, top: '68%', delay: '11s', opacity: 0.25, variant: 3 },
-      { type: 'asteroid', size: 8, top: '86%', delay: '15s', opacity: 0.3, variant: 4 },
-      { type: 'planet', size: 6, top: '41%', delay: '7s', opacity: 0.32, detail: 'craters' },
-      { type: 'planet', size: 7, top: '77%', delay: '13s', opacity: 0.3, detail: 'bands' },
-      { type: 'ringed', size: 7, top: '20%', delay: '14s', opacity: 0.3, rotation: 20 },
-      { type: 'ringed', size: 6, top: '57%', delay: '18s', opacity: 0.28, rotation: -25 },
-      { type: 'comet', size: 8, top: '46%', delay: '16s', opacity: 0.32, rotation: -8 },
-      { type: 'constellation', size: 12, top: '73%', delay: '20s', opacity: 0.25, variant: 1 },
-    ],
-  },
-  {
-    color: '#7A8484',
-    speedClass: 'fast',
-    shapes: [
-      { type: 'dot', size: 2, top: '5%', delay: '0s', opacity: 0.4 },
-      { type: 'dot', size: 2.5, top: '18%', delay: '3s', opacity: 0.45 },
-      { type: 'star4', size: 8, top: '10%', delay: '1s', opacity: 0.38 },
-      { type: 'star4', size: 10, top: '33%', delay: '5s', opacity: 0.42 },
-      { type: 'star4', size: 7, top: '69%', delay: '9s', opacity: 0.36 },
-      { type: 'star5', size: 8, top: '25%', delay: '2s', opacity: 0.4 },
-      { type: 'star5', size: 10, top: '55%', delay: '7s', opacity: 0.45 },
-      { type: 'asteroid', size: 9, top: '15%', delay: '4s', opacity: 0.38, variant: 0 },
-      { type: 'asteroid', size: 8, top: '42%', delay: '8s', opacity: 0.4, variant: 2 },
-      { type: 'asteroid', size: 10, top: '61%', delay: '10s', opacity: 0.42, variant: 3 },
-      { type: 'asteroid', size: 9, top: '81%', delay: '13s', opacity: 0.38, variant: 5 },
-      { type: 'planet', size: 9, top: '30%', delay: '6s', opacity: 0.48, detail: 'bands' },
-      { type: 'planet', size: 8, top: '74%', delay: '12s', opacity: 0.5, detail: 'craters' },
-      { type: 'ringed', size: 10, top: '48%', delay: '11s', opacity: 0.45, rotation: -30, detail: 'bands' },
-      { type: 'ringed', size: 9, top: '88%', delay: '16s', opacity: 0.42, rotation: 35, detail: 'craters' },
-      { type: 'comet', size: 11, top: '22%', delay: '14s', opacity: 0.45, rotation: -12 },
-      { type: 'comet', size: 10, top: '67%', delay: '17s', opacity: 0.4, rotation: 5 },
-      { type: 'constellation', size: 14, top: '39%', delay: '19s', opacity: 0.38, variant: 2 },
-    ],
-  },
-];
+float bayer4(float fx, float fy) {
+  float x = mod(fx, 4.0);
+  float y = mod(fy, 4.0);
+  float col0 = select4(0.0, 12.0, 3.0, 15.0, y);
+  float col1 = select4(8.0, 4.0, 11.0, 7.0, y);
+  float col2 = select4(2.0, 14.0, 1.0, 13.0, y);
+  float col3 = select4(10.0, 6.0, 9.0, 5.0, y);
+  return select4(col0, col1, col2, col3, x);
+}
 
-/* ── Main component ── */
+void main() {
+  float threshold = bayer4(gl_FragCoord.x, gl_FragCoord.y) / 16.0;
 
-const SPEED_CLASS_MAP: Record<Layer['speedClass'], string> = {
-  slow: styles.driftSlow,
-  mid: styles.driftMid,
-  fast: styles.driftFast,
-};
+  vec2 uv = (v_uv - 0.5) * u_crop + 0.5;
+  uv += (u_mouse - 0.5) * 0.03;
+
+  float lum = dot(texture2D(u_tex, uv).rgb, vec3(0.299, 0.587, 0.114));
+
+  float t = u_time * 0.05;
+  vec2 p = gl_FragCoord.xy / u_resolution;
+  p += (u_mouse - 0.5) * 0.5;
+  float n = fbm(p * 2.0, t);
+  n = n / 0.875 * 0.5 + 0.5;
+
+  float value = clamp(lum + (n - 0.5) * u_shimmer, 0.0, 1.0);
+
+  float c = step(threshold, value);
+  vec3 color = mix(u_colorA, u_colorB, c);
+  gl_FragColor = vec4(color, 1.0);
+}
+`;
+
+function parseHex(hex: string): [number, number, number] {
+  return [
+    parseInt(hex.slice(1, 3), 16) / 255,
+    parseInt(hex.slice(3, 5), 16) / 255,
+    parseInt(hex.slice(5, 7), 16) / 255,
+  ];
+}
+
+function compileShader(gl: WebGLRenderingContext | WebGL2RenderingContext, type: number, source: string) {
+  const shader = gl.createShader(type);
+  if (!shader) return null;
+  gl.shaderSource(shader, source);
+  gl.compileShader(shader);
+  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+    console.error('HeroBackground shader compile:', gl.getShaderInfoLog(shader));
+    gl.deleteShader(shader);
+    return null;
+  }
+  return shader;
+}
+
+function createProgram(gl: WebGLRenderingContext | WebGL2RenderingContext) {
+  const vertex = compileShader(gl, gl.VERTEX_SHADER, VERTEX_SHADER);
+  const fragment = compileShader(gl, gl.FRAGMENT_SHADER, FRAGMENT_SHADER);
+  if (!vertex || !fragment) return null;
+
+  const program = gl.createProgram();
+  if (!program) return null;
+  gl.attachShader(program, vertex);
+  gl.attachShader(program, fragment);
+  gl.linkProgram(program);
+  gl.deleteShader(vertex);
+  gl.deleteShader(fragment);
+
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    console.error('HeroBackground program link:', gl.getProgramInfoLog(program));
+    gl.deleteProgram(program);
+    return null;
+  }
+  return program;
+}
 
 export function HeroBackground() {
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    const canvas = canvasRef.current;
+    if (!wrap || !canvas) return;
+
+    let gl: WebGLRenderingContext | WebGL2RenderingContext | null = canvas.getContext('webgl2', {
+      preserveDrawingBuffer: true,
+    });
+    if (!gl) gl = canvas.getContext('webgl', { preserveDrawingBuffer: true });
+    if (!gl) gl = canvas.getContext('experimental-webgl', { preserveDrawingBuffer: true }) as WebGLRenderingContext | null;
+    if (!gl) return;
+
+    const program = createProgram(gl);
+    if (!program) return;
+
+    const buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+
+    const positionLocation = gl.getAttribLocation(program, 'a_position');
+    gl.enableVertexAttribArray(positionLocation);
+    gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+    const uResolution = gl.getUniformLocation(program, 'u_resolution');
+    const uTime = gl.getUniformLocation(program, 'u_time');
+    const uMouse = gl.getUniformLocation(program, 'u_mouse');
+    const uColorA = gl.getUniformLocation(program, 'u_colorA');
+    const uColorB = gl.getUniformLocation(program, 'u_colorB');
+    const uCrop = gl.getUniformLocation(program, 'u_crop');
+    const uShimmer = gl.getUniformLocation(program, 'u_shimmer');
+    const uTex = gl.getUniformLocation(program, 'u_tex');
+
+    const colorA = new Float32Array(parseHex(COLOR_A));
+    const colorB = new Float32Array(parseHex(COLOR_B));
+
+    let texture: WebGLTexture | null = null;
+    let textureReady = false;
+    let texSize: { width: number; height: number } | null = null;
+    let cropX = 1;
+    let cropY = 1;
+
+    const updateCrop = () => {
+      if (!texSize) return;
+      const scale = Math.max(canvas.width / texSize.width, canvas.height / texSize.height);
+      cropX = canvas.width / texSize.width / scale;
+      cropY = canvas.height / texSize.height / scale;
+    };
+
+    const setupTexture = (source: ImageBitmap | HTMLImageElement) => {
+      texture = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, texture);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      texSize = { width: source.width, height: source.height };
+      textureReady = true;
+      updateCrop();
+      if (reducedMotionQuery.matches) {
+        draw(performance.now());
+      }
+    };
+
+    const loadTexture = async () => {
+      try {
+        const response = await fetch(TEXTURE_URL);
+        if (!response.ok) return;
+        const blob = await response.blob();
+        if ('createImageBitmap' in window) {
+          const bitmap = await createImageBitmap(blob);
+          setupTexture(bitmap);
+        } else {
+          const image = new Image();
+          image.onload = () => setupTexture(image);
+          image.src = URL.createObjectURL(blob);
+        }
+      } catch {
+        return;
+      }
+    };
+
+    const resize = () => {
+      const width = Math.max(1, Math.round(wrap.clientWidth * RENDER_SCALE));
+      const height = Math.max(1, Math.round(wrap.clientHeight * RENDER_SCALE));
+      if (canvas.width !== width || canvas.height !== height) {
+        canvas.width = width;
+        canvas.height = height;
+      }
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      updateCrop();
+    };
+    resize();
+
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(wrap);
+
+    let targetX = 0.5;
+    let targetY = 0.5;
+    let mouseX = 0.5;
+    let mouseY = 0.5;
+
+    const onMouseMove = (event: MouseEvent) => {
+      const rect = wrap.getBoundingClientRect();
+      targetX = rect.width > 0 ? (event.clientX - rect.left) / rect.width : 0.5;
+      targetY = rect.height > 0 ? (event.clientY - rect.top) / rect.height : 0.5;
+    };
+    window.addEventListener('mousemove', onMouseMove);
+
+    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    let startTime = performance.now();
+    let animationFrame = 0;
+    let running = true;
+
+    const draw = (now: number) => {
+      if (!textureReady) return;
+      mouseX += (targetX - mouseX) * MOUSE_EASE;
+      mouseY += (targetY - mouseY) * MOUSE_EASE;
+
+      gl.useProgram(program);
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, texture);
+      gl.uniform1i(uTex, 0);
+      gl.uniform2f(uResolution, canvas.width, canvas.height);
+      gl.uniform1f(uTime, reducedMotionQuery.matches ? 0 : (now - startTime) / 1000);
+      gl.uniform2f(uMouse, mouseX, mouseY);
+      gl.uniform3fv(uColorA, colorA);
+      gl.uniform3fv(uColorB, colorB);
+      gl.uniform2f(uCrop, cropX, cropY);
+      gl.uniform1f(uShimmer, reducedMotionQuery.matches ? 0 : SHIMMER);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+    };
+
+    const loop = (now: number) => {
+      if (!running) return;
+      if (!document.hidden) draw(now);
+      animationFrame = requestAnimationFrame(loop);
+    };
+
+    const startLoop = () => {
+      if (animationFrame || !running || reducedMotionQuery.matches) return;
+      animationFrame = requestAnimationFrame(loop);
+    };
+
+    if (reducedMotionQuery.matches) {
+      draw(performance.now());
+    } else {
+      animationFrame = requestAnimationFrame(loop);
+    }
+
+    const onReducedMotionChange = () => {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = 0;
+      if (reducedMotionQuery.matches) {
+        draw(performance.now());
+      } else {
+        startLoop();
+      }
+    };
+
+    const media = reducedMotionQuery as MediaQueryList & {
+      addListener?: (listener: (event: MediaQueryListEvent) => void) => void;
+      removeListener?: (listener: (event: MediaQueryListEvent) => void) => void;
+    };
+    if (typeof media.addEventListener === 'function') {
+      media.addEventListener('change', onReducedMotionChange);
+    } else if (media.addListener) {
+      media.addListener(onReducedMotionChange);
+    }
+
+    const intersectionObserver = new IntersectionObserver(
+      (entries) => {
+        running = entries[0]?.isIntersecting ?? false;
+        if (running) {
+          startTime = performance.now();
+          startLoop();
+        } else {
+          cancelAnimationFrame(animationFrame);
+          animationFrame = 0;
+        }
+      },
+      { rootMargin: '150px 0px' },
+    );
+    intersectionObserver.observe(wrap);
+
+    void loadTexture();
+
+    return () => {
+      cancelAnimationFrame(animationFrame);
+      window.removeEventListener('mousemove', onMouseMove);
+      resizeObserver.disconnect();
+      intersectionObserver.disconnect();
+      if (typeof media.removeEventListener === 'function') {
+        media.removeEventListener('change', onReducedMotionChange);
+      } else if (media.removeListener) {
+        media.removeListener(onReducedMotionChange);
+      }
+      gl.deleteProgram(program);
+      gl.deleteBuffer(buffer);
+      gl.deleteTexture(texture);
+      gl.getExtension('WEBGL_lose_context')?.loseContext();
+    };
+  }, []);
+
   return (
-    <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none" aria-hidden="true">
-      {LAYERS.map((layer) =>
-        layer.shapes.map((shape, i) => (
-          <div
-            key={`${layer.speedClass}-${i}`}
-            className={`absolute left-0 ${SPEED_CLASS_MAP[layer.speedClass]}`}
-            style={{
-              top: shape.top,
-              animationDelay: shape.delay,
-            }}
-          >
-            <ShapeSVG shape={shape} color={layer.color} />
-          </div>
-        )),
-      )}
+    <div
+      ref={wrapRef}
+      className="absolute inset-0 z-0 overflow-hidden pointer-events-none"
+      aria-hidden="true"
+      style={{ background: `linear-gradient(155deg, ${COLOR_A} 0%, ${COLOR_B} 100%)` }}
+    >
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 block h-full w-full"
+        style={{ imageRendering: 'pixelated' }}
+      />
     </div>
   );
 }

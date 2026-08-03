@@ -55,7 +55,7 @@ export default function HeroContent() {
     >
       <motion.p
         variants={staggerItem}
-        className="hero-line flex flex-wrap items-baseline justify-center gap-x-1.5 gap-y-0 text-text-primary leading-none"
+        className="hero-line flex flex-wrap items-baseline justify-center gap-x-1.5 gap-y-0 text-[#F0EAD6] leading-none [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_8px_rgba(0,0,0,0.75)]"
       >
         <span className="font-jb text-base sm:text-lg md:text-xl font-medium">Hi, I&apos;m</span>
         <span className="hero-isaac font-vt323 text-3xl sm:text-4xl md:text-5xl leading-none">Isaac,</span>
@@ -64,21 +64,21 @@ export default function HeroContent() {
 
       <motion.h1
         variants={staggerItem}
-        className="hero-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-industrial uppercase font-bold tracking-wide md:tracking-widest text-text-primary leading-none select-none"
+        className="hero-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-industrial uppercase font-bold tracking-wide md:tracking-widest text-[#E8DCC0] leading-none select-none [text-shadow:0_2px_3px_rgba(0,0,0,0.85),0_0_10px_rgba(0,0,0,0.7)]"
       >
         {currentRole.title.split(' ').map((word, i) => (
           <span key={i} className="block">
             <ScrambleText text={word} />
           </span>
         ))}
-        <span className="hero-subtitle block mt-2 text-xs sm:text-sm md:text-base lg:text-lg leading-none overflow-hidden normal-case tracking-normal font-sans text-text-secondary">
+        <span className="hero-subtitle block mt-2 text-xs sm:text-sm md:text-base lg:text-lg leading-none overflow-hidden normal-case tracking-normal font-sans text-[#F0EAD6] [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_8px_rgba(0,0,0,0.75)]">
           <ScrambleText text={currentRole.subtitle} />
         </span>
       </motion.h1>
 
       <motion.div
         variants={staggerItem}
-        className="hero-desc max-w-xl mx-auto text-base sm:text-lg md:text-xl text-text-primary font-sans leading-relaxed"
+        className="hero-desc max-w-xl mx-auto text-base sm:text-lg md:text-xl text-[#F2E9D8] font-sans leading-relaxed [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_8px_rgba(0,0,0,0.75)]"
       >
         I turn vague problems into shipped, measurable wins. Code was born on localhost. It was never meant to die there.{" "}
         <MediaBetweenText
@@ -90,8 +90,8 @@ export default function HeroContent() {
           triggerType="hover"
           alt="where"
           className="hidden sm:inline-flex items-center align-middle"
-          leftTextClassName="font-mono text-text-primary/80"
-          rightTextClassName="font-mono text-text-primary/80"
+          leftTextClassName="font-mono text-[#F2E9D8]/80 [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_6px_rgba(0,0,0,0.75)]"
+          rightTextClassName="font-mono text-[#F2E9D8]/80 [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_6px_rgba(0,0,0,0.75)]"
           mediaContainerClassName="h-[2.25em] overflow-hidden mx-1"
           animationVariants={{
             initial: { width: 0 },
@@ -125,7 +125,7 @@ export default function HeroContent() {
           target="_blank"
           data-icon-hover-trigger
         >
-          <Button variant="outline" size="lg" className="group w-full sm:w-auto">
+          <Button variant="outline" size="lg" className="group w-full sm:w-auto text-[#F0EAD6]">
             Download Resume
             <IconHoverWrapper hoverTrigger="closest">
               <FileDescriptionIcon size={16} className="ml-2 transition-transform group-hover:-rotate-12" />
