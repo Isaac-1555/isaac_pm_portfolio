@@ -35,6 +35,7 @@ export function ScreenshotGrid({
             whileHover="hover"
             className="group relative block w-full overflow-hidden rounded-sm border border-divider bg-bg-dark text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cta cursor-zoom-in"
             style={{ aspectRatio: aspect }}
+            data-cursor-view
           >
             <Image
               src={item.src}

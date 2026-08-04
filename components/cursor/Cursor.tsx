@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useCursor } from "./cursor-context";
+import type { CursorVariant } from "./cursor-types";
 
 export function Cursor() {
   const {
@@ -56,6 +57,18 @@ export function Cursor() {
 
   const frameVisible = variant === "button" && targetRect;
 
+  const ringShape: Record<CursorVariant, string> = {
+    default: "w-[30px] h-[30px] rounded-full border border-white",
+    view: "w-[72px] h-[30px] rounded-full border border-white bg-white/10",
+    spotlight:
+      "w-[100px] h-[100px] rounded-full bg-white/10 shadow-[0_0_40px_rgba(255,255,255,0.12)]",
+    wrap: "w-[96px] h-[96px] rounded-full border border-white/70",
+    loading:
+      "w-[30px] h-[30px] rounded-full border-2 border-transparent border-t-white animate-spin",
+    disabled: "w-[30px] h-[30px] rounded-full border border-white opacity-20",
+    button: "w-[30px] h-[30px] rounded-full border border-white opacity-0 scale-50",
+  };
+
   return (
     <>
       <div
@@ -66,36 +79,25 @@ export function Cursor() {
         <div className="w-[7px] h-[7px] bg-white rounded-full -translate-x-1/2 -translate-y-1/2" />
       </div>
 
-      {variant !== "button" ? (
+      <div
+        ref={ringRef}
+        className={cursorStyle + " z-[9998]"}
+        style={{ mixBlendMode: "exclusion" }}
+      >
         <div
-          ref={ringRef}
-          className={cursorStyle + " z-[9998]"}
-          style={{ mixBlendMode: "exclusion" }}
+          className={
+            "-translate-x-1/2 -translate-y-1/2 flex items-center justify-center transition-all duration-200 ease-out " +
+            ringShape[variant]
+          }
+          style={variant === "loading" ? { animationDuration: "1.8s" } : undefined}
         >
-          {variant === "spotlight" ? (
-            <div className="w-[100px] h-[100px] rounded-full -translate-x-1/2 -translate-y-1/2 bg-white/10 shadow-[0_0_40px_rgba(255,255,255,0.12)]" />
-          ) : variant === "wrap" ? (
-            <div className="w-[96px] h-[96px] rounded-full -translate-x-1/2 -translate-y-1/2 border border-white/70" />
-          ) : variant === "loading" ? (
-            <div
-              className="w-[30px] h-[30px] rounded-full -translate-x-1/2 -translate-y-1/2 border-2 border-transparent border-t-white animate-spin"
-              style={{ animationDuration: "1.8s" }}
-            />
-          ) : variant === "disabled" ? (
-            <div className="w-[30px] h-[30px] rounded-full -translate-x-1/2 -translate-y-1/2 border border-white opacity-20" />
-          ) : (
-            <div className="w-[30px] h-[30px] rounded-full -translate-x-1/2 -translate-y-1/2 border border-white" />
+          {variant === "view" && (
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white leading-none select-none">
+              View
+            </span>
           )}
         </div>
-      ) : (
-        <div
-          ref={ringRef}
-          className={cursorStyle + " z-[9998]"}
-          style={{ mixBlendMode: "exclusion" }}
-        >
-          <div className="w-[30px] h-[30px] rounded-full -translate-x-1/2 -translate-y-1/2 border border-white opacity-0 scale-50 transition-all duration-200" />
-        </div>
-      )}
+      </div>
 
       {frameVisible && (
         <div

@@ -25,7 +25,7 @@ interface TargetRecord {
   rect: DOMRect;
   cx: number;
   cy: number;
-  type: "button" | "spotlight" | "disabled";
+  type: "button" | "spotlight" | "disabled" | "view";
 }
 
 interface CursorContextValue {
@@ -77,7 +77,7 @@ export function CursorProvider({ children }: Props) {
 
   const scanTargets = () => {
     const els: NodeListOf<Element> = document.querySelectorAll(
-      "[data-cursor-target], [data-cursor-spotlight]"
+      "[data-cursor-target], [data-cursor-spotlight], [data-cursor-view]"
     );
     const records: TargetRecord[] = [];
     for (const el of els) {
@@ -87,11 +87,13 @@ export function CursorProvider({ children }: Props) {
         rect,
         cx: rect.left + rect.width / 2,
         cy: rect.top + rect.height / 2,
-        type: el.hasAttribute("data-cursor-spotlight")
-          ? "spotlight"
-          : el.hasAttribute("disabled") || el.getAttribute("aria-disabled") === "true"
-            ? "disabled"
-            : "button",
+        type: el.hasAttribute("data-cursor-view")
+          ? "view"
+          : el.hasAttribute("data-cursor-spotlight")
+            ? "spotlight"
+            : el.hasAttribute("disabled") || el.getAttribute("aria-disabled") === "true"
+              ? "disabled"
+              : "button",
       });
     }
     targetsRef.current = records;
@@ -251,7 +253,7 @@ export function CursorProvider({ children }: Props) {
 
     const handleMouseOver = (e: MouseEvent) => {
       const el = (e.target as Element).closest(
-        "[data-cursor-target], [data-cursor-spotlight], [data-cursor-wrap]"
+        "[data-cursor-target], [data-cursor-spotlight], [data-cursor-wrap], [data-cursor-view]"
       );
       if (!el) return;
       if (el === enteredRef.current) return;
@@ -277,6 +279,11 @@ export function CursorProvider({ children }: Props) {
       if (isSpotlight) {
         setVariant("spotlight");
         setTargetRect(el.getBoundingClientRect());
+        return;
+      }
+      if (el.hasAttribute("data-cursor-view")) {
+        setVariant("view");
+        setTargetRect(null);
         return;
       }
       if (isWrap) {

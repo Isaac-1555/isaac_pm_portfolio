@@ -95,6 +95,7 @@ export function Figure({
         onClick={() => open(src)}
         aria-label={`Enlarge image: ${alt}`}
         className="group relative block w-full aspect-video rounded-sm overflow-hidden border-2 border-bg-dark bg-bg-dark shadow-lg cursor-zoom-in text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cta"
+        data-cursor-view
       >
         <Image
           src={src}

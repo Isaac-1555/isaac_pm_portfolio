@@ -121,7 +121,10 @@ function compileShader(gl: WebGLRenderingContext | WebGL2RenderingContext, type:
   gl.shaderSource(shader, source);
   gl.compileShader(shader);
   if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-    console.error('HeroBackground shader compile:', gl.getShaderInfoLog(shader));
+    console.error(
+      'HeroBackground shader compile:',
+      gl.getShaderInfoLog(shader) ?? 'unknown GLSL compile error',
+    );
     gl.deleteShader(shader);
     return null;
   }
@@ -164,6 +167,7 @@ export function HeroBackground() {
     if (!gl) gl = canvas.getContext('webgl', { preserveDrawingBuffer: true });
     if (!gl) gl = canvas.getContext('experimental-webgl', { preserveDrawingBuffer: true }) as WebGLRenderingContext | null;
     if (!gl) return;
+    if (gl.isContextLost()) return;
 
     const program = createProgram(gl);
     if (!program) return;
@@ -354,7 +358,6 @@ export function HeroBackground() {
       gl.deleteProgram(program);
       gl.deleteBuffer(buffer);
       gl.deleteTexture(texture);
-      gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
   }, []);
 
