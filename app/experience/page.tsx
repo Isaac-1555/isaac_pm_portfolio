@@ -90,6 +90,65 @@ const education = [
   },
 ];
 
+const certifications = [
+  {
+    name: "Product Marketing Fundamental",
+    url: "https://www.credly.com/badges/27eb5767-0aee-4ebe-ba3e-37bfac97b5f7",
+  },
+  {
+    name: "Product Marketing Go-to-Market Strategy",
+    url: "https://www.credly.com/badges/18ff8d76-40da-46fc-8f04-068f4e47336c",
+  },
+  {
+    name: "Leaders as Coaches",
+    url: "https://www.credly.com/badges/2b02ae67-541b-4ed5-8206-5963c6259e2b",
+  },
+  {
+    name: "Problem Solving & Decision Making",
+    url: "https://www.credly.com/badges/f453cc34-ee8f-42ed-9aec-c43ddcab66cc",
+  },
+  {
+    name: "Executing & Closing Projects",
+    url: "https://www.credly.com/badges/6a00922f-84df-4c36-86e1-02d50ef6d2e6",
+  },
+  {
+    name: "Leadership Skills",
+    url: "https://www.credly.com/badges/70ce20ea-9bd3-4795-bf65-9c5b6419da1c",
+  },
+  {
+    name: "Agile Project Management",
+    url: "https://www.credly.com/badges/424122c3-d17e-4c44-812d-7540b7c3421e",
+  },
+  {
+    name: "The Power of Productive Meetings",
+    url: "https://www.credly.com/badges/42e24dd5-38a4-40de-95f1-51267e293446",
+  },
+  {
+    name: "Project Risk Methods & Practices",
+    url: "https://www.credly.com/badges/290ef74a-6491-4b11-9780-f85beba472fc",
+  },
+  {
+    name: "Initiating Projects",
+    url: "https://www.credly.com/badges/fdd64a58-521e-49a9-84b3-d0afbe402a79",
+  },
+  {
+    name: "Planning Projects",
+    url: "https://www.credly.com/badges/a25cabbb-c011-470a-ab21-32211319c77f",
+  },
+  {
+    name: "Project Management Essentials",
+    url: "https://www.credly.com/badges/ddbc010f-4282-4dc6-a760-32d941cbdb83",
+  },
+  {
+    name: "Communicating Effectively",
+    url: "https://www.credly.com/badges/e6cc9ddf-2a25-4276-8dd2-1a79a5ec5bed",
+  },
+  {
+    name: "Using Time Effectively and Productively",
+    url: "https://www.credly.com/badges/b169ff2a-86ed-4c0d-a3c8-92598985e947",
+  },
+];
+
 export default function AboutPage() {
   const reduced = useRevealMotion();
   const intro = revealProps(reduced);
@@ -263,11 +322,13 @@ export default function AboutPage() {
             variants={staggerContainer}
             className="flex flex-wrap gap-3 will-change-transform"
           >
-            {["Agile & Scrum", "Prompt Engineering", "Context Engineering"].map((cert) => (
-              <motion.div key={cert} variants={staggerItemFast}>
-                <Badge variant="outline" className="text-sm px-4 py-2 border-cta/50 text-text-secondary">
-                  {cert}
-                </Badge>
+            {certifications.map((cert) => (
+              <motion.div key={cert.name} variants={staggerItemFast}>
+                <Link href={cert.url} target="_blank" rel="noopener noreferrer">
+                  <Badge variant="outline" className="text-sm px-4 py-2 border-cta/50 text-text-secondary transition-colors hover:border-cta hover:text-cta">
+                    {cert.name}
+                  </Badge>
+                </Link>
               </motion.div>
             ))}
           </motion.div>
