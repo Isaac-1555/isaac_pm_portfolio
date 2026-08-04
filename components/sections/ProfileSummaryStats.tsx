@@ -20,7 +20,7 @@ export function ProfileSummaryStats() {
           <div className="text-3xl md:text-4xl font-industrial font-bold text-white leading-none">
             {stat.value}
           </div>
-          <div className="text-xs md:text-sm font-industrial text-text-secondary uppercase tracking-wide mt-2">
+            <div className="text-xs md:text-sm font-industrial text-white uppercase tracking-wide mt-2">
             {stat.label}
           </div>
         </UnderlineToBackground>
