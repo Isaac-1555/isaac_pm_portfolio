@@ -13,6 +13,7 @@ import {
   createWaveState,
   createLootItem,
 } from './game/entities';
+import type { GamePhase } from './game/entities';
 import {
   processInput,
   updatePlayer,
@@ -69,6 +70,18 @@ interface HitEffect {
   x: number;
   y: number;
   time: number;
+}
+
+export interface GameResult {
+  score: number;
+  waveReached: number;
+}
+
+interface InteractivePortfolioGameProps {
+  /** Fired once when a run ends (phase -> gameOver). */
+  onGameOver?: (result: GameResult) => void;
+  /** Fired when a new run begins (space/tap to start or restart). */
+  onGameStart?: () => void;
 }
 
 function loadHighScore(): number {
@@ -148,7 +161,10 @@ function startGame(state: GameState): void {
   announceWave(state, 1);
 }
 
-export default function InteractivePortfolioGame() {
+export default function InteractivePortfolioGame({
+  onGameOver,
+  onGameStart,
+}: InteractivePortfolioGameProps = {}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const gameStateRef = useRef<GameState>(createInitialGameState());
@@ -158,6 +174,16 @@ export default function InteractivePortfolioGame() {
   const timeRef = useRef(0);
   const spacePressedRef = useRef(false);
   const tapPendingRef = useRef(false);
+  const phaseRef = useRef<GamePhase>(createInitialGameState().phase);
+
+  // Callbacks go through refs so the game loop (created once) always sees
+  // the latest handlers without being re-created when props change.
+  const onGameOverRef = useRef(onGameOver);
+  const onGameStartRef = useRef(onGameStart);
+  useEffect(() => {
+    onGameOverRef.current = onGameOver;
+    onGameStartRef.current = onGameStart;
+  });
 
   const touchStartXRef = useRef(0);
   const touchHasMovedRef = useRef(false);
@@ -302,6 +328,8 @@ export default function InteractivePortfolioGame() {
         if (state.phase === 'start' || state.phase === 'gameOver') {
           if (advance) {
             startGame(state);
+            phaseRef.current = 'playing';
+            onGameStartRef.current?.();
             spacePressedRef.current = isSpaceDown;
             drawFrame(state, timeRef.current);
             return;
@@ -496,6 +524,16 @@ export default function InteractivePortfolioGame() {
           if (hitEffectsRef.current[i].time > 0.3) {
             hitEffectsRef.current.splice(i, 1);
           }
+        }
+
+        // Notify once when a run ends so the host can offer score submission.
+        // state.phase is mutable and TS has narrowed it to 'playing' here,
+        // but physics functions can flip it to 'gameOver' at runtime.
+        if ((state.phase as GamePhase) === 'gameOver' && phaseRef.current !== 'gameOver') {
+          phaseRef.current = 'gameOver';
+          onGameOverRef.current?.({ score: state.score, waveReached: state.waveReached });
+        } else {
+          phaseRef.current = state.phase as GamePhase;
         }
 
         drawFrame(state, timeRef.current);
