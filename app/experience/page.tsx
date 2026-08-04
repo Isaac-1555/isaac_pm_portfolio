@@ -62,7 +62,7 @@ const experience = [
     role: "IT Operations Specialist",
     company: "Calgary Coop",
     period: "2024 - Present",
-    description: "Implemented workflow improvements that boosted team efficiency by 20%. Reduced file retrieval time 35% through optimized categorization. Streamlined documentation processedd supporting internal porduct tracking.",
+    description: "Implemented workflow improvements that boosted team efficiency by 20%. Reduced file retrieval time 35% through optimized categorization. Streamlined documentation processed supporting internal product tracking.",
   },
   {
     role: "Electrical Engineer",
