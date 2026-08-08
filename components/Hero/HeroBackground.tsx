@@ -2,12 +2,18 @@
 
 import { useEffect, useRef } from 'react';
 
-const TEXTURE_URL = '/hero_bg.png';
-const COLOR_A = '#171D20';
-const COLOR_B = '#525756';
+const DEFAULT_TEXTURE_URL = '/hero_bg.png';
+const DEFAULT_COLOR_A = '#171D20';
+const DEFAULT_COLOR_B = '#525756';
 const RENDER_SCALE = 0.5;
 const MOUSE_EASE = 0.06;
 const SHIMMER = 0.08;
+
+export interface HeroBackgroundProps {
+  textureUrl?: string;
+  colorA?: string;
+  colorB?: string;
+}
 
 const VERTEX_SHADER = `
 attribute vec2 a_position;
@@ -152,9 +158,12 @@ function createProgram(gl: WebGLRenderingContext | WebGL2RenderingContext) {
   return program;
 }
 
-export function HeroBackground() {
+export function HeroBackground({ textureUrl = DEFAULT_TEXTURE_URL, colorA = DEFAULT_COLOR_A, colorB = DEFAULT_COLOR_B }: HeroBackgroundProps) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  const propsRef = useRef({ textureUrl, colorA, colorB });
+  propsRef.current = { textureUrl, colorA, colorB };
 
   useEffect(() => {
     const wrap = wrapRef.current;
@@ -189,8 +198,8 @@ export function HeroBackground() {
     const uShimmer = gl.getUniformLocation(program, 'u_shimmer');
     const uTex = gl.getUniformLocation(program, 'u_tex');
 
-    const colorA = new Float32Array(parseHex(COLOR_A));
-    const colorB = new Float32Array(parseHex(COLOR_B));
+    const colorA = new Float32Array(parseHex(propsRef.current.colorA));
+    const colorB = new Float32Array(parseHex(propsRef.current.colorB));
 
     let texture: WebGLTexture | null = null;
     let textureReady = false;
@@ -223,7 +232,7 @@ export function HeroBackground() {
 
     const loadTexture = async () => {
       try {
-        const response = await fetch(TEXTURE_URL);
+        const response = await fetch(propsRef.current.textureUrl);
         if (!response.ok) return;
         const blob = await response.blob();
         if ('createImageBitmap' in window) {
@@ -366,7 +375,7 @@ export function HeroBackground() {
       ref={wrapRef}
       className="absolute inset-0 z-0 overflow-hidden pointer-events-none"
       aria-hidden="true"
-      style={{ background: `linear-gradient(155deg, ${COLOR_A} 0%, ${COLOR_B} 100%)` }}
+      style={{ background: `linear-gradient(155deg, ${propsRef.current.colorA} 0%, ${propsRef.current.colorB} 100%)` }}
     >
       <canvas
         ref={canvasRef}

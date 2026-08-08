@@ -26,6 +26,7 @@ import { notFound } from "next/navigation";
 import type { AnimatedIconProps } from "@/components/icons/types";
 import { TechPillField } from "@/components/case-study/TechPillField";
 import { ScreenshotGrid } from "@/components/image/ScreenshotGrid";
+import { HeroBackground } from "@/components/Hero/HeroBackground";
 import { revealProps, useRevealMotion } from "@/lib/motion";
 
 function SectionHeader({ icon: Icon, title }: { icon: React.ComponentType<AnimatedIconProps>, title: string }) {
@@ -59,6 +60,13 @@ export default function CaseStudyDetail({ params }: { params: Promise<{ slug: st
     <article className="min-h-screen pb-24 bg-bg-base">
       {/* Header */}
       <header className={`py-24 relative overflow-hidden bg-gradient-to-br ${project.gradient}`}>
+        {project.heroBackground && (
+          <HeroBackground
+            textureUrl={project.heroBackground.image}
+            colorA={project.heroBackground.colorA}
+            colorB={project.heroBackground.colorB}
+          />
+        )}
         <TechPillField techStack={project.techStack} />
         <div className="absolute inset-0 bg-bg-dark/40 z-[2] pointer-events-none" />
         <div className="absolute inset-0 z-[2] diagonal-stripes opacity-10 pointer-events-none" />
