@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const DEFAULT_TEXTURE_URL = '/hero_bg.png';
 const DEFAULT_COLOR_A = '#171D20';
@@ -8,6 +8,8 @@ const DEFAULT_COLOR_B = '#525756';
 const RENDER_SCALE = 0.5;
 const MOUSE_EASE = 0.06;
 const SHIMMER = 0.08;
+const MAX_TEX_DIM = 1024; // cap VRAM: 2.6M PNG ~2048x2048 -> 4Mpx -> scale to 1Mpx
+const MAX_CONTEXT_LOST_RETRIES = 2;
 
 export interface HeroBackgroundProps {
   textureUrl?: string;
@@ -158,9 +160,29 @@ function createProgram(gl: WebGLRenderingContext | WebGL2RenderingContext) {
   return program;
 }
 
+function downscaleSource(source: ImageBitmap | HTMLImageElement): ImageBitmap | HTMLCanvasElement | HTMLImageElement {
+  const w = source.width;
+  const h = source.height;
+  if (w <= MAX_TEX_DIM && h <= MAX_TEX_DIM) return source;
+  const scale = Math.min(MAX_TEX_DIM / w, MAX_TEX_DIM / h);
+  const cw = Math.max(1, Math.round(w * scale));
+  const ch = Math.max(1, Math.round(h * scale));
+  const off = document.createElement('canvas');
+  off.width = cw;
+  off.height = ch;
+  const ctx = off.getContext('2d');
+  if (!ctx) return source;
+  // Use high-quality downscale
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(source as unknown as CanvasImageSource, 0, 0, cw, ch);
+  return off;
+}
+
 export function HeroBackground({ textureUrl = DEFAULT_TEXTURE_URL, colorA = DEFAULT_COLOR_A, colorB = DEFAULT_COLOR_B }: HeroBackgroundProps) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [fallback, setFallback] = useState(false);
 
   const propsRef = useRef({ textureUrl, colorA, colorB });
   propsRef.current = { textureUrl, colorA, colorB };
@@ -170,17 +192,59 @@ export function HeroBackground({ textureUrl = DEFAULT_TEXTURE_URL, colorA = DEFA
     const canvas = canvasRef.current;
     if (!wrap || !canvas) return;
 
-    let gl: WebGLRenderingContext | WebGL2RenderingContext | null = canvas.getContext('webgl2', {
+    // If too many WebGL contexts already, browsers evict oldest -> immediate CONTEXT_LOST.
+    // Hard fallback: if we already failed before, stay in CSS-only mode.
+    let lostCount = 0;
+    let aborted = false;
+
+    // Must add lost/restored listeners BEFORE getContext to catch early eviction.
+    const onContextLost = (e: Event) => {
+      e.preventDefault();
+      lostCount += 1;
+      // After 2+ losses, permanently fall back to gradient — avoids log spam loop.
+      if (lostCount >= MAX_CONTEXT_LOST_RETRIES) {
+        aborted = true;
+        setFallback(true);
+      }
+    };
+    // Temporary placeholder, real handler wired after gl init below
+    let onContextRestored: () => void = () => {};
+
+    canvas.addEventListener('webglcontextlost', onContextLost);
+    // We'll re-add the real restored listener after init
+
+    // Reduce VRAM pressure: low-power, no alpha/antialias/preserveBuffer, desynchronized
+    const contextAttrs: WebGLContextAttributes = {
       alpha: false,
       antialias: false,
       preserveDrawingBuffer: false,
-    });
-    if (!gl) gl = canvas.getContext('webgl', { alpha: false, antialias: false, preserveDrawingBuffer: false });
-    if (!gl) return;
-    if (gl.isContextLost()) return;
+      powerPreference: 'low-power',
+      desynchronized: true,
+      failIfMajorPerformanceCaveat: false,
+    } as WebGLContextAttributes & { desynchronized?: boolean };
+
+    let gl: WebGLRenderingContext | WebGL2RenderingContext | null =
+      canvas.getContext('webgl2', contextAttrs) as WebGL2RenderingContext | null;
+    if (!gl) gl = canvas.getContext('webgl', contextAttrs) as WebGLRenderingContext | null;
+    if (!gl) {
+      canvas.removeEventListener('webglcontextlost', onContextLost);
+      setFallback(true);
+      return;
+    }
+    if (gl.isContextLost()) {
+      canvas.removeEventListener('webglcontextlost', onContextLost);
+      setFallback(true);
+      return;
+    }
+
+    // Replace temporary listener with full handler that tracks running state
+    canvas.removeEventListener('webglcontextlost', onContextLost);
 
     let program: WebGLProgram | null = createProgram(gl);
-    if (!program) return;
+    if (!program) {
+      setFallback(true);
+      return;
+    }
 
     let buffer: WebGLBuffer | null = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
@@ -216,18 +280,24 @@ export function HeroBackground({ textureUrl = DEFAULT_TEXTURE_URL, colorA = DEFA
       cropY = canvas.height / texSize.height / scale;
     };
 
-    const setupTexture = (source: ImageBitmap | HTMLImageElement) => {
-      if (contextLost) return;
-      // Recreate texture on restore; delete old if exists
+    const setupTexture = (source: ImageBitmap | HTMLImageElement | HTMLCanvasElement) => {
+      if (contextLost || aborted) return;
+      const scaled = downscaleSource(source as ImageBitmap | HTMLImageElement);
+      // If createImageBitmap source, close original to free memory after downscale
+      if (typeof ImageBitmap !== 'undefined' && source instanceof ImageBitmap && scaled !== source) {
+        try { source.close(); } catch {}
+      }
       if (texture) gl!.deleteTexture(texture);
       texture = gl!.createTexture();
       gl!.bindTexture(gl!.TEXTURE_2D, texture);
-      gl!.texImage2D(gl!.TEXTURE_2D, 0, gl!.RGBA, gl!.RGBA, gl!.UNSIGNED_BYTE, source);
+      // Unpack flip not needed; ensure correct colorspace
+      gl!.pixelStorei(gl!.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+      gl!.texImage2D(gl!.TEXTURE_2D, 0, gl!.RGBA, gl!.RGBA, gl!.UNSIGNED_BYTE, scaled as TexImageSource);
       gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_WRAP_S, gl!.CLAMP_TO_EDGE);
       gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_WRAP_T, gl!.CLAMP_TO_EDGE);
       gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_MIN_FILTER, gl!.LINEAR);
       gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_MAG_FILTER, gl!.LINEAR);
-      texSize = { width: source.width, height: source.height };
+      texSize = { width: (scaled as { width: number; height: number }).width, height: (scaled as { width: number; height: number }).height };
       textureReady = true;
       updateCrop();
       if (reducedMotionQuery.matches) {
@@ -236,16 +306,23 @@ export function HeroBackground({ textureUrl = DEFAULT_TEXTURE_URL, colorA = DEFA
     };
 
     const loadTexture = async () => {
+      if (aborted) return;
       try {
         const response = await fetch(propsRef.current.textureUrl);
         if (!response.ok) return;
         const blob = await response.blob();
         if ('createImageBitmap' in window) {
-          const bitmap = await createImageBitmap(blob);
+          const opts: ImageBitmapOptions = { premultiplyAlpha: 'none', colorSpaceConversion: 'none' as ImageBitmapOptions['colorSpaceConversion'] };
+          const bitmap = await createImageBitmap(blob, opts).catch(async () => await createImageBitmap(blob));
           setupTexture(bitmap);
         } else {
           const image = new Image();
-          image.onload = () => setupTexture(image);
+          image.decoding = 'async';
+          image.onload = () => {
+            setupTexture(image);
+            URL.revokeObjectURL(image.src);
+          };
+          image.onerror = () => URL.revokeObjectURL(image.src);
           image.src = URL.createObjectURL(blob);
         }
       } catch {
@@ -254,13 +331,14 @@ export function HeroBackground({ textureUrl = DEFAULT_TEXTURE_URL, colorA = DEFA
     };
 
     const resize = () => {
+      if (aborted || !gl) return;
       const width = Math.max(1, Math.round(wrap.clientWidth * RENDER_SCALE));
       const height = Math.max(1, Math.round(wrap.clientHeight * RENDER_SCALE));
       if (canvas.width !== width || canvas.height !== height) {
         canvas.width = width;
         canvas.height = height;
       }
-      gl!.viewport(0, 0, canvas.width, canvas.height);
+      gl.viewport(0, 0, canvas.width, canvas.height);
       updateCrop();
     };
     resize();
@@ -287,33 +365,43 @@ export function HeroBackground({ textureUrl = DEFAULT_TEXTURE_URL, colorA = DEFA
     let running = true;
 
     const draw = (now: number) => {
-      if (!textureReady || contextLost || !gl || !program) return;
+      if (!textureReady || contextLost || aborted || !gl || !program) return;
       if (gl.isContextLost()) return;
       mouseX += (targetX - mouseX) * MOUSE_EASE;
       mouseY += (targetY - mouseY) * MOUSE_EASE;
 
-      gl.useProgram(program);
-      gl.activeTexture(gl.TEXTURE0);
-      gl.bindTexture(gl.TEXTURE_2D, texture);
-      gl.uniform1i(uTex, 0);
-      gl.uniform2f(uResolution, canvas.width, canvas.height);
-      gl.uniform1f(uTime, reducedMotionQuery.matches ? 0 : (now - startTime) / 1000);
-      gl.uniform2f(uMouse, mouseX, mouseY);
-      gl.uniform3fv(uColorA, colorAVec);
-      gl.uniform3fv(uColorB, colorBVec);
-      gl.uniform2f(uCrop, cropX, cropY);
-      gl.uniform1f(uShimmer, reducedMotionQuery.matches ? 0 : SHIMMER);
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
+      try {
+        gl.useProgram(program);
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+        gl.uniform1i(uTex, 0);
+        gl.uniform2f(uResolution, canvas.width, canvas.height);
+        gl.uniform1f(uTime, reducedMotionQuery.matches ? 0 : (now - startTime) / 1000);
+        gl.uniform2f(uMouse, mouseX, mouseY);
+        gl.uniform3fv(uColorA, colorAVec);
+        gl.uniform3fv(uColorB, colorBVec);
+        gl.uniform2f(uCrop, cropX, cropY);
+        gl.uniform1f(uShimmer, reducedMotionQuery.matches ? 0 : SHIMMER);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+        const err = gl.getError();
+        if (err === gl.CONTEXT_LOST_WEBGL) {
+          contextLost = true;
+          return;
+        }
+      } catch {
+        // Swallow transient GL errors after context loss
+        return;
+      }
     };
 
     const loop = (now: number) => {
-      if (!running || contextLost) return;
+      if (!running || contextLost || aborted) return;
       if (!document.hidden) draw(now);
       animationFrame = requestAnimationFrame(loop);
     };
 
     const startLoop = () => {
-      if (animationFrame || !running || reducedMotionQuery.matches || contextLost) return;
+      if (animationFrame || !running || reducedMotionQuery.matches || contextLost || aborted) return;
       animationFrame = requestAnimationFrame(loop);
     };
 
@@ -358,45 +446,50 @@ export function HeroBackground({ textureUrl = DEFAULT_TEXTURE_URL, colorA = DEFA
     );
     intersectionObserver.observe(wrap);
 
-    // Handle GPU context loss/restore — prevents stale black canvas + console spam
-    const onContextLost = (e: Event) => {
+    // Full context loss/restore handlers — must preventDefault to allow restore
+    const fullOnContextLost = (e: Event) => {
       e.preventDefault();
       contextLost = true;
+      lostCount += 1;
+      if (lostCount >= MAX_CONTEXT_LOST_RETRIES) {
+        aborted = true;
+        setFallback(true);
+      }
       textureReady = false;
       cancelAnimationFrame(animationFrame);
       animationFrame = 0;
       running = false;
     };
 
-    const onContextRestored = () => {
-      // Re-acquire context and re-init GL resources
-      const restoredGl = canvas.getContext('webgl2', { alpha: false, antialias: false, preserveDrawingBuffer: false }) as WebGLRenderingContext | WebGL2RenderingContext | null
-        ?? canvas.getContext('webgl', { alpha: false, antialias: false, preserveDrawingBuffer: false }) as WebGLRenderingContext | null;
-      if (!restoredGl) return;
-      gl = restoredGl;
+    onContextRestored = () => {
+      if (aborted) return;
+      // Don't re-acquire via getContext — browser restores same context automatically
+      // Just re-init GL resources
+      const restoredProgram = createProgram(gl!);
+      if (!restoredProgram) {
+        setFallback(true);
+        return;
+      }
+      // Clean old refs if not lost
+      program = restoredProgram;
 
-      const newProgram = createProgram(gl);
-      if (!newProgram) return;
-      program = newProgram;
+      buffer = gl!.createBuffer();
+      gl!.bindBuffer(gl!.ARRAY_BUFFER, buffer);
+      gl!.bufferData(gl!.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
 
-      buffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+      positionLocation = gl!.getAttribLocation(program, 'a_position');
+      gl!.enableVertexAttribArray(positionLocation);
+      gl!.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
-      positionLocation = gl.getAttribLocation(program, 'a_position');
-      gl.enableVertexAttribArray(positionLocation);
-      gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+      uResolution = gl!.getUniformLocation(program, 'u_resolution');
+      uTime = gl!.getUniformLocation(program, 'u_time');
+      uMouse = gl!.getUniformLocation(program, 'u_mouse');
+      uColorA = gl!.getUniformLocation(program, 'u_colorA');
+      uColorB = gl!.getUniformLocation(program, 'u_colorB');
+      uCrop = gl!.getUniformLocation(program, 'u_crop');
+      uShimmer = gl!.getUniformLocation(program, 'u_shimmer');
+      uTex = gl!.getUniformLocation(program, 'u_tex');
 
-      uResolution = gl.getUniformLocation(program, 'u_resolution');
-      uTime = gl.getUniformLocation(program, 'u_time');
-      uMouse = gl.getUniformLocation(program, 'u_mouse');
-      uColorA = gl.getUniformLocation(program, 'u_colorA');
-      uColorB = gl.getUniformLocation(program, 'u_colorB');
-      uCrop = gl.getUniformLocation(program, 'u_crop');
-      uShimmer = gl.getUniformLocation(program, 'u_shimmer');
-      uTex = gl.getUniformLocation(program, 'u_tex');
-
-      // Reset state
       texture = null;
       textureReady = false;
       texSize = null;
@@ -412,28 +505,30 @@ export function HeroBackground({ textureUrl = DEFAULT_TEXTURE_URL, colorA = DEFA
       }
     };
 
-    canvas.addEventListener('webglcontextlost', onContextLost);
+    canvas.addEventListener('webglcontextlost', fullOnContextLost);
     canvas.addEventListener('webglcontextrestored', onContextRestored);
 
     void loadTexture();
 
     return () => {
+      aborted = true;
       cancelAnimationFrame(animationFrame);
       window.removeEventListener('mousemove', onMouseMove);
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
-      canvas.removeEventListener('webglcontextlost', onContextLost);
+      canvas.removeEventListener('webglcontextlost', fullOnContextLost);
       canvas.removeEventListener('webglcontextrestored', onContextRestored);
       if (typeof media.removeEventListener === 'function') {
         media.removeEventListener('change', onReducedMotionChange);
       } else if (media.removeListener) {
         media.removeListener(onReducedMotionChange);
       }
-      // Only delete if context not already lost (avoids INVALID_OPERATION)
       if (gl && !gl.isContextLost()) {
-        if (program) gl.deleteProgram(program);
-        if (buffer) gl.deleteBuffer(buffer);
-        if (texture) gl.deleteTexture(texture);
+        try {
+          if (program) gl.deleteProgram(program);
+          if (buffer) gl.deleteBuffer(buffer);
+          if (texture) gl.deleteTexture(texture);
+        } catch {}
       }
     };
   }, []);
@@ -445,11 +540,13 @@ export function HeroBackground({ textureUrl = DEFAULT_TEXTURE_URL, colorA = DEFA
       aria-hidden="true"
       style={{ background: `linear-gradient(155deg, ${propsRef.current.colorA} 0%, ${propsRef.current.colorB} 100%)` }}
     >
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 block h-full w-full"
-        style={{ imageRendering: 'pixelated' }}
-      />
+      {!fallback && (
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 block h-full w-full"
+          style={{ imageRendering: 'pixelated' }}
+        />
+      )}
     </div>
   );
 }
