@@ -75,14 +75,14 @@ export function Hero() {
               </IconHoverWrapper>
             </Button>
           </Link>
-<Link href="/Isaac_Daniel_Sudakar_Resume.pdf" download target="_blank" data-icon-hover-trigger>
+<a href="/Isaac_Daniel_Sudakar_Resume.pdf" download target="_blank" rel="noopener noreferrer" data-icon-hover-trigger>
             <Button variant="outline" size="lg" className="group w-full sm:w-auto">
               Download Resume
               <IconHoverWrapper hoverTrigger="closest">
                 <FileDescriptionIcon size={16} className="ml-2 transition-transform group-hover:-rotate-12" />
               </IconHoverWrapper>
             </Button>
-          </Link>
+          </a>
         </div>
 
         {/* Technical Decorative Elements - Kept for theme consistency but simplified */}

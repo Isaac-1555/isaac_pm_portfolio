@@ -171,41 +171,43 @@ export function HeroBackground({ textureUrl = DEFAULT_TEXTURE_URL, colorA = DEFA
     if (!wrap || !canvas) return;
 
     let gl: WebGLRenderingContext | WebGL2RenderingContext | null = canvas.getContext('webgl2', {
-      preserveDrawingBuffer: true,
+      alpha: false,
+      antialias: false,
+      preserveDrawingBuffer: false,
     });
-    if (!gl) gl = canvas.getContext('webgl', { preserveDrawingBuffer: true });
-    if (!gl) gl = canvas.getContext('experimental-webgl', { preserveDrawingBuffer: true }) as WebGLRenderingContext | null;
+    if (!gl) gl = canvas.getContext('webgl', { alpha: false, antialias: false, preserveDrawingBuffer: false });
     if (!gl) return;
     if (gl.isContextLost()) return;
 
-    const program = createProgram(gl);
+    let program: WebGLProgram | null = createProgram(gl);
     if (!program) return;
 
-    const buffer = gl.createBuffer();
+    let buffer: WebGLBuffer | null = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
 
-    const positionLocation = gl.getAttribLocation(program, 'a_position');
+    let positionLocation = gl.getAttribLocation(program, 'a_position');
     gl.enableVertexAttribArray(positionLocation);
     gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
-    const uResolution = gl.getUniformLocation(program, 'u_resolution');
-    const uTime = gl.getUniformLocation(program, 'u_time');
-    const uMouse = gl.getUniformLocation(program, 'u_mouse');
-    const uColorA = gl.getUniformLocation(program, 'u_colorA');
-    const uColorB = gl.getUniformLocation(program, 'u_colorB');
-    const uCrop = gl.getUniformLocation(program, 'u_crop');
-    const uShimmer = gl.getUniformLocation(program, 'u_shimmer');
-    const uTex = gl.getUniformLocation(program, 'u_tex');
+    let uResolution = gl.getUniformLocation(program, 'u_resolution');
+    let uTime = gl.getUniformLocation(program, 'u_time');
+    let uMouse = gl.getUniformLocation(program, 'u_mouse');
+    let uColorA = gl.getUniformLocation(program, 'u_colorA');
+    let uColorB = gl.getUniformLocation(program, 'u_colorB');
+    let uCrop = gl.getUniformLocation(program, 'u_crop');
+    let uShimmer = gl.getUniformLocation(program, 'u_shimmer');
+    let uTex = gl.getUniformLocation(program, 'u_tex');
 
-    const colorA = new Float32Array(parseHex(propsRef.current.colorA));
-    const colorB = new Float32Array(parseHex(propsRef.current.colorB));
+    const colorAVec = new Float32Array(parseHex(propsRef.current.colorA));
+    const colorBVec = new Float32Array(parseHex(propsRef.current.colorB));
 
     let texture: WebGLTexture | null = null;
     let textureReady = false;
     let texSize: { width: number; height: number } | null = null;
     let cropX = 1;
     let cropY = 1;
+    let contextLost = false;
 
     const updateCrop = () => {
       if (!texSize) return;
@@ -215,13 +217,16 @@ export function HeroBackground({ textureUrl = DEFAULT_TEXTURE_URL, colorA = DEFA
     };
 
     const setupTexture = (source: ImageBitmap | HTMLImageElement) => {
-      texture = gl.createTexture();
-      gl.bindTexture(gl.TEXTURE_2D, texture);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      if (contextLost) return;
+      // Recreate texture on restore; delete old if exists
+      if (texture) gl!.deleteTexture(texture);
+      texture = gl!.createTexture();
+      gl!.bindTexture(gl!.TEXTURE_2D, texture);
+      gl!.texImage2D(gl!.TEXTURE_2D, 0, gl!.RGBA, gl!.RGBA, gl!.UNSIGNED_BYTE, source);
+      gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_WRAP_S, gl!.CLAMP_TO_EDGE);
+      gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_WRAP_T, gl!.CLAMP_TO_EDGE);
+      gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_MIN_FILTER, gl!.LINEAR);
+      gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_MAG_FILTER, gl!.LINEAR);
       texSize = { width: source.width, height: source.height };
       textureReady = true;
       updateCrop();
@@ -255,7 +260,7 @@ export function HeroBackground({ textureUrl = DEFAULT_TEXTURE_URL, colorA = DEFA
         canvas.width = width;
         canvas.height = height;
       }
-      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl!.viewport(0, 0, canvas.width, canvas.height);
       updateCrop();
     };
     resize();
@@ -282,7 +287,8 @@ export function HeroBackground({ textureUrl = DEFAULT_TEXTURE_URL, colorA = DEFA
     let running = true;
 
     const draw = (now: number) => {
-      if (!textureReady) return;
+      if (!textureReady || contextLost || !gl || !program) return;
+      if (gl.isContextLost()) return;
       mouseX += (targetX - mouseX) * MOUSE_EASE;
       mouseY += (targetY - mouseY) * MOUSE_EASE;
 
@@ -293,21 +299,21 @@ export function HeroBackground({ textureUrl = DEFAULT_TEXTURE_URL, colorA = DEFA
       gl.uniform2f(uResolution, canvas.width, canvas.height);
       gl.uniform1f(uTime, reducedMotionQuery.matches ? 0 : (now - startTime) / 1000);
       gl.uniform2f(uMouse, mouseX, mouseY);
-      gl.uniform3fv(uColorA, colorA);
-      gl.uniform3fv(uColorB, colorB);
+      gl.uniform3fv(uColorA, colorAVec);
+      gl.uniform3fv(uColorB, colorBVec);
       gl.uniform2f(uCrop, cropX, cropY);
       gl.uniform1f(uShimmer, reducedMotionQuery.matches ? 0 : SHIMMER);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
 
     const loop = (now: number) => {
-      if (!running) return;
+      if (!running || contextLost) return;
       if (!document.hidden) draw(now);
       animationFrame = requestAnimationFrame(loop);
     };
 
     const startLoop = () => {
-      if (animationFrame || !running || reducedMotionQuery.matches) return;
+      if (animationFrame || !running || reducedMotionQuery.matches || contextLost) return;
       animationFrame = requestAnimationFrame(loop);
     };
 
@@ -352,6 +358,63 @@ export function HeroBackground({ textureUrl = DEFAULT_TEXTURE_URL, colorA = DEFA
     );
     intersectionObserver.observe(wrap);
 
+    // Handle GPU context loss/restore — prevents stale black canvas + console spam
+    const onContextLost = (e: Event) => {
+      e.preventDefault();
+      contextLost = true;
+      textureReady = false;
+      cancelAnimationFrame(animationFrame);
+      animationFrame = 0;
+      running = false;
+    };
+
+    const onContextRestored = () => {
+      // Re-acquire context and re-init GL resources
+      const restoredGl = canvas.getContext('webgl2', { alpha: false, antialias: false, preserveDrawingBuffer: false }) as WebGLRenderingContext | WebGL2RenderingContext | null
+        ?? canvas.getContext('webgl', { alpha: false, antialias: false, preserveDrawingBuffer: false }) as WebGLRenderingContext | null;
+      if (!restoredGl) return;
+      gl = restoredGl;
+
+      const newProgram = createProgram(gl);
+      if (!newProgram) return;
+      program = newProgram;
+
+      buffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+
+      positionLocation = gl.getAttribLocation(program, 'a_position');
+      gl.enableVertexAttribArray(positionLocation);
+      gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+      uResolution = gl.getUniformLocation(program, 'u_resolution');
+      uTime = gl.getUniformLocation(program, 'u_time');
+      uMouse = gl.getUniformLocation(program, 'u_mouse');
+      uColorA = gl.getUniformLocation(program, 'u_colorA');
+      uColorB = gl.getUniformLocation(program, 'u_colorB');
+      uCrop = gl.getUniformLocation(program, 'u_crop');
+      uShimmer = gl.getUniformLocation(program, 'u_shimmer');
+      uTex = gl.getUniformLocation(program, 'u_tex');
+
+      // Reset state
+      texture = null;
+      textureReady = false;
+      texSize = null;
+      contextLost = false;
+      running = true;
+      startTime = performance.now();
+      resize();
+      void loadTexture();
+      if (reducedMotionQuery.matches) {
+        draw(performance.now());
+      } else {
+        startLoop();
+      }
+    };
+
+    canvas.addEventListener('webglcontextlost', onContextLost);
+    canvas.addEventListener('webglcontextrestored', onContextRestored);
+
     void loadTexture();
 
     return () => {
@@ -359,14 +422,19 @@ export function HeroBackground({ textureUrl = DEFAULT_TEXTURE_URL, colorA = DEFA
       window.removeEventListener('mousemove', onMouseMove);
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
+      canvas.removeEventListener('webglcontextlost', onContextLost);
+      canvas.removeEventListener('webglcontextrestored', onContextRestored);
       if (typeof media.removeEventListener === 'function') {
         media.removeEventListener('change', onReducedMotionChange);
       } else if (media.removeListener) {
         media.removeListener(onReducedMotionChange);
       }
-      gl.deleteProgram(program);
-      gl.deleteBuffer(buffer);
-      gl.deleteTexture(texture);
+      // Only delete if context not already lost (avoids INVALID_OPERATION)
+      if (gl && !gl.isContextLost()) {
+        if (program) gl.deleteProgram(program);
+        if (buffer) gl.deleteBuffer(buffer);
+        if (texture) gl.deleteTexture(texture);
+      }
     };
   }, []);
 

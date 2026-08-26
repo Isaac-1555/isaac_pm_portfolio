@@ -201,14 +201,14 @@ export default function AboutPage() {
             No matter the industry, the problem is usually the same: people are <TextHighlighter highlightColor="hsla(1, 85%, 65%, 0.7)" highlightTextColor="#2B3233" direction="ltr" transition={{ type: "spring", duration: 1, delay: 1.5, bounce: 0 }}>stuck doing things the hard way</TextHighlighter>. My work has always revolved around finding those moments, understanding why they exist, and building solutions that make work faster, simpler, and more enjoyable. I&apos;ve been able to move between engineering, product, and business teams because I enjoy <TextHighlighter highlightColor="hsla(1, 85%, 65%, 0.7)" highlightTextColor="#2B3233" direction="ltr" transition={{ type: "spring", duration: 1, delay: 1.5, bounce: 0 }}>speaking both languages</TextHighlighter>: the technical details and the human side of the problem. I&apos;m at my best when I&apos;m collaborating with people, earning their trust, and <TextHighlighter highlightColor="hsla(1, 85%, 65%, 0.7)" highlightTextColor="#2B3233" direction="ltr" transition={{ type: "spring", duration: 1, delay: 1.5, bounce: 0 }}>turning messy ideas into something teams can actually use</TextHighlighter>.
           </motion.p>
           <motion.div variants={staggerItem} className="mt-8">
-            <Link href="/Isaac_Daniel_Sudakar_Resume.pdf" download target="_blank" data-icon-hover-trigger>
+            <a href="/Isaac_Daniel_Sudakar_Resume.pdf" download target="_blank" rel="noopener noreferrer" data-icon-hover-trigger>
               <Button variant="outline" className="gap-2">
                 <IconHoverWrapper hoverTrigger="closest">
                   <FileDescriptionIcon size={16} />
                 </IconHoverWrapper>
                 Download Resume
               </Button>
-            </Link>
+            </a>
           </motion.div>
         </motion.div>
 
