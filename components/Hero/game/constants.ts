@@ -127,8 +127,7 @@ export const GAME_PROJECTS: GameProject[] = [
     description:
       'Tailors resumes to any job description using AI. Works on LinkedIn, Indeed, and all major job boards.',
     tags: ['GenAI', 'Productivity', 'Chrome Ext'],
-    websiteUrl:
-      'https://chromewebstore.google.com/detail/pocketresume/mdplmgfkpgalajmchilemiamifoaneip',
+    websiteUrl: 'https://pocket-resume.xyz',
     repoUrl: 'https://github.com/Isaac-1555/pocket-resume',
     color: COLORS.warning,
   },

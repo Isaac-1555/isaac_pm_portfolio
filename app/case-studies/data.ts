@@ -362,7 +362,7 @@ export const caseStudies: CaseStudy[] = [
     heroBackground: { image: "/PocketResume_works_bg.png", colorA: "#3E4C4D", colorB: "#D97B4A" },
     tags: ["GenAI", "Chrome Ext", "Productivity"],
     techStack: ["Chrome MV3", "TypeScript", "AI API", "jsPDF", "DOM Scraping", "Tailwind", "Chrome Storage API"],
-    websiteUrl: "https://chromewebstore.google.com/detail/pocketresume/mdplmgfkpgalajmchilemiamifoaneip?hl=en-US&utm_source=ext_sidebar",
+    websiteUrl: "https://pocket-resume.xyz",
     repoUrl: "https://github.com/Isaac-1555/pocket-resume",
     screenshots: [
       "/PocketResume_UI.png",
