@@ -72,7 +72,9 @@ export default function HeroContent() {
         variants={staggerItem}
         className="hero-desc max-w-xl mx-auto text-base sm:text-lg md:text-xl text-[#F2E9D8] font-sans leading-relaxed [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_8px_rgba(0,0,0,0.75)]"
       >
-        I&apos;ve shipped more features than I&apos;ve had good nights of sleep. No regrets. Mostly.{" "}
+        <span className="block">
+          I&apos;ve shipped more features than I&apos;ve had good nights of sleep. No regrets. Mostly.
+        </span>
         <MediaBetweenText
           as="span"
           firstText="<!-- Insert clever dev joke here ("
@@ -81,7 +83,7 @@ export default function HeroContent() {
           mediaType="image"
           triggerType="hover"
           alt="where"
-          className="hidden sm:inline-flex items-center align-middle"
+          className="hidden sm:flex mt-2 w-full justify-center items-center"
           leftTextClassName="font-mono text-[#F2E9D8]/80 [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_6px_rgba(0,0,0,0.75)]"
           rightTextClassName="font-mono text-[#F2E9D8]/80 [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_6px_rgba(0,0,0,0.75)]"
           mediaContainerClassName="h-[2.25em] overflow-hidden mx-1"
