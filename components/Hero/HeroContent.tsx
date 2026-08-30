@@ -72,7 +72,7 @@ export default function HeroContent() {
         variants={staggerItem}
         className="hero-desc max-w-xl mx-auto text-base sm:text-lg md:text-xl text-[#F2E9D8] font-sans leading-relaxed [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_8px_rgba(0,0,0,0.75)]"
       >
-        I turn vague problems into shipped, measurable wins. Code was born on localhost. It was never meant to die there.{" "}
+        I&apos;ve shipped more features than I&apos;ve had good nights of sleep. No regrets. Mostly.{" "}
         <MediaBetweenText
           as="span"
           firstText="<!-- Insert clever dev joke here ("
