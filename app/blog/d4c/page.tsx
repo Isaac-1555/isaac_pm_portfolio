@@ -21,7 +21,7 @@ import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 export const metadata = {
   title: "D4C: Building a Personalized Coding Agent | Isaac PM Blog",
   description:
-    "How I forked the pi coding agent and added plan/build modes, permanent MCP servers, and an /update skill that preserves customizations across upstream syncs.",
+    "How I built a personal coding agent on top of pi — plan/build modes, permanent MCP servers, and an /update skill that re-applies my customizations after every upstream sync. Includes the mistake that wiped all of them the first time.",
 };
 
 const TOC = [
@@ -72,9 +72,10 @@ export default function D4CArticle() {
           </h1>
 
           <p className="mt-6 text-lg md:text-xl text-white/80 max-w-2xl leading-relaxed">
-            How I forked the pi coding agent and added plan/build modes,
-            permanent MCP servers, and an /update skill that preserves
-            customizations across upstream syncs.
+            Building my dream coding agent was the easy part. Keeping it alive
+            through upstream syncs nearly killed it — and the first sync wiped
+            everything I&apos;d built. Here&apos;s what went wrong and how the
+            /update skill saved it.
           </p>
 
           <div className="flex flex-wrap gap-2 mt-8">
@@ -151,7 +152,7 @@ export default function D4CArticle() {
               <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-6">
                 D4C — short for{" "}
                 <strong className="text-text-primary">Dirty Deeds Done Dirt Cheap</strong>{" "}
-                — is a personalized fork of the{" "}
+                — is a personalized build of the{" "}
                 <a
                   href="https://pi.ai"
                   target="_blank"
@@ -159,8 +160,9 @@ export default function D4CArticle() {
                 >
                   pi coding agent
                 </a>
-                . It takes everything pi does well and layers on custom features
-                that fit <em>my</em> workflow.
+                . I started from pi&apos;s codebase and built my workflow on top
+                of it as a customization layer: plan/build modes, permanent MCP
+                servers, my own skills. Nothing in pi&apos;s core got touched.
               </p>
               <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-6">
                 Pi already had a solid foundation: it&apos;s a capable coding agent

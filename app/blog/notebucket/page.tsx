@@ -144,7 +144,7 @@ export default function NoteBucketArticle() {
                   data-icon-hover-trigger
                 >
                   <Button variant="secondary" className="w-full text-xs">
-                    Download APK (43 MB)
+                    Download APK (41 MB)
                     <IconHoverWrapper hoverTrigger="closest">
                       <DownloadIcon size={14} className="ml-2" />
                     </IconHoverWrapper>
@@ -233,10 +233,13 @@ export default function NoteBucketArticle() {
               </p>
               <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-6">
                 It was 3 AM when I finally admitted the truth: the model was too
-                small. BGE-small is 33MB. A model capable of generating coherent
-                folder names from scratch would be 300MB or more. That&apos;s
-                not a prompt problem — it&apos;s a physics problem. You can&apos;t
-                squeeze generation capability out of a model that size.
+                small. A model capable of generating coherent folder names from
+                scratch needs hundreds of millions of parameters — 300MB or
+                more. Even BGE-small, at 33MB, wouldn&apos;t help: it&apos;s an
+                embedding model, not a generator — it measures text, it
+                doesn&apos;t write it. That&apos;s not a prompt problem — it&apos;s
+                a physics problem. You can&apos;t squeeze generation out of a
+                model that never had it.
               </p>
 
               <Callout>
@@ -506,7 +509,7 @@ export default function NoteBucketArticle() {
                     variant="outline"
                     className="text-white border-white/30 hover:bg-white/10"
                   >
-                    Download APK (43 MB)
+                    Download APK (41 MB)
                     <IconHoverWrapper hoverTrigger="closest">
                       <DownloadIcon size={16} className="ml-2" />
                     </IconHoverWrapper>

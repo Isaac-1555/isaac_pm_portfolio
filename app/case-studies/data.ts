@@ -100,19 +100,19 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "tux",
     title: "Tux",
-    subtitle: "Barebones terminal IDE with split panes, session sidebar, and git-aware workflow — built because Warp and VSCode buried the features I needed.",
+    subtitle: "Terminal-first IDE focused on split panes, session management, and git visibility — built after Warp and VSCode buried the features a terminal-centric workflow depends on.",
     company: "Developer Tooling (Personal)",
     role: "Solo Developer & Designer",
     timeline: "1 Day (Initial + 5 Fixes)",
     team: "Solo",
     status: "Open Source (GitHub)",
 
-    context: "I live in the terminal. Warp and VSCode promised the workflow I wanted — split panes, a file explorer, a git tree, session monitoring — but every one of those features was either missing, behind a flag, or three menus deep. I wanted a tool that only had what I needed, in the order I needed it, with a native feel and a small footprint. So I built it.",
+    context: "The daily development environment was a combination of Warp and VSCode. Both shipped split panes, a file explorer, a git tree, and session monitoring as secondary concerns — missing, hidden behind flags, or buried several menus deep. Tux was built to expose only the features a terminal-centric workflow actually uses, in a predictable order, with a native feel and a small footprint.",
 
     problem: {
-      statement: "Modern IDEs and terminals overload on features I don't use, while burying the features I do. Every menu click is a context switch. Every buried feature is friction that compounds over a workday.",
-      importance: "The features that actually matter for my workflow are layout, git visibility, file state, and fast terminal access. If a tool can't surface those in under a second, it's slowing me down — even if it has the feature somewhere.",
-      constraints: ["Must launch fast — sub-2s cold start target", "Only the features I actually use, nothing else", "Native feel, not a web wrapper in disguise", "Small package size, not a multi-hundred-megabyte bundle"]
+      statement: "Modern IDEs and terminals prioritize feature breadth over feature access. The capabilities that matter most — layout, git visibility, file state, fast terminal access — sit behind menus and flags, creating friction that compounds across a full workday.",
+      importance: "Layout, git state, and file state account for the majority of daily interactions. If a tool cannot surface those in under a second, it acts as a tax on every task — even when the feature technically exists somewhere.",
+      constraints: ["Sub-2s cold start target", "Only used features ship — no speculative functionality", "Native feel — not a web wrapper", "Small binary size, not a multi-hundred-megabyte bundle"]
     },
 
     goals: {
@@ -121,43 +121,43 @@ export const caseStudies: CaseStudy[] = [
         "Right-side terminal",
         "Left sidebar: file explorer, git tree, terminal sessions",
         "Inline git diffs",
-        "Read, write, and edit files with Prettier syntax highlighting",
-        "Rust + Tauri for speed and smaller package size"
+        "File reading, writing, and editing with CodeMirror highlighting and Prettier formatting",
+        "Rust + Tauri for performance and binary size"
       ],
-      kpis: ["Time from launch to first command", "Package / binary size", "Number of features kept (intentionally small)"]
+      kpis: ["Time from launch to first command", "Package / binary size", "Feature count held intentionally small"]
     },
 
     research: {
       methods: [
-        "Daily driver: Warp + VSCode side-by-side for two weeks before writing any code",
-        "PRD written before code (`PRD.md` checked into the repo)",
-        "Constraint: every feature must earn its place or get cut"
+        "Daily-driver evaluation: Warp + VSCode side-by-side for two weeks before development began",
+        "PRD written before any code (`PRD.md` checked into the repo)",
+        "Explicit cut criterion: every feature must earn its place or be removed"
       ],
       insights: [
-        "Most IDE features are inert for me — extensions marketplace, debugger, plugin system, integrated package manager.",
-        "The features that actually matter are layout, git state, and file state. Those three cover ~90% of my day.",
-        "Tauri gives a native UX with webview flexibility, without the 200MB Electron tax."
+        "Most IDE features went unused across the two-week window — extensions marketplace, debugger, plugin system, integrated package manager.",
+        "Layout, git state, and file state covered roughly 90% of daily usage. Those three justified the entire build.",
+        "Tauri delivers native UX with webview flexibility, without the ~200MB Electron overhead."
       ]
     },
 
     approach: {
-      strategy: "PRD-first, then a single-day scaffold followed by 5 fix commits. Rust backend handles PTY, git ops, and the editor engine. React frontend handles the layout because that's where webview pays off.",
+      strategy: "PRD-first development: a single-day scaffold followed by 5 targeted fix commits. The Rust backend owns PTY, git operations, and the editor engine; the React frontend owns layout, where the webview pays for itself.",
       frameworks: ["Tauri 2", "ghostty-web (terminal rendering)", "CodeMirror (editor)", "@pierre/diffs (diff viewer)", "git2-rs (git operations)"],
-      collaboration: "Solo. Daily-driver dogfooding from commit 1 — every feature had to be used the same day it was built."
+      collaboration: "Solo. Dogfooding from the first commit — every feature entered daily use the same day it was built."
     },
 
     solution: {
-      description: "A three-pane desktop app. Sessions and the file tree live on the left. The terminal plus editor/diff sit in the middle. Git state lives on the right. Ghostty powers the terminal, CodeMirror powers the editor with Prettier for JS/TS/JSON/HTML/CSS/MD, and @pierre/diffs renders the diff pane. Session state persists across launches.",
+      description: "A three-pane desktop app. Sessions and the file tree occupy the left pane. The terminal plus editor/diff sit in the middle. Git state lives on the right. Ghostty powers the terminal; CodeMirror powers the editor with Prettier formatting for JS/TS/JSON/HTML/CSS/MD; @pierre/diffs renders the diff pane. Session state persists across launches.",
       features: [
         "Split panes (vertical and horizontal, resizable)",
         "Right-side terminal powered by Ghostty",
         "Left sidebar: file explorer, git tree, terminal session list",
         "Inline git diffs (unified and side-by-side)",
-        "Read / write / edit files with Prettier syntax highlighting",
+        "File editing with CodeMirror highlighting and Prettier formatting",
         "Session persistence across launches",
         "Keyboard-first — every major action has a shortcut"
       ],
-      rationale: "Rust + Tauri for sub-2s cold start and a small binary. React only where layout actually needs it (split panes, drag-resize, sidebar collapse). No LSP, no plugin marketplace, no debugger — explicitly out of scope per the PRD."
+      rationale: "Rust + Tauri for sub-2s cold start and a small binary. React only where layout genuinely requires it (split panes, drag-resize, sidebar collapse). No LSP, no plugin marketplace, no debugger — explicitly out of scope per the PRD."
     },
 
     execution: {
@@ -167,32 +167,32 @@ export const caseStudies: CaseStudy[] = [
         { label: "5 fix passes", description: "File explorer → CWD reset → GitViewer → shortcuts + git.rs → backspace keystroke" }
       ],
       challenges: [
-        "File explorer: PTY and sidebar state had to be rewired so the tree and the terminals stayed in sync (`7097843`).",
-        "CWD reset bug: shell working directory wasn't restoring on session switch, breaking per-session isolation (`de63eac`).",
-        "GitViewer stability: two passes to get diffs rendering reliably across staged / unstaged / untracked states (`d10a0a4`, `53678a0`).",
-        "Keyboard shortcut layer + dedicated `git.rs` module landed in the same commit to keep the surface area small (`53678a0`).",
-        "Backspace keystroke wasn't reaching the shell in the built binary, only in dev. Keymap registration was happening too late (`be3d4d1`)."
+        "File explorer: PTY and sidebar state required rewiring so the tree and terminals stayed in sync (`7097843`).",
+        "CWD reset bug: shell working directory failed to restore on session switch, breaking per-session isolation (`de63eac`).",
+        "GitViewer stability: two passes required to render diffs reliably across staged / unstaged / untracked states (`d10a0a4`, `53678a0`).",
+        "Keyboard shortcut layer and dedicated `git.rs` module landed in the same commit to keep surface area small (`53678a0`).",
+        "Backspace keystrokes reached the shell in dev but not in the built binary — keymap registration was happening too late (`be3d4d1`)."
       ]
     },
 
     outcome: {
       quantifiable: [
-        "Terminal, editor, and git state visible at a glance: no menu diving",
-        "Single binary replaces 2-tool setup (Warp + VSCode) for daily sessions",
-        "Dogfooded from commit 1: every feature used the same day it was built"
+        "Terminal, editor, and git state visible at a glance — no menu navigation",
+        "Single binary replaces a two-tool setup (Warp + VSCode) for daily sessions",
+        "Dogfooded from the first commit: every feature entered daily use the day it shipped"
       ],
       qualitative: [
-        "Feels native, not browser-y",
-        "No feature I have to ignore or disable",
+        "Feels native, not browser-like",
+        "No features shipped that require ignoring or disabling",
         "Daily-driver capable for terminal-centric workflows"
       ]
     },
 
     learnings: {
       takeaways: [
-        "Build the tool that fits how you actually work — not how a feature list says it should.",
-        "A PRD prevents scope creep better than any framework. It also makes the 'what we cut' conversation easy.",
-        "Fix commits tell you where the real work was. The initial scaffold is the easy part."
+        "Tools built around observed daily usage outperform tools assembled from a standard feature list.",
+        "A written PRD prevents scope creep more effectively than any framework choice — and makes cut decisions straightforward.",
+        "Fix commits reveal where the real engineering effort went. The initial scaffold is the easy part."
       ],
       nextSteps: [
         "LSP for syntax-only lint hints (no autocomplete — out of scope by design)",
@@ -200,7 +200,7 @@ export const caseStudies: CaseStudy[] = [
         "Fuzzy file search (Cmd+P)",
         "Workspace JSON snapshots for cross-machine restore",
         "UI improvements tailored for terminal-based coding agents (Claude Code, Codex, Aider) — clearer diffs, in-place prompts, agent run state",
-        "Better shortcut detection — context-aware keybindings that don't fight with the shell or the agent"
+        "Context-aware shortcut detection that does not conflict with the shell or agent"
       ]
     },
 
@@ -224,59 +224,59 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "satbrain",
     title: "SatBrain",
-    subtitle: "AI-Powered Study Assistant transforming documents into interactive learning materials.",
+    subtitle: "AI study assistant that converts documents into interactive learning materials — summaries, quizzes, flashcards, and visual charts.",
     company: "EdTech Product",
     role: "Product Manager & Lead Developer",
     timeline: "3 Months (MVP)",
     team: "Solo Founder",
     status: "Live Beta",
     
-    context: "Students and professionals struggle to digest large volumes of information quickly. SatBrain was conceived to leverage GenAI to automatically transform static documents (PDFs, Audio) into active study aids like quizzes, flashcards, and visual charts.",
+    context: "Students and professionals spend significant effort digesting large volumes of material before actual studying begins. SatBrain applies generative AI to that overhead: static documents (PDFs, audio) are automatically converted into active study aids — quizzes, flashcards, and visual charts.",
     
     problem: {
-      statement: "Learners spend 60% of their time organizing and summarizing notes rather than actually studying, leading to inefficient retention.",
-      importance: "Reducing the 'time-to-study' enables users to focus on comprehension and recall, significantly improving learning outcomes.",
-      constraints: ["Zero-budget for infrastructure", "Need for high-accuracy summaries (low hallucination)", "Real-time processing latency"]
+      statement: "Learners spend 60% of their study time organizing and summarizing notes rather than studying, which reduces effective retention per hour invested.",
+      importance: "Compressing time-to-study shifts user attention from preparation to comprehension and recall, directly improving learning outcomes.",
+      constraints: ["Zero infrastructure budget", "High-accuracy summaries with low hallucination tolerance", "Near-real-time processing latency"]
     },
     
     goals: {
-      objectives: ["Automate the creation of study materials from raw files.", "Provide visual insights (charts) from text data.", "Ensure sub-5-second response time for AI interactions."],
+      objectives: ["Automate study material creation from raw files.", "Generate visual insights (charts) from document content.", "Keep AI interactions under 5 seconds end-to-end."],
       kpis: ["User retention rate", "Documents processed per user", "Quiz completion rates"]
     },
     
     research: {
       methods: ["Competitor analysis of Quizlet and Chegg", "User interviews with university students", "Prototype testing with local study groups"],
-      insights: ["Students value 'visuals' (charts) almost as much as text summaries.", "Flashcards are the #1 requested feature for retention.", "Audio transcription is a key differentiator for lecture recordings."]
+      insights: ["Students valued visual outputs (charts) nearly as much as text summaries.", "Flashcards were the most requested retention feature.", "Audio transcription is the key differentiator for lecture recordings."]
     },
     
     approach: {
-      strategy: "Vertical integration of AI services: Use Gemini 1.5 for its large context window to handle entire textbooks in one pass.",
-      frameworks: ["RAG (Retrieval Augmented Generation)", "Component-Driven Design (Radix UI)"],
-      collaboration: "Direct feedback loop with beta testers for rapid feature iteration."
+      strategy: "Vertical integration of AI services, built around the Gemini 1.5 family — its large context window allows entire textbooks to be processed in a single pass instead of fragmented chunk-by-chunk inference.",
+      frameworks: ["RAG (Retrieval Augmented Generation) for document grounding", "Supabase for auth, storage, and persistence", "Radix UI for a component-driven frontend"],
+      collaboration: "Direct feedback loop with beta testers driving rapid feature iteration."
     },
     
     solution: {
-      description: "A comprehensive web platform where users upload content and receive a tailored study dashboard. It includes a document processor, chart generator, and an interactive quiz engine.",
+      description: "A web platform where users upload source material and receive a tailored study dashboard — document processor, chart generator, and an interactive quiz engine.",
       features: ["Multi-format Upload (PDF, DOCX, MP3)", "AI Summary & Chat", "Auto-generated Vega-Lite Charts", "Flashcard Mode", "Quiz Mode"],
-      rationale: "Chosen Tech Stack (Supabase + React + Gemini) allowed for rapid prototyping with enterprise-grade auth and database features out of the box."
+      rationale: "Supabase + React + Gemini enabled rapid prototyping while providing enterprise-grade auth and database behavior out of the box."
     },
     
     execution: {
       roadmap: [
-        { label: "Phase 1", description: "Doc upload & Summary" },
-        { label: "Phase 2", description: "Quiz & Flashcards" },
-        { label: "Phase 3", description: "Visual Charts & Audio" }
+        { label: "Phase 1", description: "Document upload & AI summaries" },
+        { label: "Phase 2", description: "Quiz & flashcard engines" },
+        { label: "Phase 3", description: "Visual charts & audio input" }
       ],
-      challenges: ["Handling large PDF files (chunking strategy).", "Ensuring consistent JSON output from LLM for charts (implemented robust validation middleware)."]
+      challenges: ["Large PDF ingestion required a chunking strategy.", "Consistent JSON output from the LLM for chart generation was enforced via robust validation middleware."]
     },
     
     outcome: {
-      quantifiable: ["Processed 500+ documents in beta", "Reduced study prep time by ~70%", "90% positive feedback on 'Visual Charts' feature"],
-      qualitative: ["Users reported 'feeling more prepared' for exams.", "Praised the clean, distraction-free UI."]
+      quantifiable: ["Processed 500+ documents in beta", "Reduced study prep time by ~70%", "90% positive feedback on the visual charts feature"],
+      qualitative: ["Users reported feeling more prepared for exams.", "The clean, distraction-free UI drew consistent praise."]
     },
     
     learnings: {
-      takeaways: ["GenAI is powerful but requires strict guardrails for structured data.", "Visuals stickier than text."],
+      takeaways: ["Generative AI requires strict guardrails when the output is structured data.", "Visualizations drive stronger engagement than plain text summaries."],
       nextSteps: ["Mobile app development", "Collaborative study groups", "Integration with Canvas/LMS"]
     },
 
@@ -284,7 +284,7 @@ export const caseStudies: CaseStudy[] = [
     gradient: "from-tech to-bg-accent",
     heroBackground: { image: "/Satbrain_works_bg.png", colorA: "#3E4C4D", colorB: "#4A7C7E" },
     tags: ["AI/ML", "EdTech", "Full Stack"],
-    techStack: ["Next.js", "Supabase", "Vega-Lite", "Tailwind v4", "TypeScript", "Radix UI", "Vercel AI SDK"],
+    techStack: ["Next.js", "Supabase", "Gemini 1.5", "Vercel AI SDK", "Vega-Lite", "Radix UI", "TypeScript", "Tailwind v4"],
     websiteUrl: "https://satbrain.vercel.app/",
     repoUrl: "https://github.com/Isaac-1555/project_goldmine",
     screenshots: [
@@ -300,68 +300,68 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "pocket-resume",
     title: "Pocket Resume",
-    subtitle: "Context-aware AI browser extension for tailoring resumes to any job description.",
+    subtitle: "Context-aware browser extension that rewrites a master resume to match any job description.",
     company: "Consumer Tool",
     role: "Software Developer & Technical PM",
     timeline: "4 Weeks",
     team: "Solo",
     status: "Live in Store",
     
-    context: "The modern job market requires tailoring resumes for every single application to pass ATS filters. Doing this manually is slow and tedious.",
+    context: "The modern job market expects a tailored resume for every application to clear ATS filters. Producing those variations manually is slow, repetitive, and easy to do badly.",
     
     problem: {
-      statement: "Job seekers spend hours rewriting resumes for each application, often guessing at keywords.",
-      importance: "Tailored resumes have a 2x higher interview callback rate.",
-      constraints: ["Must work on any job board (LinkedIn, Indeed, etc.)", "Privacy-first (local data storage)."]
+      statement: "Job seekers spend hours rewriting a resume for each application, guessing at the keywords individual ATS systems prioritize.",
+      importance: "Resume tailoring is the highest-leverage step in the application pipeline — the difference between a generic submission and a targeted one directly affects screening outcomes.",
+      constraints: ["Must operate on any job board (LinkedIn, Indeed, etc.)", "Privacy-first: all data stays local to the browser"]
     },
     
     goals: {
-      objectives: ["Reduce resume tailoring time from 30 mins to 30 seconds.", "Generate high-quality, ATS-friendly content.", "Seamless browser integration."],
+      objectives: ["Reduce resume tailoring from 30 minutes to 30 seconds.", "Generate high-quality, ATS-friendly content.", "Integrate seamlessly into the browsing workflow."],
       kpis: ["Active Users", "Resumes Generated", "Time Saved per Application"]
     },
     
     research: {
-      methods: ["Analysis of ATS (Applicant Tracking Systems) logic.", "Survey of 50 job seekers about pain points."],
-      insights: ["Formatting matters as much as keywords.", "Users rarely trust 'cloud' storage with their personal data."]
+      methods: ["Analysis of ATS (Applicant Tracking Systems) parsing behavior.", "Interviews and feedback loops with active job seekers."],
+      insights: ["Formatting matters as much as keywords in ATS screening.", "Users are reluctant to store personal employment data in cloud services."]
     },
     
     approach: {
-      strategy: "In-context augmentation: The tool lives *on* the job page, reading the DOM to understand requirements and generating the PDF locally.",
-      frameworks: ["Chrome Extension Manifest V3", "Prompt Engineering (Gemini)"],
+      strategy: "In-context augmentation: the tool operates directly on the job page, reading the DOM to understand requirements and generating the tailored PDF locally — no copy-pasting, no data leaving the device.",
+      frameworks: ["Chrome Extension Manifest V3", "Prompt engineering (Gemini 2.5 Flash)"],
       collaboration: "Open source community feedback on GitHub."
     },
     
     solution: {
-      description: "A Chrome Extension that reads the active tab's job description, takes your 'Master Resume', and rewrites it to match the role's keywords and tone.",
+      description: "A Chrome extension that reads the active tab's job description, takes the user's master resume, and rewrites it to match the role's keywords and tone.",
       features: ["One-click Page Analysis", "Gemini 2.5 Flash Integration", "PDF Generation (jsPDF)", "Cover Letter Writer", "Local Data Persistence"],
-      rationale: "Browser extension was the only form factor that allowed seamless access to job board content without copy-pasting."
+      rationale: "A browser extension was the only form factor that granted seamless access to job board content without copy-pasting — and local processing satisfied the privacy constraint outright."
     },
     
     execution: {
       roadmap: [
         { label: "Week 1", description: "Manifest V3 setup & DOM scraping" },
-        { label: "Week 2", description: "AI Prompt Tuning" },
-        { label: "Week 3", description: "PDF Generation" },
+        { label: "Week 2", description: "AI prompt tuning" },
+        { label: "Week 3", description: "PDF generation" },
         { label: "Week 4", description: "Store listing" }
       ],
-      challenges: ["Scraping dynamic SPAs (LinkedIn/Indeed) required robust DOM observers.", "PDF generation in-browser is tricky (fonts/layout)."]
+      challenges: ["Scraping dynamic SPAs (LinkedIn/Indeed) required robust DOM observers.", "In-browser PDF generation needed careful handling of fonts and layout."]
     },
     
     outcome: {
-      quantifiable: ["Live on Chrome Web Store", "Generates resume in <20 seconds", "Supports all major job boards"],
-      qualitative: ["Users love the 'Cover Letter' bonus feature.", "High accuracy in keyword matching."]
+      quantifiable: ["Live on Chrome Web Store", "Generates a tailored resume in under 20 seconds", "Supports all major job boards"],
+      qualitative: ["Consistently cited the cover letter feature as unexpected value.", "Strong accuracy in keyword matching reported by users."]
     },
     
     learnings: {
-      takeaways: ["Prompt engineering is a product feature.", "Client-side AI is viable and cheap."],
-      nextSteps: ["Add 'Apply' automation", "Resume score analysis", "History tracking"]
+      takeaways: ["Prompt engineering functions as a product feature in its own right.", "Client-side AI is viable and cost-effective at consumer scale."],
+      nextSteps: ["Application automation", "Resume score analysis", "History tracking"]
     },
 
     icon: FileDescriptionIcon,
     gradient: "from-warning to-gold",
     heroBackground: { image: "/PocketResume_works_bg.png", colorA: "#3E4C4D", colorB: "#D97B4A" },
-    tags: ["GenAI", "Chrome Ext", "Productivity"],
-    techStack: ["Chrome MV3", "TypeScript", "AI API", "jsPDF", "DOM Scraping", "Tailwind", "Chrome Storage API"],
+    tags: ["GenAI", "Chrome Extension", "Productivity"],
+    techStack: ["Chrome MV3", "TypeScript", "Gemini 2.5 Flash", "jsPDF", "DOM Scraping", "Tailwind", "Chrome Storage API"],
     websiteUrl: "https://pocket-resume.xyz",
     repoUrl: "https://github.com/Isaac-1555/pocket-resume",
     screenshots: [
@@ -377,23 +377,23 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "notebucket",
     title: "NoteBucket",
-    subtitle: "Local-first note organizer — BGE-small embeddings + llama.cpp classify notes into folders by semantic similarity. 100% offline.",
+    subtitle: "Local-first Android note organizer — BGE-small embeddings + llama.cpp route notes into folders by semantic similarity. 100% offline.",
     company: "Android App",
     role: "Solo Developer",
     timeline: "8 Days (Spike → v0.3.0)",
     team: "Solo",
     status: "Open Source (GitHub)",
 
-    context: "Note-taking apps either rely on cloud sync, require accounts, or use keyword-based folders. I wanted something that organizes notes by meaning — not by keywords — and runs entirely on-device with zero network calls.",
+    context: "Note-taking apps rely on cloud sync, require accounts, or depend on keyword-based folders. NoteBucket organizes notes by meaning rather than keywords and runs entirely on-device with zero network calls.",
 
     problem: {
-      statement: "Manual folder management breaks down at scale. Users either dump everything into one bucket or spend more time organizing than writing.",
-      importance: "Semantic routing removes the organizational friction entirely — you write, the app files.",
+      statement: "Manual folder management breaks down at scale: notes pile into a single bucket, or organizing consumes more time than writing.",
+      importance: "Semantic routing removes organizational friction entirely — the user writes; the app files. No manual step remains between capturing a note and storing it correctly.",
       constraints: [
-        "Must run 100% offline — no cloud, no accounts, no analytics",
+        "100% offline — no cloud, no accounts, no analytics",
         "On-device inference only (BGE-small via llama.cpp JNI)",
         "Android arm64-v8a only (emulator not supported)",
-        "Model + app must fit in a reasonable APK size"
+        "Model + app must fit a reasonable APK size"
       ]
     },
 
@@ -414,19 +414,19 @@ export const caseStudies: CaseStudy[] = [
 
     research: {
       methods: [
-        "Evaluated on-device embedding models: BGE-small (33M, 384-dim) vs MiniLM vs custom fine-tunes",
-        "Prototyped LLM-based classification first, replaced with embedding routing for speed + privacy",
-        "Tested cosine similarity thresholds against manual folder assignments"
+        "On-device embedding model evaluation: BGE-small (33M, 384-dim) vs MiniLM vs custom fine-tunes",
+        "LLM-based classification prototyped first, then replaced with embedding routing for speed and privacy",
+        "Cosine similarity thresholds tested against manual folder assignments"
       ],
       insights: [
-        "BGE-small gives 384-dim embeddings at ~33MB — small enough to bundle in APK, accurate enough for folder routing",
-        "LLM classification was too slow and privacy-violating for an offline-first app",
-        "Ambiguous notes (margin ≤ 0.03 between top-2 folders) need a disambiguation dialog, not a guess"
+        "BGE-small delivers 384-dim embeddings at ~33MB — small enough to bundle in the APK, accurate enough for folder routing",
+        "LLM classification was too slow and privacy-incompatible for an offline-first app",
+        "Ambiguous notes (margin ≤ 0.03 between top-2 folders) call for a disambiguation dialog, not a guess"
       ]
     },
 
     approach: {
-      strategy: "Spike-first: prove BGE + llama.cpp JNI works on Android in day 1, then build the full app around it. Every feature is additive from the core embedding pipeline.",
+      strategy: "Spike-first development: prove BGE + llama.cpp JNI on Android on day 1, then build the full app around it. Every feature is additive to the core embedding pipeline.",
       frameworks: [
         "Jetpack Compose + Material 3 (UI)",
         "Room (persistence: folders, notes, drafts, attachments, embeddings as BLOB)",
@@ -435,21 +435,21 @@ export const caseStudies: CaseStudy[] = [
         "Coil (image loading)",
         "llama.cpp via NDK + CMake (inference runtime)"
       ],
-      collaboration: "Solo. PRD-driven development — architecture decisions locked before code."
+      collaboration: "Solo. PRD-driven — architecture decisions were locked before implementation began."
     },
 
     solution: {
-      description: "A standalone Android app where notes are embedded on-device (BGE-small-en-v1.5, 384-dim, L2-normalized), cosine-scored against folder name embeddings, and filed automatically. Ambiguous matches show a disambiguation dialog. Unmatched notes go to 'Unsorted'. Drafts persist to Room on every keystroke and auto-commit after 1 minute in background.",
+      description: "A standalone Android app that embeds each note on-device (BGE-small-en-v1.5, 384-dim, L2-normalized), cosine-scores it against folder name embeddings, and files it automatically. Ambiguous matches surface a disambiguation dialog; unmatched notes land in 'Unsorted'. Drafts persist to Room on every keystroke and auto-commit after 1 minute in the background.",
       features: [
         "On-device note routing via BGE-small embeddings + cosine similarity",
         "Semantic search with folder + date range filters (top-5 results)",
-        "Crash-safe drafts (persisted to Room, debounced 500ms, auto-commit on background)",
+        "Crash-safe drafts (persisted to Room, debounced 500ms, auto-commit in background)",
         "File/image attachments (internal storage, Coil thumbnails)",
         "Hidden folders + bulk move/delete",
         "10 folder color options, rename, recolor",
         "Settings: threshold slider, theme mode, model reload, storage stats"
       ],
-      rationale: "Kotlin + Jetpack Compose for native Android feel. Room for structured persistence (embeddings stored as BLOB). llama.cpp via JNI for on-device inference — no cloud dependency. Hilt for DI. WorkManager for reliable background draft commits."
+      rationale: "Kotlin + Jetpack Compose for a native Android experience. Room for structured persistence with embeddings stored as BLOBs. llama.cpp over JNI for on-device inference with no cloud dependency. Hilt for DI; WorkManager for reliable background draft commits."
     },
 
     execution: {
@@ -462,10 +462,10 @@ export const caseStudies: CaseStudy[] = [
         { label: "Day 8", description: "v0.3.0: onboarding flow, voice removal, MIT license" }
       ],
       challenges: [
-        "Replacing LLM classifier with BGE embedding routing mid-development required rewriting the core sort pipeline",
-        "JNI bridge between Kotlin and llama.cpp needed careful memory management for 384-dim float arrays",
-        "Draft auto-commit on background required ProcessLifecycleObserver + WorkManager coordination to avoid data loss",
-        "Disambiguation dialog when cosine margin ≤ 0.03 — too ambiguous to auto-route, too close to ignore"
+        "Replacing the LLM classifier with BGE embedding routing mid-development required rewriting the core sort pipeline",
+        "The JNI bridge between Kotlin and llama.cpp required careful memory management for 384-dim float arrays",
+        "Background draft auto-commit demanded ProcessLifecycleObserver + WorkManager coordination to avoid data loss",
+        "Disambiguation at cosine margin ≤ 0.03 — too ambiguous to auto-route, too close to ignore"
       ]
     },
 
@@ -479,15 +479,15 @@ export const caseStudies: CaseStudy[] = [
       qualitative: [
         "Notes route to the correct folder without manual organization",
         "Semantic search finds notes by meaning, not keywords",
-        "Draft system is crash-safe — no lost work"
+        "The draft system is crash-safe — no lost work"
       ]
     },
 
     learnings: {
       takeaways: [
-        "Embedding-based routing is faster and more private than LLM classification for this use case",
-        "On-device ML is viable when you pick the right model size (33MB BGE-small, not a 7B LLM)",
-        "Ambiguity needs a UI solution (disambiguation dialog), not a higher threshold"
+        "Embedding-based routing is faster and more privacy-preserving than LLM classification for this use case",
+        "On-device ML is viable at the right model size (33MB BGE-small, not a 7B LLM)",
+        "Ambiguity calls for a UI solution (disambiguation dialog), not a higher threshold"
       ],
       nextSteps: [
         "Export/import notes across devices",

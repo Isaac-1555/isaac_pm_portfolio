@@ -46,7 +46,7 @@ const posts = [
     slug: "d4c",
     title: "D4C: Building a Personalized Coding Agent on Top of Pi",
     subtitle:
-      "How I forked the pi coding agent and added plan/build modes, permanent MCP servers, and an /update skill that preserves customizations across upstream syncs.",
+      "How I built a personalized coding agent on top of pi — plan/build modes, permanent MCP servers, and an /update skill that saved the project after my first upstream sync wiped everything.",
     date: "May 2026",
     readTime: "8 min",
     author: "Isaac",

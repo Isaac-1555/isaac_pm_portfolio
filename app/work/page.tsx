@@ -34,8 +34,8 @@ const technicalProjects = [
     id: "barcode-lists",
     title: "Barcode-Lists",
     role: "Developer",
-    description: "Chrome extension for saving and reusing barcodes across scans. Lightweight, keyboard-first, built for inventory workflows.",
-    tags: ["Chrome Extension", "JavaScript", "Productivity"],
+    description: "Chrome extension for the Calgary Coop store team — shared barcode storage with AI extraction from images and spreadsheets, synced across shifts in real time.",
+    tags: ["Chrome Extension", "JavaScript", "Internal Tool"],
     href: "https://github.com/Isaac-1555/Barcode-Lists",
     icon: ScanBarcodeIcon,
   },
@@ -43,7 +43,7 @@ const technicalProjects = [
     id: "phone-barcode",
     title: "Phone-Barcode-scanner",
     role: "Developer",
-    description: "Mobile companion app that scans barcodes and pushes them straight to the Barcode-Lists extension.",
+    description: "Companion mobile app that scans barcodes and pushes them straight into the Barcode-Lists extension.",
     tags: ["TypeScript", "Mobile", "Barcode"],
     href: "https://github.com/Isaac-1555/Phone-Barcode-scanner",
     icon: ScanBarcodeIcon,
@@ -52,7 +52,7 @@ const technicalProjects = [
     id: "ez-resume",
     title: "Ez-Resume",
     role: "Developer",
-    description: "No-AI resume builder that generates clean, structured resumes in under a minute. Speed over smarts.",
+    description: "No-AI resume builder packaged as a Chrome extension that works like a web app — produces clean, structured resumes in under a minute. Speed over smarts.",
     tags: ["Chrome Extension", "JavaScript", "Resume"],
     href: "https://github.com/Isaac-1555/Ez-Resume",
     icon: FileDescriptionIcon,
@@ -61,7 +61,7 @@ const technicalProjects = [
     id: "summarease",
     title: "Summarease",
     role: "Developer",
-    description: "Turns long audio and conversations into the format you want — summaries, action items, transcripts.",
+    description: "Turns long audio and conversations into whatever format the moment needs — summaries, action items, or transcripts.",
     tags: ["JavaScript", "Audio", "AI"],
     href: "https://github.com/Isaac-1555/summarease_v1",
     icon: RadioIcon,
@@ -88,7 +88,7 @@ const technicalProjects = [
     id: "betteryt",
     title: "BetterYT",
     role: "Developer",
-    description: "Chrome extension that fixes YouTube recommendations with custom category chips and curated feeds.",
+    description: "Chrome extension that fixes YouTube's recommendations with custom category chips and curated feeds, using AI with a bring-your-own API key.",
     tags: ["Chrome Extension", "JavaScript", "AI"],
     href: "https://github.com/Isaac-1555/BetterYT",
     icon: YoutubeIcon,
@@ -97,7 +97,7 @@ const technicalProjects = [
     id: "d4c",
     title: "D4C",
     role: "Developer",
-    description: "Personalized coding agent forked from pi, tuned for my own workflow and preferences.",
+    description: "Personalized coding agent built on top of pi — plan/build modes, permanent MCP servers, and an /update skill that survives upstream syncs.",
     tags: ["TypeScript", "AI", "Coding Agent"],
     href: "https://github.com/Isaac-1555/D4C",
     icon: CodeIcon,
@@ -106,7 +106,7 @@ const technicalProjects = [
     id: "pigeon",
     title: "Pigeon",
     role: "Developer",
-    description: "Notification system for small businesses — keeps customers in the loop on job status automatically.",
+    description: "Automated status notifications for small businesses — customers stay in the loop on job progress without anyone picking up the phone.",
     tags: ["TypeScript", "B2B", "Notifications"],
     href: "https://github.com/Isaac-1555/Pigeon",
     icon: SendIcon,
@@ -189,7 +189,10 @@ export default function WorkPage() {
           data-reveal-hide
           className="text-text-secondary max-w-2xl text-lg leading-relaxed opacity-0"
         >
-          A collection of product initiatives, from enterprise workflow transformations to AI-powered prototypes.
+          Tools built because the existing options didn&apos;t do the job —
+          internal store tooling, on-device AI, and agent infrastructure. The
+          flagship case studies above carry the deep dives; these are the
+          smaller builds, each with its own story.
         </p>
       </div>
 

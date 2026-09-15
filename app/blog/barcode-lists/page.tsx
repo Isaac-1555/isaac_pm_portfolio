@@ -54,7 +54,7 @@ const CHANGELOG = [
     points: [
       "OCR feature using AI for image-to-barcode",
       "Lazy loader added to keep popup snappy",
-      "TCO UPC parser using AI for noisy scans",
+      "UPC parser using AI to handle noisy scans",
       "UI pass — removed the floating add button",
     ],
   },
@@ -181,7 +181,7 @@ export default function BarcodeListsArticle() {
           </p>
 
           <div className="flex flex-wrap gap-2 mt-8">
-            {["Chrome Extension", "AI/OCR", "Internal Tool", "B2B", "Realtime"].map(
+            {["Chrome Extension", "AI/OCR", "Internal Tool", "Realtime"].map(
               (tag) => (
                 <Badge
                   key={tag}
@@ -272,12 +272,15 @@ export default function BarcodeListsArticle() {
                 <strong className="text-text-primary">Calgary Coop</strong>{" "}
                 store personnel. It centralizes barcode storage, enables shared
                 access across the team, and uses AI to extract barcodes from
-                images and spreadsheets.
+                images and spreadsheets. It started as a fix for one recurring
+                Monday-morning problem; it ended as the tool the store team now
+                runs every scan through.
               </p>
               <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-6">
-                It started as a Monday-morning fix. It ended as a 24-commit
-                project on the Chrome Web Store, used across multiple store
-                locations.
+                Twenty-four commits over three months, live on the Chrome Web
+                Store, in active use across multiple store locations. And most
+                of those commits were fixes, not features — which is the honest
+                story I&apos;ll get into below.
               </p>
               <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-6">
                 This post is the builder&apos;s log — why I built it, how my
