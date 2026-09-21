@@ -11,6 +11,7 @@ import { Cursor } from "@/components/cursor/Cursor";
 import { LenisProvider } from "@/components/scroll/LenisProvider";
 import { TabTitleManager } from "@/components/layout/TabTitleManager";
 import { RouteTransitionProvider } from "@/components/transitions/RouteTransitionProvider";
+import Noise from "@/components/ui/Noise";
 
 const devGothic = localFont({
   src: "./fonts/devgothic.ttf",
@@ -67,6 +68,7 @@ export default function RootLayout({
             <TabTitleManager />
             <main className="relative z-10 flex-grow min-h-[100vh] bg-bg-base">
               <RouteTransitionProvider>{children}</RouteTransitionProvider>
+              <Noise />
             </main>
             <MascotMount />
             <Footer />

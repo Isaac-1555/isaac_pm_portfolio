@@ -12,7 +12,7 @@ export function Hero() {
   return (
     <section
       id="mission-home-hero"
-      className="relative w-full min-h-[calc(100dvh-3.5rem)] md:min-h-[calc(100dvh-4rem)] bg-bg-base flex flex-col items-center justify-center [@media(max-height:680px)]:justify-start overflow-hidden"
+      className="relative z-50 w-full min-h-[calc(100dvh-3.5rem)] md:min-h-[calc(100dvh-4rem)] bg-bg-base flex flex-col items-center justify-center [@media(max-height:680px)]:justify-start overflow-hidden"
     >
       <HeroBackground />
 
