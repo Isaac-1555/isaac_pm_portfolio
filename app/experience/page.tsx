@@ -215,7 +215,7 @@ export default function AboutPage() {
         <section className="mb-24">
           <motion.h2
             {...competenciesHeader}
-            className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 will-change-transform"
+            className="text-3xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 will-change-transform"
           >
             Core Skills
           </motion.h2>
@@ -232,7 +232,7 @@ export default function AboutPage() {
                     <IconHoverWrapper hoverTrigger="closest">
                       <Icon size={24} className="text-cta transition-transform group-hover:scale-110" />
                     </IconHoverWrapper>
-                    <h3 className="text-xl font-industrial uppercase tracking-widest text-text-primary">
+                    <h3 className="text-2xl font-industrial uppercase tracking-widest text-text-primary">
                       {skill.category}
                     </h3>
                   </div>
@@ -252,7 +252,7 @@ export default function AboutPage() {
         <section className="mb-24">
           <motion.h2
             {...experienceHeader}
-            className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 will-change-transform"
+            className="text-3xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 will-change-transform"
           >
             Professional Experience
           </motion.h2>
@@ -284,7 +284,7 @@ export default function AboutPage() {
         <section>
           <motion.h2
             {...educationHeader}
-            className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 will-change-transform"
+            className="text-3xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 will-change-transform"
           >
             Education
           </motion.h2>
@@ -313,7 +313,7 @@ export default function AboutPage() {
         <section className="mt-24">
           <motion.h2
             {...certificationsHeader}
-            className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 will-change-transform"
+            className="text-3xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 will-change-transform"
           >
             Certifications
           </motion.h2>

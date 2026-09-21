@@ -201,7 +201,7 @@ export default function WorkPage() {
         <h2
           ref={flagshipH2Ref}
           data-reveal-hide
-          className="text-2xl font-industrial uppercase tracking-widest mb-2 border-b border-divider pb-3 flex items-center gap-2 opacity-0"
+          className="text-3xl font-industrial uppercase tracking-widest mb-2 border-b border-divider pb-3 flex items-center gap-2 opacity-0"
         >
           <TravelBag size={20} className="text-cta" /> Flagship Case Studies
         </h2>
@@ -212,7 +212,7 @@ export default function WorkPage() {
       <section id="mission-work-technical">
         <motion.h2
           {...techHeader}
-          className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 flex items-center gap-2 will-change-transform"
+          className="text-3xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 flex items-center gap-2 will-change-transform"
         >
           <SparklesIcon size={20} className="text-cta" /> Technical Prototypes & Labs
         </motion.h2>

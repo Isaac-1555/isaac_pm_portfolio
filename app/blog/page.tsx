@@ -124,7 +124,7 @@ export default function BlogPage() {
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-xl md:text-2xl font-industrial font-bold uppercase tracking-wider text-text-primary group-hover:text-cta transition-colors leading-tight mb-3">
+                    <h3 className="text-2xl md:text-3xl font-industrial font-bold uppercase tracking-wider text-text-primary group-hover:text-cta transition-colors leading-tight mb-3">
                       {post.title}
                     </h3>
 

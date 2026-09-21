@@ -31,7 +31,7 @@ import { revealProps, useRevealMotion } from "@/lib/motion";
 
 function SectionHeader({ icon: Icon, title }: { icon: React.ComponentType<AnimatedIconProps>, title: string }) {
   return (
-    <h2 className="text-2xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 flex items-center gap-3">
+    <h2 className="text-3xl font-industrial uppercase tracking-widest mb-8 border-b border-divider pb-4 flex items-center gap-3">
       <Icon size={24} className="text-cta" /> {title}
     </h2>
   );
@@ -145,7 +145,7 @@ export default function CaseStudyDetail({ params }: { params: Promise<{ slug: st
             <SectionHeader icon={TargetIcon} title="Goals & Metrics" />
             <div className="grid md:grid-cols-2 gap-8">
               <div>
-                <h3 className="font-industrial uppercase tracking-wide text-gold mb-4">Objectives</h3>
+                <h3 className="font-industrial uppercase tracking-wide text-xl text-gold mb-4">Objectives</h3>
                 <ul className="space-y-3">
                   {project.goals.objectives.map((obj, i) => (
                     <li key={i} className="flex items-start gap-2">
@@ -156,7 +156,7 @@ export default function CaseStudyDetail({ params }: { params: Promise<{ slug: st
                 </ul>
               </div>
               <div>
-                <h3 className="font-industrial uppercase tracking-wide text-gold mb-4">Target KPIs</h3>
+                <h3 className="font-industrial uppercase tracking-wide text-xl text-gold mb-4">Target KPIs</h3>
                 <ul className="space-y-3">
                   {project.goals.kpis.map((kpi, i) => (
                     <li key={i} className="flex items-start gap-2">
@@ -230,7 +230,7 @@ export default function CaseStudyDetail({ params }: { params: Promise<{ slug: st
 
             {/* App Visuals — grid + lightbox (no horizontal scroll) */}
             <div className="my-12">
-              <h3 className="font-industrial uppercase tracking-wide text-sm text-text-secondary mb-4">App Visuals</h3>
+              <h3 className="font-industrial uppercase tracking-wide text-base text-text-secondary mb-4">App Visuals</h3>
               <ScreenshotGrid
                 items={project.screenshots.map((src, i) => ({
                   src,
@@ -284,7 +284,7 @@ export default function CaseStudyDetail({ params }: { params: Promise<{ slug: st
             <SectionHeader icon={ChartLineIcon} title="Outcomes & Impact" />
             <div className="grid md:grid-cols-2 gap-8">
               <div className="bg-bg-accent/5 p-6 rounded-sm">
-                <h3 className="font-industrial uppercase tracking-wide text-success mb-4">Quantifiable Results</h3>
+                <h3 className="font-industrial uppercase tracking-wide text-xl text-success mb-4">Quantifiable Results</h3>
                 <ul className="space-y-4">
                   {project.outcome.quantifiable.map((res, i) => (
                     <li key={i} className="flex items-center gap-3">
@@ -295,7 +295,7 @@ export default function CaseStudyDetail({ params }: { params: Promise<{ slug: st
                 </ul>
               </div>
               <div>
-                <h3 className="font-industrial uppercase tracking-wide text-gold mb-4">Qualitative Feedback</h3>
+                <h3 className="font-industrial uppercase tracking-wide text-xl text-gold mb-4">Qualitative Feedback</h3>
                 <div className="space-y-4">
                   {project.outcome.qualitative.map((quote, i) => (
                     <blockquote key={i} className="border-l-4 border-divider pl-4 italic text-text-secondary text-sm">
@@ -331,7 +331,7 @@ export default function CaseStudyDetail({ params }: { params: Promise<{ slug: st
         {/* Sidebar / Actions */}
         <div className="lg:col-span-4 space-y-8">
           <div className="bg-card border-2 border-bg-dark p-6 sticky top-24 rounded-sm shadow-xl">
-            <h3 className="text-xl font-industrial uppercase tracking-widest mb-6 text-bg-dark border-b border-bg-dark/10 pb-4">
+            <h3 className="text-2xl font-industrial uppercase tracking-widest mb-6 text-bg-dark border-b border-bg-dark/10 pb-4">
               Project Actions
             </h3>
 

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Orbitron, Rajdhani, Inter, JetBrains_Mono, VT323 } from "next/font/google";
+import { Hanken_Grotesk } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -11,36 +12,16 @@ import { LenisProvider } from "@/components/scroll/LenisProvider";
 import { TabTitleManager } from "@/components/layout/TabTitleManager";
 import { RouteTransitionProvider } from "@/components/transitions/RouteTransitionProvider";
 
-const orbitron = Orbitron({
-  subsets: ["latin"],
-  variable: "--font-orbitron",
+const devGothic = localFont({
+  src: "./fonts/devgothic.ttf",
+  weight: "400",
+  variable: "--font-devgothic",
   display: "swap",
 });
 
-const rajdhani = Rajdhani({
+const hankenGrotesk = Hanken_Grotesk({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-rajdhani",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-jetbrains-mono",
-  display: "swap",
-});
-
-const vt323 = VT323({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-vt323",
+  variable: "--font-hanken",
   display: "swap",
 });
 
@@ -76,9 +57,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${devGothic.variable} ${hankenGrotesk.variable}`}>
       <body
-        className={`${orbitron.variable} ${rajdhani.variable} ${inter.variable} ${jetbrainsMono.variable} ${vt323.variable} antialiased bg-bg-base text-text-primary font-sans flex flex-col min-h-screen`}
+        className="antialiased bg-bg-base text-text-primary font-sans flex flex-col min-h-screen"
       >
         <CursorProvider>
           <LenisProvider>

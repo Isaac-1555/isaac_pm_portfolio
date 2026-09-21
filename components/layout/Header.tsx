@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -38,16 +37,8 @@ export function Header() {
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-2 w-[180px] font-industrial text-lg md:text-xl font-bold tracking-wide md:tracking-widest text-text-primary hover:text-cta transition-colors shrink-0"
+          className="flex items-center w-[180px] font-industrial text-lg md:text-xl font-bold tracking-wide md:tracking-widest text-text-primary hover:text-cta transition-colors shrink-0"
         >
-          <Image
-            src="/logo.png"
-            alt="Isaac Daniel"
-            width={28}
-            height={28}
-            priority
-            className="w-6 h-6 md:w-7 md:h-7 object-contain"
-          />
           <motion.span
             layout
             className="overflow-hidden whitespace-nowrap"
@@ -65,7 +56,7 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "relative flex h-full items-center px-4 lg:px-6 text-xs lg:text-sm font-medium uppercase tracking-wide lg:tracking-widest transition-colors hover:text-cta",
+                  "relative flex h-full items-center px-4 lg:px-6 font-industrial text-sm lg:text-base font-medium uppercase tracking-wide lg:tracking-widest transition-colors hover:text-cta",
                   isActive
                     ? "text-bg-dark font-bold bg-bg-accent/10"
                     : "text-text-secondary"
@@ -89,12 +80,12 @@ export function Header() {
           <Link
             href="https://www.linkedin.com/in/isaac-daniel-sudakar-182792375"
             target="_blank"
-            className="hidden md:block text-sm font-medium text-text-secondary hover:text-cta transition-colors uppercase tracking-wide"
+            className="hidden md:block font-industrial text-base font-medium text-text-secondary hover:text-cta transition-colors uppercase tracking-wide"
           >
             Contact
           </Link>
           <Link href="/experience">
-            <Button variant="default" size="sm" className="text-xs md:text-sm px-3 md:px-4">
+            <Button variant="default" size="sm" className="font-industrial text-sm md:text-base px-3 md:px-4">
               <span className="hidden sm:inline">Resume</span>
               <span className="sm:hidden">CV</span>
             </Button>
@@ -128,7 +119,7 @@ export function Header() {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      "block px-4 py-3 text-sm font-medium uppercase tracking-wide rounded transition-colors",
+                      "block px-4 py-3 font-industrial text-base font-medium uppercase tracking-wide rounded transition-colors",
                       isActive
                         ? "text-bg-dark font-bold bg-bg-accent/10"
                         : "text-text-secondary hover:text-cta hover:bg-bg-accent/5"

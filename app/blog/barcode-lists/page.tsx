@@ -200,7 +200,7 @@ export default function BarcodeListsArticle() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
           <aside className="hidden lg:block lg:col-span-3">
             <nav className="sticky top-28">
-              <h2 className="text-xs font-industrial uppercase tracking-widest text-text-secondary mb-4">
+              <h2 className="text-sm font-industrial uppercase tracking-widest text-text-secondary mb-4">
                 Contents
               </h2>
               <ol className="space-y-2 border-l-2 border-divider pl-4">
@@ -247,7 +247,7 @@ export default function BarcodeListsArticle() {
 
           <div className="lg:col-span-9 max-w-none">
             <nav className="lg:hidden mb-10 bg-card border-2 border-bg-dark rounded-sm p-5">
-              <h2 className="text-xs font-industrial uppercase tracking-widest text-text-secondary mb-3">
+              <h2 className="text-sm font-industrial uppercase tracking-widest text-text-secondary mb-3">
                 Contents
               </h2>
               <ol className="grid grid-cols-2 gap-2">
@@ -480,7 +480,7 @@ export default function BarcodeListsArticle() {
                         {entry.date}
                       </span>
                     </div>
-                    <h4 className="font-industrial uppercase tracking-widest text-sm text-text-primary mb-2">
+                    <h4 className="font-industrial uppercase tracking-widest text-base text-text-primary mb-2">
                       {entry.title}
                     </h4>
                     <ul className="space-y-1.5">
@@ -530,7 +530,7 @@ export default function BarcodeListsArticle() {
                     key={item.title}
                     className="bg-card border-2 border-bg-dark p-5 rounded-sm"
                   >
-                    <h4 className="font-industrial uppercase tracking-widest text-sm text-text-primary mb-2">
+                    <h4 className="font-industrial uppercase tracking-widest text-base text-text-primary mb-2">
                       {item.title}
                     </h4>
                     <p className="text-sm text-text-secondary leading-relaxed">
@@ -613,7 +613,7 @@ function SectionHeading({
   title: string;
 }) {
   return (
-    <h2 className="flex items-center gap-3 text-xl md:text-2xl font-industrial uppercase tracking-widest text-text-primary mb-6 pb-3 border-b border-divider">
+    <h2 className="flex items-center gap-3 text-2xl md:text-3xl font-industrial uppercase tracking-widest text-text-primary mb-6 pb-3 border-b border-divider">
       <Icon className="h-5 w-5 text-cta shrink-0" />
       {title}
     </h2>
@@ -651,7 +651,7 @@ function FeatureBlock({
     <div className="flex gap-4">
       <div className="mt-1 shrink-0">{icon}</div>
       <div>
-        <h4 className="font-industrial uppercase tracking-widest text-sm text-text-primary mb-1">
+        <h4 className="font-industrial uppercase tracking-widest text-base text-text-primary mb-1">
           {title}
         </h4>
         <p className="text-sm text-text-secondary leading-relaxed">
@@ -677,7 +677,7 @@ function LearningBlock({
         {number}
       </div>
       <div>
-        <h4 className="font-industrial uppercase tracking-widest text-sm text-text-primary mb-2">
+        <h4 className="font-industrial uppercase tracking-widest text-base text-text-primary mb-2">
           {title}
         </h4>
         <p className="text-sm md:text-base text-text-secondary leading-relaxed">
