@@ -17,6 +17,7 @@ import CpuIcon from "@/components/icons/cpu-icon";
 import MagnifierIcon from "@/components/icons/magnifier-icon";
 import CheckedIcon from "@/components/icons/checked-icon";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
+import { TopoMap } from "@/components/case-study/TopoMap";
 
 export const metadata = {
   title: "D4C: Building a Personalized Coding Agent | Isaac PM Blog",
@@ -37,10 +38,11 @@ export default function D4CArticle() {
   return (
     <GalleryProvider>
       <article className="pb-24">
-      <header className="relative w-full bg-gradient-to-br from-indigo-900 to-purple-900 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10" />
+      <header className="pt-28 pb-24 md:pt-36 md:pb-28 min-h-[600px] relative w-full bg-gradient-to-br from-slate-900 to-bg-dark overflow-hidden">
+        <TopoMap activeId="blog-d4c" />
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 z-[2] pointer-events-none" />
 
-        <div className="container mx-auto px-4 pt-28 pb-16 md:pt-36 md:pb-20 relative z-10">
+        <div className="container mx-auto px-4 relative z-10">
           <Link
             href="/blog"
             data-icon-hover-trigger
@@ -434,7 +436,7 @@ export default function D4CArticle() {
               </div>
             </section>
 
-            <section className="mt-16 bg-gradient-to-br from-indigo-900 to-purple-900 rounded-sm p-8 md:p-12 relative overflow-hidden">
+            <section className="mt-16 bg-gradient-to-br from-slate-900 to-bg-dark rounded-sm p-8 md:p-12 relative overflow-hidden">
               <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10" />
               <div className="relative z-10">
                 <TerminalIcon size={40} className="text-purple-300 mb-4" />

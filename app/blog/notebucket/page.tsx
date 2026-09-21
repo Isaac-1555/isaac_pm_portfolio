@@ -16,6 +16,7 @@ import CheckedIcon from "@/components/icons/checked-icon";
 import ExternalLinkIcon from "@/components/icons/external-link-icon";
 import DownloadIcon from "@/components/icons/download-icon";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
+import { TopoMap } from "@/components/case-study/TopoMap";
 
 export const metadata = {
   title: "NoteBucket: Lessons from Building an Offline-First Semantic Note Organizer | Isaac PM Blog",
@@ -37,10 +38,11 @@ export default function NoteBucketArticle() {
   return (
     <GalleryProvider>
       <article className="pb-24">
-      <header className="relative w-full bg-gradient-to-br from-cyan-900 to-slate-900 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10" />
+      <header className="pt-28 pb-24 md:pt-36 md:pb-28 min-h-[600px] relative w-full bg-gradient-to-br from-slate-900 to-bg-dark overflow-hidden">
+        <TopoMap activeId="blog-notebucket" />
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 z-[2] pointer-events-none" />
 
-        <div className="container mx-auto px-4 pt-28 pb-24 md:pt-36 md:pb-28 relative z-10">
+        <div className="container mx-auto px-4 relative z-10">
           <Link
             href="/blog"
             data-icon-hover-trigger
@@ -452,7 +454,7 @@ export default function NoteBucketArticle() {
               </PullQuote>
             </section>
 
-            <section className="mt-16 bg-gradient-to-br from-cyan-900 to-slate-900 rounded-sm p-8 md:p-12 relative overflow-hidden">
+            <section className="mt-16 bg-gradient-to-br from-slate-900 to-bg-dark rounded-sm p-8 md:p-12 relative overflow-hidden">
               <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10" />
               <div className="relative z-10">
                 <div className="mb-4">

@@ -1,39 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio
+
+Next.js App Router portfolio site (`next@16`, `react@19`, TypeScript, Tailwind CSS v4). Content/UI driven — case studies, work grid, and blog posts come from static data files, not a backend.
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm ci        # install dependencies
+npm run dev   # start dev server at http://localhost:3000
+npm run build # production build
+npm run start # serve production build
+npm run lint  # lint
+npx tsc --noEmit  # type-check
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Shared topographic map hero
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Every featured work (case study) page and every blog post page renders a shared topographic background (`public/topographic.svg`) with markers for **all** projects and posts:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- 3 marker groups: `featured` (★ case studies), `work` (small square, work grid items), `blog` (✎ blog posts)
+- The page you are currently on is highlighted in tech teal (`bg-cta`/`text-cta`)
+- Marker positions live in one registry: `lib/topo-markers.ts` (`{ id, label, group, x, y }`, coordinates in % of the hero)
+- Rendered by `components/case-study/TopoMap.tsx`
 
-## Learn More
+## Adding a new project
 
-To learn more about Next.js, take a look at the following resources:
+1. Add a full entry to `app/case-studies/data.ts` (follows the `CaseStudy` interface). No `heroBackground` field needed — the shared topo map is used automatically.
+2. Add the same `id` to the in-file card arrays on the home page and `app/work/page.tsx` so cards link to the case study.
+3. Add a marker to `lib/topo-markers.ts` with `group: "featured"` and a distinct `x`/`y` (avoid overlapping existing markers).
+4. If the project also appears as a plain work item, add it to `technicalProjects` in `app/work/page.tsx` and add a `group: "work"` marker.
+5. Check `components/mascot/AstronautMascot.tsx` `TOUR_CONFIGS` if the new page introduces or renames section IDs (`mission-*`).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Adding a new blog post
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Create `app/blog/<slug>/page.tsx` (copy the structure of an existing post; keep the `metadata` export and gradient hero).
+2. Add `<TopoMap activeId="blog-<slug>" />` as the first layer inside the hero `<header>`, and import it from `@/components/case-study/TopoMap`.
+3. Add the post to the `posts` array in `app/blog/page.tsx` (listing card) and `app/blog/sitemap.ts` if it exists.
+4. Add a marker to `lib/topo-markers.ts` with `id: "blog-<slug>"`, `group: "blog"`, and a distinct `x`/`y`.
 
 ## Global Game Leaderboard
 

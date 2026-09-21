@@ -90,8 +90,6 @@ export interface CaseStudy {
   /** Optional aspect ratio for the preview image */
   previewWidth?: number;
   previewHeight?: number;
-  /** Optional dithered texture hero background (image + 2 dither colors) */
-  heroBackground?: { image: string; colorA: string; colorB: string };
   /** How carousel images fit: 'cover' (default, crops) or 'contain' (full frame) */
   carouselFit?: "cover" | "contain";
 }
@@ -206,7 +204,6 @@ export const caseStudies: CaseStudy[] = [
 
     icon: TerminalIcon,
     gradient: "from-slate-900 to-bg-dark",
-    heroBackground: { image: "/Tux_works_bg.png", colorA: "#0F172A", colorB: "#3E4C4D" },
     tags: ["Rust", "Tauri", "IDE", "Terminal", "Dev Tool"],
     techStack: ["Rust", "Tauri 2", "React 19", "TypeScript", "Ghostty", "CodeMirror", "@pierre/diffs", "Vite", "git2-rs"],
     websiteUrl: "https://github.com/Isaac-1555/Tux",
@@ -282,7 +279,6 @@ export const caseStudies: CaseStudy[] = [
 
     icon: BrainCircuitIcon,
     gradient: "from-tech to-bg-accent",
-    heroBackground: { image: "/Satbrain_works_bg.png", colorA: "#3E4C4D", colorB: "#4A7C7E" },
     tags: ["AI/ML", "EdTech", "Full Stack"],
     techStack: ["Next.js", "Supabase", "Gemini 1.5", "Vercel AI SDK", "Vega-Lite", "Radix UI", "TypeScript", "Tailwind v4"],
     websiteUrl: "https://satbrain.vercel.app/",
@@ -359,7 +355,6 @@ export const caseStudies: CaseStudy[] = [
 
     icon: FileDescriptionIcon,
     gradient: "from-warning to-gold",
-    heroBackground: { image: "/PocketResume_works_bg.png", colorA: "#3E4C4D", colorB: "#D97B4A" },
     tags: ["GenAI", "Chrome Extension", "Productivity"],
     techStack: ["Chrome MV3", "TypeScript", "Gemini 2.5 Flash", "jsPDF", "DOM Scraping", "Tailwind", "Chrome Storage API"],
     websiteUrl: "https://pocket-resume.xyz",
@@ -499,7 +494,6 @@ export const caseStudies: CaseStudy[] = [
 
     icon: BucketIcon,
     gradient: "from-cyan-900 to-slate-900",
-    heroBackground: { image: "/NoteBucket_works_bg.png", colorA: "#0F172A", colorB: "#164E63" },
     tags: ["Android", "On-Device AI", "Local-First"],
     techStack: ["Kotlin", "Jetpack Compose", "Material 3", "Room", "Hilt", "llama.cpp", "BGE-small", "WorkManager", "Coil", "NDK/CMake"],
     websiteUrl: "https://github.com/Isaac-1555/NoteBucket",

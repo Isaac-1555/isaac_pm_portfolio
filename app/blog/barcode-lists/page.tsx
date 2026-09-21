@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { TopoMap } from "@/components/case-study/TopoMap";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { GalleryProvider, Figure } from "@/components/image/gallery-context";
@@ -140,10 +141,11 @@ export default function BarcodeListsArticle() {
   return (
     <GalleryProvider>
       <article className="pb-24">
-      <header className="relative w-full bg-gradient-to-br from-slate-800 to-slate-950 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10" />
+      <header className="pt-28 pb-24 md:pt-36 md:pb-28 min-h-[600px] relative w-full bg-gradient-to-br from-slate-900 to-bg-dark overflow-hidden">
+        <TopoMap activeId="blog-barcode-lists" />
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 z-[2] pointer-events-none" />
 
-        <div className="container mx-auto px-4 pt-28 pb-16 md:pt-36 md:pb-20 relative z-10">
+        <div className="container mx-auto px-4 relative z-10">
           <Link
             href="/blog"
             data-icon-hover-trigger
@@ -541,7 +543,7 @@ export default function BarcodeListsArticle() {
               </div>
             </section>
 
-            <section className="mt-16 bg-gradient-to-br from-slate-800 to-slate-950 rounded-sm p-8 md:p-12 relative overflow-hidden">
+            <section className="mt-16 bg-gradient-to-br from-slate-900 to-bg-dark rounded-sm p-8 md:p-12 relative overflow-hidden">
               <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10" />
               <div className="relative z-10">
                 <ScanBarcodeIcon size={40} className="text-emerald-300 mb-4" />
