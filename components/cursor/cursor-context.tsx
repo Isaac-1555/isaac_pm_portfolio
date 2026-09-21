@@ -122,7 +122,23 @@ export function CursorProvider({ children }: Props) {
       if (t.el instanceof Element) ro.observe(t.el);
     }
 
-    const handleScroll = () => refreshTargetRects();
+    const handleScroll = () => {
+      refreshTargetRects();
+
+      const locked = enteredRef.current;
+      if (!locked) return;
+
+      const under = document.elementFromPoint(mouseRef.current.x, mouseRef.current.y);
+      const stillOver = under && (under === locked || locked.contains(under));
+
+      if (stillOver) {
+        setTargetRect(locked.getBoundingClientRect());
+      } else {
+        enteredRef.current = null;
+        setVariant("default");
+        setTargetRect(null);
+      }
+    };
     window.addEventListener("scroll", handleScroll, { passive: true });
 
     const handleMouse = (e: MouseEvent) => {
