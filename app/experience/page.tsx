@@ -8,7 +8,6 @@ import RocketIcon from "@/components/icons/rocket-icon";
 import ShieldCheck from "@/components/icons/shield-check";
 import StackIcon from "@/components/icons/stack-icon";
 import UsersIcon from "@/components/icons/users-icon";
-import TrophyIcon from "@/components/icons/trophy-icon";
 import CodeIcon from "@/components/icons/code-icon";
 import FileDescriptionIcon from "@/components/icons/file-description-icon";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
@@ -53,22 +52,31 @@ const skills = [
 
 const experience = [
   {
-    role: "Full Stack Developer",
-    company: "The Blessed Life",
-    period: "2025 - 2026",
-    description: "Owning end-to-end product delivery for B2B workflow initiatives. Leading customer discovery, problem framing, and roadmap prioritization. Achieved ~25% improvement in workflow completion rates and ~30% increase in feature adoption.",
+    role: "IT Operations Specialist",
+    company: "Calgary Co-op",
+    period: "2024 - Present",
+    bullets: [
+      "The FMC department did barcode/file lookup work manually for years, taking 4-6 hours per session; the backend wiped nightly, so unfinished work was lost and staff restarted from scratch every day.",
+      "Built a standalone AI-powered Chrome Extension (JavaScript, OCR) that persists progress independently of company software and auto-resumes from where staff left off, cutting the task from 4-6 hours to under 10 minutes, a reduction of roughly 95% in time spent.",
+    ],
   },
   {
-    role: "IT Operations Specialist",
-    company: "Calgary Coop",
-    period: "2024 - Present",
-    description: "Implemented workflow improvements that boosted team efficiency by 20%. Reduced file retrieval time 35% through optimized categorization. Streamlined documentation processed supporting internal product tracking.",
+    role: "Full Stack Developer (Intern)",
+    company: "The Blessed Life",
+    period: "2025 - 2026",
+    bullets: [
+      "The company had no way to rapidly prototype stakeholder vision into something tangible, and needed a fast path from concept to a convincing, working demo to prove an idea was worth investing in.",
+      "Built full-stack applications and prototypes using React, TypeScript, Next.js, Python, and PostgreSQL (dummy backend data for prototyping), improving feature adoption by 30% and workflow completion by 100%.",
+    ],
   },
   {
     role: "Electrical Engineer",
     company: "Cris Planners and Builders",
     period: "2021 - 2023",
-    description: "Translated technical constraints into clear requirements in compliance-driven environments. Collaborated with cross-functional teams to resolve system issues, building strong systems thinking skills applicable to SDLC.",
+    bullets: [
+      "The company built homes and delivered interior design for individual homeowners but had no upsell offering, leaving revenue on the table with clients who were ready to spend more.",
+      "Proposed and delivered a home automation/IoT upsell using ESP32 and embedded systems to automate lighting and water tank filling; priced at a premium as an early, novel offering, netting the company additional profit per project.",
+    ],
   },
 ];
 
@@ -273,9 +281,11 @@ export default function AboutPage() {
                   </div>
                   <span className="font-mono text-text-secondary text-sm md:ml-auto">{job.period}</span>
                 </div>
-                <p className="text-text-secondary max-w-2xl leading-relaxed mt-2">
-                  {job.description}
-                </p>
+                <ul className="text-text-secondary max-w-2xl leading-relaxed mt-2 list-disc pl-5 space-y-2">
+                  {job.bullets.map((bullet) => (
+                    <li key={bullet}>{bullet}</li>
+                  ))}
+                </ul>
               </motion.div>
             ))}
           </motion.div>
@@ -299,7 +309,6 @@ export default function AboutPage() {
                 variants={staggerItem}
                 className="flex items-start gap-4 p-4 border border-divider/50 rounded-sm bg-bg-accent/5"
               >
-                <TrophyIcon size={24} className="text-text-secondary mt-1" />
                 <div>
                   <h3 className="font-bold text-text-primary">{edu.degree}</h3>
                   <div className="text-sm text-text-secondary">{edu.school}</div>
