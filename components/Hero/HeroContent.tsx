@@ -51,7 +51,6 @@ export default function HeroContent() {
       >
         <span className="font-jb text-base sm:text-lg md:text-xl font-medium">Hi, I&apos;m</span>
         <span className="hero-isaac font-vt323 text-3xl sm:text-4xl md:text-5xl leading-none">Isaac,</span>
-        <span className="font-jb text-base sm:text-lg md:text-xl font-medium">a</span>
       </motion.p>
 
       <motion.h1
