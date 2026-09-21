@@ -13,7 +13,7 @@ export function TopoMap({ activeId }: { activeId?: string }) {
   return (
     <div className="absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
       <div
-        className="absolute inset-0 opacity-40"
+        className="absolute -inset-4 opacity-40 blur-[4px] md:blur-none"
         style={{
           backgroundImage: "url(/topographic.svg)",
           backgroundSize: "100% auto",
