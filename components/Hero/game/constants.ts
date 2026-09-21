@@ -103,7 +103,7 @@ export const GAME_PROJECTS: GameProject[] = [
     subtitle: 'AI-Powered Study Assistant',
     description:
       'Transforms documents into interactive learning materials with AI summaries, quizzes, flashcards, and visual charts.',
-    tags: ['AI/ML', 'EdTech', 'Full Stack'],
+    tags: ['React', 'Vite', 'Gemini', 'Supabase'],
     websiteUrl: 'https://satbrain.vercel.app/',
     repoUrl: 'https://github.com/Isaac-1555/project_goldmine',
     color: COLORS.gold,
@@ -113,8 +113,8 @@ export const GAME_PROJECTS: GameProject[] = [
     title: 'Barcode Lists',
     subtitle: 'Internal Chrome Extension',
     description:
-      'Streamlines barcode management with shared access and AI-powered extraction for Calgary Coop store personnel.',
-    tags: ['Chrome Ext', 'AI/OCR', 'Internal Tool'],
+      'Streamlines barcode management with shared access and Excel barcode import for Calgary Coop store personnel.',
+    tags: ['Chrome MV3', 'JavaScript', 'Supabase'],
     websiteUrl:
       'https://chromewebstore.google.com/detail/barcode-lists/colpoghjdbjnmciefnipaefbdflgjifg',
     repoUrl: 'https://github.com/Isaac-1555/Barcode-Lists',
@@ -126,7 +126,7 @@ export const GAME_PROJECTS: GameProject[] = [
     subtitle: 'Context-Aware AI Browser Extension',
     description:
       'Tailors resumes to any job description using AI. Works on LinkedIn, Indeed, and all major job boards.',
-    tags: ['GenAI', 'Productivity', 'Chrome Ext'],
+    tags: ['Chrome MV3', 'Multi-provider AI', 'JavaScript'],
     websiteUrl: 'https://pocket-resume.xyz',
     repoUrl: 'https://github.com/Isaac-1555/pocket-resume',
     color: COLORS.warning,
@@ -134,10 +134,10 @@ export const GAME_PROJECTS: GameProject[] = [
   {
     id: 'd4c',
     title: 'D4C',
-    subtitle: 'Personal Coding Agent',
+    subtitle: 'Terminal Coding Agent in Rust',
     description:
-      'Custom coding agent built from the pi coding agent with personalized preferences and workflow enhancements.',
-    tags: ['AI', 'Dev Tool', 'TypeScript'],
+      'Coding agent built from scratch in Rust — planning-first workflows, native Ratatui TUI, built-in MCP client, provider-agnostic.',
+    tags: ['Rust', 'Ratatui', 'AI Agent'],
     websiteUrl: '',
     repoUrl: 'https://github.com/Isaac-1555/D4C',
     color: COLORS.success,
@@ -148,7 +148,7 @@ export const GAME_PROJECTS: GameProject[] = [
     subtitle: 'Esports Coaching Platform',
     description:
       'Helping amateur esports players reach pro level with team management and analytics features.',
-    tags: ['Esports', 'Platform', 'Community'],
+    tags: ['React', 'Express', 'Supabase'],
     websiteUrl: '',
     repoUrl: 'https://github.com/Isaac-1555/coachgg',
     color: COLORS.cta,

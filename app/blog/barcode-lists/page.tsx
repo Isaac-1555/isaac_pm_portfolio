@@ -24,7 +24,7 @@ import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 export const metadata = {
   title: "Barcode Lists: Building a Shared Barcode Workflow for Calgary Coop | Isaac PM Blog",
   description:
-    "How a Monday-morning scanning problem at Calgary Coop turned into a shared Chrome extension with AI-powered OCR, real-time sync, and 24 commits of iteration.",
+    "How a Monday-morning scanning problem at Calgary Coop turned into a shared Chrome extension with Supabase sync, Excel barcode import, and 24 commits of iteration.",
 };
 
 const TOC = [
@@ -133,7 +133,7 @@ const FIXES = [
   {
     name: "AI extraction accuracy",
     detail:
-      "Initial OCR pass returned noisy barcodes mixed with invoice numbers. Tightened the model prompt and added a post-extraction filter to drop anything that didn't match barcode length/charset rules.",
+      "In the v1.x era, the initial OCR pass returned noisy barcodes mixed with invoice numbers. Tightened the model prompt and added a post-extraction filter to drop anything that didn't match barcode length/charset rules. The Excel importer that replaced the AI pass carries the same validation forward.",
   },
 ];
 
@@ -178,12 +178,12 @@ export default function BarcodeListsArticle() {
 
           <p className="mt-6 text-lg md:text-xl text-white/80 max-w-2xl leading-relaxed">
             A Monday-morning scanning problem at Calgary Coop turned into a
-            shared Chrome extension with AI-powered OCR, realtime sync, and 24
-            commits of iteration over three months.
+            shared Chrome extension with Supabase sync, Excel barcode import,
+            and 24 commits of iteration over three months.
           </p>
 
           <div className="flex flex-wrap gap-2 mt-8">
-            {["Chrome Extension", "AI/OCR", "Internal Tool", "Realtime"].map(
+            {["Chrome Extension", "Supabase", "Internal Tool", "Realtime"].map(
               (tag) => (
                 <Badge
                   key={tag}
@@ -273,10 +273,10 @@ export default function BarcodeListsArticle() {
                 Barcode Lists is a Chrome extension I built for{" "}
                 <strong className="text-text-primary">Calgary Coop</strong>{" "}
                 store personnel. It centralizes barcode storage, enables shared
-                access across the team, and uses AI to extract barcodes from
-                images and spreadsheets. It started as a fix for one recurring
-                Monday-morning problem; it ended as the tool the store team now
-                runs every scan through.
+                access across the team, and extracts barcodes from Excel files
+                (with an AI-powered OCR pass in earlier versions). It started
+                as a fix for one recurring Monday-morning problem; it ended as
+                the tool the store team now runs every scan through.
               </p>
               <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-6">
                 Twenty-four commits over three months, live on the Chrome Web
@@ -372,8 +372,8 @@ export default function BarcodeListsArticle() {
                 />
                 <FeatureBlock
                   icon={<CheckedIcon size={20} className="text-cta" />}
-                  title="Image-to-list in seconds"
-                  description="A photo of a printed barcode sheet used to mean typing each code by hand. With the AI extractor, staff pasted the image and got a clean list in a few seconds."
+                  title="Excel-to-list in seconds"
+                  description="A printout or spreadsheet full of barcodes used to mean typing each code by hand. Staff upload the file, the extractor reads the UPC column, and the review modal shows a clean, de-duplicated list in a few seconds. (In the v1.x era this ran through the AI OCR pass; the current SheetJS import path is faster and deterministic.)"
                 />
                 <FeatureBlock
                   icon={<CheckedIcon size={20} className="text-cta" />}
@@ -403,18 +403,18 @@ export default function BarcodeListsArticle() {
               <div className="space-y-6">
                 <FeatureBlock
                   icon={<PuzzleIcon size={20} className="text-cta" />}
-                  title="Shared Barcode Database with Login Auth"
-                  description="Clerk handles auth, Supabase holds the data, Manifest V3 keeps the extension secure. A barcode saved by one user is visible to every other authorized user in real time. The shared store is the foundation — everything else assumes it's there."
+                  title="Shared Barcode Database with Store Auth"
+                  description="Each store gets its own account (e.g. 'FMC07'), auto-created on first login, with the password hashed before storage. Supabase holds the data and syncs it over REST, Manifest V3 keeps the extension secure. A barcode saved by one user is visible to every other authorized user in real time. The shared store is the foundation — everything else assumes it's there."
                 />
                 <FeatureBlock
                   icon={<CpuIcon size={20} className="text-cta" />}
-                  title="AI-Powered Image & Spreadsheet OCR"
-                  description="This was the most-requested feature after the shared store. Staff could paste a photo of a printed barcode sheet, a screenshot of a spreadsheet, or even a noisy image that mixed barcodes with invoice numbers. The AI extracted the barcodes, then a post-filter dropped anything that didn't match barcode length and charset rules."
+                  title="AI-Powered Image & Spreadsheet OCR (v1.x)"
+                  description="This was the most-requested feature after the shared store. Staff could paste a photo of a printed barcode sheet, a screenshot of a spreadsheet, or even a noisy image that mixed barcodes with invoice numbers. The AI extracted the barcodes, then a post-filter dropped anything that didn't match barcode length and charset rules. AI extraction shipped in v1.x (April 2026) — current versions import barcodes from Excel files directly via SheetJS instead, which is faster and needs no model."
                 />
                 <FeatureBlock
                   icon={<MagnifierIcon size={20} className="text-cta" />}
                   title="Intelligent Barcode Cleaning"
-                  description="The OCR pass had a tendency to include invoice numbers and stray whitespace. A second pass scanned the extracted values, kept the ones that looked like valid barcodes, and silently discarded the rest. Staff stopped having to clean up after the AI."
+                  description="The AI OCR pass had a tendency to include invoice numbers and stray whitespace. A second pass scanned the extracted values, kept the ones that looked like valid barcodes, and silently discarded the rest. Staff stopped having to clean up after the extraction. Today the Excel importer inherits the same discipline — 'UPC' column detection, non-numeric stripping, and duplicate detection in the review modal."
                 />
                 <FeatureBlock
                   icon={<PuzzleIcon size={20} className="text-cta" />}

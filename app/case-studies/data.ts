@@ -140,15 +140,15 @@ export const caseStudies: CaseStudy[] = [
 
     approach: {
       strategy: "PRD-first development: a single-day scaffold followed by 5 targeted fix commits. The Rust backend owns PTY, git operations, and the editor engine; the React frontend owns layout, where the webview pays for itself.",
-      frameworks: ["Tauri 2", "ghostty-web (terminal rendering)", "CodeMirror (editor)", "@pierre/diffs (diff viewer)", "git2-rs (git operations)"],
+      frameworks: ["Tauri 2", "xterm.js 6 (terminal rendering)", "CodeMirror 6 (editor)", "@pierre/diffs (diff viewer)", "portable-pty (PTY sessions)", "git2-rs (git operations)"],
       collaboration: "Solo. Dogfooding from the first commit — every feature entered daily use the same day it was built."
     },
 
     solution: {
-      description: "A three-pane desktop app. Sessions and the file tree occupy the left pane. The terminal plus editor/diff sit in the middle. Git state lives on the right. Ghostty powers the terminal; CodeMirror powers the editor with Prettier formatting for JS/TS/JSON/HTML/CSS/MD; @pierre/diffs renders the diff pane. Session state persists across launches.",
+      description: "A three-pane desktop app. Sessions and the file tree occupy the left pane. The terminal plus editor/diff sit in the middle. Git state lives on the right. xterm.js with a WebGL renderer powers the terminal; CodeMirror powers the editor with Prettier formatting for JS/TS/JSON/HTML/CSS/MD; @pierre/diffs renders the diff pane. Session state persists across launches.",
       features: [
         "Split panes (vertical and horizontal, resizable)",
-        "Right-side terminal powered by Ghostty",
+        "Right-side terminal powered by xterm.js 6",
         "Left sidebar: file explorer, git tree, terminal session list",
         "Inline git diffs (unified and side-by-side)",
         "File editing with CodeMirror highlighting and Prettier formatting",
@@ -205,7 +205,7 @@ export const caseStudies: CaseStudy[] = [
     icon: TerminalIcon,
     gradient: "from-slate-900 to-bg-dark",
     tags: ["Rust", "Tauri", "IDE", "Terminal", "Dev Tool"],
-    techStack: ["Rust", "Tauri 2", "React 19", "TypeScript", "Ghostty", "CodeMirror", "@pierre/diffs", "Vite", "git2-rs"],
+    techStack: ["Rust", "Tauri 2", "React 19", "TypeScript", "xterm.js 6", "CodeMirror 6", "@pierre/diffs", "Vite", "portable-pty", "git2-rs"],
     websiteUrl: "https://github.com/Isaac-1555/Tux",
     repoUrl: "https://github.com/Isaac-1555/Tux",
     screenshots: [
@@ -248,14 +248,14 @@ export const caseStudies: CaseStudy[] = [
     
     approach: {
       strategy: "Vertical integration of AI services, built around the Gemini 1.5 family — its large context window allows entire textbooks to be processed in a single pass instead of fragmented chunk-by-chunk inference.",
-      frameworks: ["RAG (Retrieval Augmented Generation) for document grounding", "Supabase for auth, storage, and persistence", "Radix UI for a component-driven frontend"],
+      frameworks: ["Gemini API for summaries, quizzes, and flashcards (@google/generative-ai)", "Supabase for auth, storage, and persistence", "Radix Themes + Radix primitives for a component-driven frontend"],
       collaboration: "Direct feedback loop with beta testers driving rapid feature iteration."
     },
     
     solution: {
       description: "A web platform where users upload source material and receive a tailored study dashboard — document processor, chart generator, and an interactive quiz engine.",
       features: ["Multi-format Upload (PDF, DOCX, MP3)", "AI Summary & Chat", "Auto-generated Vega-Lite Charts", "Flashcard Mode", "Quiz Mode"],
-      rationale: "Supabase + React + Gemini enabled rapid prototyping while providing enterprise-grade auth and database behavior out of the box."
+      rationale: "A Vite + React SPA with Supabase and the Gemini API enabled rapid prototyping while providing enterprise-grade auth and database behavior out of the box."
     },
     
     execution: {
@@ -279,8 +279,8 @@ export const caseStudies: CaseStudy[] = [
 
     icon: BrainCircuitIcon,
     gradient: "from-tech to-bg-accent",
-    tags: ["AI/ML", "EdTech", "Full Stack"],
-    techStack: ["Next.js", "Supabase", "Gemini 1.5", "Vercel AI SDK", "Vega-Lite", "Radix UI", "TypeScript", "Tailwind v4"],
+    tags: ["AI/ML", "EdTech", "React", "Vite"],
+    techStack: ["React 18", "Vite", "TypeScript", "Supabase", "Gemini API", "Radix Themes", "Vega-Lite", "d3", "react-router v7"],
     websiteUrl: "https://satbrain.vercel.app/",
     repoUrl: "https://github.com/Isaac-1555/project_goldmine",
     screenshots: [
@@ -323,13 +323,13 @@ export const caseStudies: CaseStudy[] = [
     
     approach: {
       strategy: "In-context augmentation: the tool operates directly on the job page, reading the DOM to understand requirements and generating the tailored PDF locally — no copy-pasting, no data leaving the device.",
-      frameworks: ["Chrome Extension Manifest V3", "Prompt engineering (Gemini 2.5 Flash)"],
+      frameworks: ["Chrome Extension Manifest V3", "Multi-provider AI (Gemini, OpenAI, Anthropic, OpenRouter, custom/local endpoints)", "Clerk (auth) + Convex (cloud sync)"],
       collaboration: "Open source community feedback on GitHub."
     },
     
     solution: {
       description: "A Chrome extension that reads the active tab's job description, takes the user's master resume, and rewrites it to match the role's keywords and tone.",
-      features: ["One-click Page Analysis", "Gemini 2.5 Flash Integration", "PDF Generation (jsPDF)", "Cover Letter Writer", "Local Data Persistence"],
+      features: ["One-click Page Analysis", "Multi-provider AI (Gemini, OpenAI, Anthropic, OpenRouter, local endpoints)", "PDF Generation (jsPDF)", "Cover Letter Writer", "Local Data Persistence"],
       rationale: "A browser extension was the only form factor that granted seamless access to job board content without copy-pasting — and local processing satisfied the privacy constraint outright."
     },
     
@@ -355,8 +355,8 @@ export const caseStudies: CaseStudy[] = [
 
     icon: FileDescriptionIcon,
     gradient: "from-warning to-gold",
-    tags: ["GenAI", "Chrome Extension", "Productivity"],
-    techStack: ["Chrome MV3", "TypeScript", "Gemini 2.5 Flash", "jsPDF", "DOM Scraping", "Tailwind", "Chrome Storage API"],
+    tags: ["GenAI", "Chrome Extension", "JavaScript"],
+    techStack: ["Chrome MV3", "JavaScript", "Multi-provider AI", "Clerk", "Convex", "jsPDF", "Chrome Storage API"],
     websiteUrl: "https://pocket-resume.xyz",
     repoUrl: "https://github.com/Isaac-1555/pocket-resume",
     screenshots: [

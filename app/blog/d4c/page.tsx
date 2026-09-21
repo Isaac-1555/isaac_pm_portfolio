@@ -20,14 +20,14 @@ import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 import { TopoMap } from "@/components/case-study/TopoMap";
 
 export const metadata = {
-  title: "D4C: Building a Personalized Coding Agent | Isaac PM Blog",
+  title: "D4C: Building a Terminal Coding Agent in Rust from Scratch | Isaac PM Blog",
   description:
-    "How I built a personal coding agent on top of pi — plan/build modes, permanent MCP servers, and an /update skill that re-applies my customizations after every upstream sync. Includes the mistake that wiped all of them the first time.",
+    "How I built a terminal coding agent from scratch in Rust — planning-first workflows, a native Ratatui TUI, a built-in MCP client, and provider-agnostic model support.",
 };
 
 const TOC = [
   { id: "intro", label: "What is D4C?" },
-  { id: "why", label: "Why I Built It" },
+  { id: "why", label: "Why Rust, Why from Scratch" },
   { id: "features", label: "Key Features" },
   { id: "setup", label: "Setup & Architecture" },
   { id: "challenges", label: "Challenges & Fixes" },
@@ -69,19 +69,19 @@ export default function D4CArticle() {
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-industrial font-bold uppercase tracking-wider text-white leading-tight max-w-4xl">
             D4C:{" "}
             <span className="text-purple-300">
-              Building a Personalized Coding Agent
+              Building a Terminal Coding Agent in Rust from Scratch
             </span>
           </h1>
 
           <p className="mt-6 text-lg md:text-xl text-white/80 max-w-2xl leading-relaxed">
-            Building my dream coding agent was the easy part. Keeping it alive
-            through upstream syncs nearly killed it — and the first sync wiped
-            everything I&apos;d built. Here&apos;s what went wrong and how the
-            /update skill saved it.
+            Most coding agents optimize for freeform chat — and you find out
+            the model misunderstood you only after your files change. D4C
+            makes planning a first-class, interactive step. Built from
+            scratch in Rust with a native TUI.
           </p>
 
           <div className="flex flex-wrap gap-2 mt-8">
-            {["AI", "Dev Tools", "Open Source", "Agent", "MCP"].map(
+            {["Rust", "TUI", "AI Agent", "MCP", "Open Source"].map(
               (tag) => (
                 <Badge
                   key={tag}
@@ -154,70 +154,80 @@ export default function D4CArticle() {
               <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-6">
                 D4C — short for{" "}
                 <strong className="text-text-primary">Dirty Deeds Done Dirt Cheap</strong>{" "}
-                — is a personalized build of the{" "}
-                <a
-                  href="https://pi.ai"
-                  target="_blank"
-                  className="text-cta hover:underline"
-                >
-                  pi coding agent
-                </a>
-                . I started from pi&apos;s codebase and built my workflow on top
-                of it as a customization layer: plan/build modes, permanent MCP
-                servers, my own skills. Nothing in pi&apos;s core got touched.
+                — is a lightweight, modular terminal coding agent built from
+                scratch in Rust with a native TUI. It shares no source code
+                with Claude Code, OpenCode, or any existing agent — it&apos;s
+                inspired by their usability, then rebuilt around a different
+                core idea.
               </p>
               <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-6">
-                Pi already had a solid foundation: it&apos;s a capable coding agent
-                with an extensive extension marketplace. But the features I
-                needed most — plan mode, build mode, permanent MCP servers —
-                weren&apos;t available as extensions. They had to be ingrained in the
-                agent itself. D4C is the result of that conviction.
+                That idea: <strong className="text-text-primary">guided workflows
+                over open-ended chat</strong>. Most agents take your request and
+                immediately start editing files — you discover scope or
+                misunderstanding only after changes are made. D4C integrates
+                model providers through APIs and treats planning as a
+                first-class, interactive step: repository context is gathered,
+                ambiguities are resolved through a structured questionnaire,
+                assumptions are surfaced for review, and only an{" "}
+                <strong className="text-text-primary">approved plan</strong> is
+                executed, with checkpoints along the way.
               </p>
               <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-6">
-                The name is a nod to the JoJo&apos;s Bizarre Adventure reference:
-                the ability to swap between different &quot;modes&quot; on the
-                fly. It stuck.
+                The name is a nod to the JoJo&apos;s Bizarre Adventure reference.
+                It stuck.
               </p>
             </section>
 
             <section id="why" className="mb-16 scroll-mt-24">
-              <SectionHeading icon={BulbSvg} title="Why I Built It" />
+              <SectionHeading icon={BulbSvg} title="Why Rust, Why from Scratch" />
 
               <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-6">
-                I started with pi because it was the best open-source coding
-                agent I could find. It understood context, it could execute
-                tools, and the extension ecosystem meant I wasn&apos;t starting from
-                zero. But as I used it more, I kept hitting the same wall:
+                I use coding agents daily, and three frustrations kept coming
+                up — none of them fixable by tweaking someone else&apos;s tool:
               </p>
 
               <Callout>
                 <p className="text-sm md:text-base">
-                  <strong>The problem:</strong> The features I wanted most —
-                  structured plan/build workflows, built-in TODO tracking,
-                  integrated web search, permanent MCP servers — needed to be
-                  part of the agent&apos;s core, not add-on extensions that
-                  could lose support or break across updates.
+                  <strong>The problems:</strong> freeform chat wastes iterations
+                  on misunderstandings; autonomous edits on real codebases are
+                  hard to trust; and nothing records <em>why</em> a change was
+                  made. On top of that, most agents lock you into one
+                  vendor&apos;s CLI and treat local models as an afterthought.
                 </p>
               </Callout>
 
-              <p className="text-text-secondary leading-relaxed text-base md:text-lg mt-6">
-                Pi&apos;s extension marketplace is extensive, but every
-                extension has a lifespan. I didn&apos;t want to rely on
-                third-party maintainers for workflow-critical capabilities. If a
-                feature is part of my daily coding loop, it needs to be baked
-                in.
+              <p className="text-text-secondary leading-relaxed text-base md:text-lg mt-6 mb-6">
+                So D4C is built from scratch in Rust. Three reasons:
               </p>
 
+              <div className="space-y-6 mb-6">
+                <FeatureBlock
+                  icon={<RocketIcon size={20} className="text-cta" />}
+                  title="Startup under 100ms"
+                  description="A coding agent should feel like a terminal tool, not a web app. Rust plus Ratatui gets D4C to its first interactive UI frame in under 100ms — no Node runtime booting, no framework hydration."
+                />
+                <FeatureBlock
+                  icon={<PuzzleIcon size={20} className="text-cta" />}
+                  title="Provider-agnostic by design"
+                  description="D4C integrates model providers through APIs, not through one vendor's CLI. Self-hosted and local models get first-class support, not a bolted-on compatibility layer."
+                />
+                <FeatureBlock
+                  icon={<CheckedIcon size={20} className="text-cta" />}
+                  title="Guided, auditable workflows"
+                  description="The planning-first interaction model is the core differentiator. Every change traces back to an approved plan, and checkpoints make autonomous edits reviewable instead of scary."
+                />
+              </div>
+
               <PullQuote>
-                &quot;If a feature is part of my daily coding loop, it needs to
-                be baked in — not bolted on.&quot;
+                &quot;Most terminal agents optimize for freeform chat. D4C
+                optimizes for getting it right before touching your files.&quot;
               </PullQuote>
             </section>
 
             <Figure
               src="/D4C_PlanMode.png"
               alt="D4C plan mode showing structured task breakdown and execution plan"
-              caption="Fig 1 — D4C plan mode: structured task breakdown before any code is written."
+              caption="Fig 1 — D4C's planning workflow: structured breakdown, questionnaire, and an approved plan before any code is written."
               priority
             />
 
@@ -225,42 +235,45 @@ export default function D4CArticle() {
               <SectionHeading icon={SparklesIcon} title="Key Features" />
 
               <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-8">
-                D4C ships with four major additions over stock pi. Each one
-                solves a specific pain point in my development workflow.
+                D4C&apos;s feature set follows from the planning-first philosophy.
+                Each one exists to reduce surprise, not to add surface area.
               </p>
 
               <div className="space-y-6">
                 <FeatureBlock
                   icon={<PuzzleIcon size={20} className="text-cta" />}
-                  title="Plan & Build Modes"
-                  description="The flagship feature. Plan mode forces the agent to think before acting: it produces a structured breakdown of what needs to be done, identifies risks, and lays out an approach. Build mode executes the plan methodically, section by section. This separation of thinking and doing dramatically reduces hallucination and keeps the agent on track."
+                  title="Planning-First Workflows"
+                  description="The flagship feature. Before any code changes, D4C gathers repository context, resolves ambiguities through a structured questionnaire, and surfaces its assumptions for review. Only after you approve the plan does execution begin — with checkpoints along the way. This separation of thinking and doing dramatically reduces hallucination and builds trust in autonomous edits."
                 />
                 <FeatureBlock
-                  icon={<CheckedIcon size={20} className="text-cta" />}
-                  title="Built-in TODO Tracking"
-                  description="Imported from the pi marketplace but integrated at the agent level. The agent can create, update, and check off tasks as it works. This gives me visibility into what's been done and what's pending — essential for multi-step refactors."
-                />
-                <FeatureBlock
-                  icon={<MagnifierIcon size={20} className="text-cta" />}
-                  title="Integrated Web Search"
-                  description="Also from the pi marketplace, but baked in as a first-class capability. The agent can search the web for current documentation, package versions, and known issues — no context-switching needed. This alone cut my research time by roughly half."
+                  icon={<TerminalIcon size={20} className="text-cta" />}
+                  title="Native Ratatui TUI"
+                  description="D4C renders with Ratatui + crossterm — a true terminal UI, not a REPL with colored text. Fast startup, full keyboard control, and a layout that stays responsive while streaming model output in the background."
                 />
                 <FeatureBlock
                   icon={<CpuIcon size={20} className="text-cta" />}
-                  title="Permanent MCP Servers"
-                  description="Two MCP servers run permanently: Context7 (for querying library documentation and code examples in real time) and Playwright (for browser automation and visual testing). These are always available — no manual setup per session, no config files to remember. The agent just uses them when needed."
+                  title="Native MCP Client"
+                  description="D4C implements the Model Context Protocol natively in the Rust core — no external MCP launcher process. Tools and context servers plug in through a standard protocol instead of vendor-specific glue."
+                />
+                <FeatureBlock
+                  icon={<MagnifierIcon size={20} className="text-cta" />}
+                  title="Automatic Model Selection"
+                  description="A small embedded router picks the model based on task complexity — cheap models for routine edits, stronger ones for gnarly refactors. No separate heavy service, no external dependency, and it's transparent: you can always see and override what was chosen."
+                />
+                <FeatureBlock
+                  icon={<CodeIcon size={20} className="text-cta" />}
+                  title="Slash-Command Architecture"
+                  description="Slash commands are the primary interaction surface — not buried menus or chat keywords. Everything the agent can do is discoverable, scriptable, and consistent."
                 />
               </div>
 
               <Callout>
                 <p className="text-sm md:text-base">
-                  <strong>Why MCP servers instead of extensions?</strong>{" "}
-                  Context7 and Playwright are deeply embedded tools. Context7
-                  provides documentation lookup that keeps the agent accurate
-                  with library APIs. Playwright lets the agent test UI changes
-                  interactively. Extensions could provide similar functionality,
-                  but permanent MCP servers guarantee they&apos;re always
-                  available without configuration overhead.
+                  <strong>Why an embedded router instead of a bigger service?</strong>{" "}
+                  Model choice is a per-task decision, not a per-session config.
+                  Keeping the router small and inside the agent means startup
+                  stays fast, there&apos;s nothing else to deploy, and the
+                  selection logic stays auditable in one place.
                 </p>
               </Callout>
 
@@ -270,10 +283,10 @@ export default function D4CArticle() {
                 </h4>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {[
-                    { value: "2", label: "New Modes (Plan + Build)" },
-                    { value: "2", label: "Integrated Marketplace Extensions" },
-                    { value: "2", label: "Permanent MCP Servers" },
-                    { value: "1", label: "Custom /update Skill" },
+                    { value: "<100ms", label: "First UI Frame" },
+                    { value: "1", label: "Approved Plan Before Execution" },
+                    { value: "Native", label: "MCP Client in Rust" },
+                    { value: "Auto", label: "Model Router" },
                   ].map((stat) => (
                     <div key={stat.label} className="text-center">
                       <div className="text-2xl md:text-3xl font-industrial font-bold text-cta">
@@ -290,18 +303,16 @@ export default function D4CArticle() {
 
             <Figure
               src="/D4C_BuildMode.png"
-              alt="D4C build mode executing a planned implementation step by step"
-              caption="Fig 2 — Build mode in action: executing each step from the plan with progress tracking."
+              alt="D4C executing a planned implementation step by step"
+              caption="Fig 2 — Execution with checkpoints: each step from the approved plan, tracked as it completes."
             />
 
             <section id="setup" className="mb-16 scroll-mt-24">
               <SectionHeading icon={CodeIcon} title="Setup & Architecture" />
 
               <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-6">
-                D4C starts from the pi codebase and applies a layered
-                customization strategy. Instead of modifying pi&apos;s core files
-                directly (which would break on updates), every custom feature
-                lives in its own directory or config file.
+                D4C is a Rust workspace split into three crates, each
+                independently testable:
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
@@ -311,10 +322,12 @@ export default function D4CArticle() {
                   </h4>
                   <ul className="space-y-2">
                     {[
-                      "Pi coding agent — Base agent framework",
-                      "Custom skills — Plan mode, build mode, /update",
-                      "MCP servers — Context7 + Playwright",
-                      "Marketplace extensions — TODO + WebSearch",
+                      "Rust 2024 — single language, no runtime",
+                      "d4c-core — agent logic, tools, MCP client",
+                      "d4c-tui — Ratatui + crossterm terminal UI",
+                      "d4c-cli — headless / non-interactive entry",
+                      "Tokio — async runtime for streaming model I/O",
+                      "reqwest — provider API calls over rustls",
                     ].map((item) => (
                       <li
                         key={item}
@@ -328,14 +341,15 @@ export default function D4CArticle() {
                 </div>
                 <div>
                   <h4 className="text-sm font-industrial uppercase tracking-widest text-gold mb-3">
-                    Architecture Principle
+                    Architecture Principles
                   </h4>
                   <ul className="space-y-2">
                     {[
-                      "All custom features in isolated directories",
-                      "No modifications to pi's core source files",
-                      "Config-driven feature registration",
-                      "/update skill layers changes on top of upstream sync",
+                      "Crates split: core / TUI / CLI independently testable",
+                      "Provider abstraction — no vendor lock-in",
+                      "MCP implemented natively in the core crate",
+                      "Plans, checkpoints, and tool calls are first-class records",
+                      "Model router embedded — no external service",
                     ].map((item) => (
                       <li
                         key={item}
@@ -351,8 +365,8 @@ export default function D4CArticle() {
 
               <Figure
                 src="/D4C_MCPServers.png"
-                alt="D4C configuration showing permanent MCP server setup"
-                caption="Fig 3 — Permanent MCP server configuration: Context7 and Playwright always available."
+                alt="D4C configuration showing MCP server setup"
+                caption="Fig 3 — MCP client configuration in the Rust core: context servers plug in over the standard protocol."
               />
             </section>
 
@@ -360,77 +374,77 @@ export default function D4CArticle() {
               <SectionHeading icon={ChartLineIcon} title="Challenges & Fixes" />
 
               <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-8">
-                Building D4C was straightforward for the most part — pi is well
-                architected. But one problem nearly killed the project:
+                Building an agent from scratch means building everything
+                twice: once as code, once as an interaction model. These four
+                problems shaped the project the most:
               </p>
 
               <div className="space-y-8">
                 <LearningBlock
                   number="01"
-                  title="The Update Problem"
-                  content="The first time I tried to pull upstream changes from pi's repo, it wiped every customization I had made. Plan mode? Gone. MCP servers? Gone. The entire branch was a fork that would drift further from upstream with every commit. I needed a way to stay current without rebuilding my customizations from scratch every time."
+                  title="The Trust Problem"
+                  content="The whole reason D4C exists. Early prototypes edited files directly from chat and I stopped trusting them on real codebases. The fix wasn't a confirmation dialog — it was restructuring the interaction: context gathering, a structured questionnaire for ambiguities, surfaced assumptions, and an approved plan with checkpoints before execution starts."
                 />
                 <LearningBlock
                   number="02"
-                  title="The /update Skill"
-                  content="I built a custom /update command that solves this. Instead of a naive git pull, the /update skill pulls the latest from pi's upstream, then reapplies all D4C-specific customizations on top — skills, configs, MCP servers, extensions. The layering is deterministic: pull, merge, overlay. No manual conflict resolution, no lost features."
+                  title="Streaming Output in a TUI"
+                  content="Rendering live model output while keeping a Ratatui layout responsive is trickier than printing to stdout. The solution was an event-driven design on Tokio: model streams push events into a channel, and the TUI redraws from state snapshots — the render loop never blocks on the network."
                 />
                 <LearningBlock
                   number="03"
-                  title="Extension Integration Depth"
-                  content="TODO and WebSearch exist in pi's marketplace, but running them as extensions meant they weren't deeply integrated. The agent could use them, but they didn't feel native. I had to modify how the agent registers and prefers these tools — making them first-class citizens rather than optional add-ons."
+                  title="MCP Without the Glue"
+                  content="Most agents shell out to an external MCP launcher process. D4C implements the protocol natively in the Rust core, which means better error handling and no process-management headaches — but it also meant implementing the protocol's lifecycle, tool discovery, and error semantics by hand."
                 />
                 <LearningBlock
                   number="04"
-                  title="MCP Server Reliability"
-                  content="Permanent MCP servers need to be resilient. If Context7 or Playwright fail, the agent should degrade gracefully rather than crash. I added health-check retries and fallback messaging so the agent acknowledges the tool is down and suggests alternatives instead of failing silently."
+                  title="Provider Abstraction"
+                  content="Every provider's API differs in streaming format, tool-call shape, and error behavior. The abstraction layer normalizes all of it into one internal format — which is also what makes the automatic model router possible: routing is just choosing among normalized providers per task."
                 />
               </div>
 
               <PullQuote>
-                &quot;The /update skill was the make-or-break feature. Without
-                it, D4C would have been a static fork — dead in the water after
-                the first upstream sync.&quot;
+                &quot;Building from scratch wasn&apos;t the hard part. Deciding
+                what the agent should ask before it acts was.&quot;
               </PullQuote>
             </section>
 
             <Figure
               src="/D4C_UpdateSkill.png"
-              alt="D4C /update skill output showing the pull-and-layer process"
-              caption="Fig 4 — The /update skill in action: pulling upstream changes and layering D4C features on top."
+              alt="D4C terminal session showing slash commands in action"
+              caption="Fig 4 — Slash commands are the primary interaction surface: discoverable, scriptable, consistent."
             />
 
             <section id="roadmap" className="mb-16 scroll-mt-24">
               <SectionHeading icon={RocketIcon} title="What's Next" />
 
               <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-8">
-                D4C is actively used as my daily coding agent. Here&apos;s what I&apos;m
-                planning next:
+                D4C is in active development as my daily coding agent.
+                Here&apos;s the direction:
               </p>
 
               <div className="relative border-l-2 border-divider pl-6 space-y-8">
                 <RoadmapItem
                   phase="In Progress"
-                  title="Custom Skill SDK"
-                  description="A lightweight SDK for writing custom skills without touching the agent's internals. The goal is to make adding a new mode or command as simple as dropping a file into a directory."
+                  title="Session Memory Persistence"
+                  description="Remember decisions and repository context across sessions. If the agent mapped your project structure yesterday, it shouldn't rediscover it today."
                   status="In Progress"
                 />
                 <RoadmapItem
                   phase="Planned"
-                  title="Session Memory Persistence"
-                  description="Remember decisions and context across sessions. If the agent figured out your project structure in a previous session, it shouldn't need to rediscover it."
+                  title="Richer Checkpoint Review"
+                  description="Deeper diff inspection at each checkpoint, plus plan revision mid-execution when reality disagrees with the approved plan."
                   status="Planned"
                 />
                 <RoadmapItem
                   phase="Exploring"
                   title="Multi-Agent Orchestration"
-                  description="Spin up specialized sub-agents for parallel task execution. One agent builds while another researches — coordinated by the main agent."
+                  description="Specialized sub-agents for parallel task execution — one builds while another researches, coordinated through the planning layer."
                   status="Exploring"
                 />
                 <RoadmapItem
                   phase="Exploring"
-                  title="Open Source Release"
-                  description="Package D4C's customization layer so anyone can apply the same features to their own pi fork. Plan/build modes, MCP servers, and the /update skill as a reusable overlay."
+                  title="Local Model Hardening"
+                  description="D4C is provider-agnostic by design; the next step is first-class support for self-hosted inference (Ollama, vLLM) with the same streaming and tool-call guarantees as hosted APIs."
                   status="Exploring"
                 />
               </div>
@@ -444,8 +458,8 @@ export default function D4CArticle() {
                   Try D4C
                 </h3>
                 <p className="text-white/80 leading-relaxed max-w-xl mb-6">
-                  Fork it, tweak it, or just browse the source. D4C is open and
-                  built in the open — contributions and ideas welcome.
+                  Browse the source, read the PRD, or build it yourself. D4C is
+                  open and built in the open — contributions and ideas welcome.
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <Link href="https://github.com/Isaac-1555/D4C" target="_blank" data-icon-hover-trigger>
