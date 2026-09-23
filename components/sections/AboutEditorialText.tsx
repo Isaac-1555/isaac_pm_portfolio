@@ -17,6 +17,7 @@ const OBSTACLE_HPAD = 10;
 const OBSTACLE_VPAD = 4;
 const MIN_SLOT_WIDTH = 50;
 const LINE_HEIGHT_RATIO = 1.82;
+const MAX_WORD_SPACING_RATIO = 1.1;
 
 type Interval = { left: number; right: number };
 
@@ -24,8 +25,20 @@ type PositionedLine = {
   x: number;
   y: number;
   width: number;
+  slotWidth: number;
+  justify: boolean;
   text: string;
 };
+
+const TRAILING_WHITESPACE = /\s+$/;
+
+function countSpaces(text: string): number {
+  let spaces = 0;
+  for (let index = 0; index < text.length; index++) {
+    if (text[index] === " ") spaces++;
+  }
+  return spaces;
+}
 
 type CircleObstacle = {
   cx: number;
@@ -119,12 +132,18 @@ function layoutLines(
         x: Math.round(slot.left),
         y: Math.round(lineTop),
         width: line.width,
-        text: line.text,
+        slotWidth,
+        justify: true,
+        text: line.text.replace(TRAILING_WHITESPACE, ""),
       });
       cursor = line.end;
     }
 
     lineTop += lineHeight;
+  }
+
+  if (textExhausted && lines.length > 0) {
+    lines[lines.length - 1].justify = false;
   }
 
   return lines;
@@ -135,7 +154,15 @@ function positionedLinesEqual(a: PositionedLine[], b: PositionedLine[]): boolean
   for (let index = 0; index < a.length; index++) {
     const left = a[index];
     const right = b[index];
-    if (left.x !== right.x || left.y !== right.y || left.text !== right.text) return false;
+    if (
+      left.x !== right.x ||
+      left.y !== right.y ||
+      left.width !== right.width ||
+      left.slotWidth !== right.slotWidth ||
+      left.justify !== right.justify ||
+      left.text !== right.text
+    )
+      return false;
   }
   return true;
 }
@@ -169,6 +196,7 @@ export function AboutEditorialText() {
     let lineHeight = 0;
     let preparedWidth = 0;
     let regionH = 0;
+    let maxWordSpacing = 0;
     let appliedFont = "";
     let prevLines: PositionedLine[] = [];
     const spans: HTMLSpanElement[] = [];
@@ -194,6 +222,7 @@ export function AboutEditorialText() {
       const fontSize = parseFloat(style.fontSize) || 16;
       font = `${fontSize}px ${style.fontFamily}`;
       lineHeight = Math.round(fontSize * LINE_HEIGHT_RATIO);
+      maxWordSpacing = fontSize * MAX_WORD_SPACING_RATIO;
     };
 
     const prepareForWidth = (width: number) => {
@@ -235,6 +264,17 @@ export function AboutEditorialText() {
         const transform = `translate3d(${line.x}px, ${line.y}px, 0)`;
         if (span.style.transform !== transform) span.style.transform = transform;
         if (span.style.display !== "") span.style.display = "";
+
+        let wordSpacing = 0;
+        if (line.justify && line.slotWidth > line.width) {
+          const spaces = countSpaces(line.text);
+          if (spaces > 0) {
+            const candidate = (line.slotWidth - line.width) / spaces;
+            if (candidate <= maxWordSpacing) wordSpacing = candidate;
+          }
+        }
+        const wordSpacingCss = wordSpacing > 0.01 ? `${wordSpacing.toFixed(3)}px` : "0px";
+        if (span.style.wordSpacing !== wordSpacingCss) span.style.wordSpacing = wordSpacingCss;
       }
     };
 
@@ -320,7 +360,9 @@ export function AboutEditorialText() {
       data-cursor-wrap
       className="relative max-w-lg text-white font-sans leading-[1.82] text-sm md:text-base"
     >
-      {ready ? null : <p className="leading-[1.82] text-sm md:text-base">{ABOUT_TEXT}</p>}
+      {ready ? null : (
+        <p className="text-justify leading-[1.82] text-sm md:text-base">{ABOUT_TEXT}</p>
+      )}
       <div ref={stageRef} className="absolute inset-0 pointer-events-none" />
     </div>
   );

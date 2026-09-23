@@ -13,14 +13,14 @@ export function ProfileSummaryStats() {
       {stats.map((stat) => (
         <UnderlineToBackground
           key={stat.label}
-          targetTextColor="#ffffff"
+          targetTextColor="#4A7C7E"
           underlineHeightRatio={0.08}
-            className="block"
+          className="block text-white"
         >
-          <div className="text-3xl md:text-4xl font-industrial font-bold text-white leading-none">
+          <div className="text-3xl md:text-4xl font-industrial font-bold leading-none">
             {stat.value}
           </div>
-            <div className="text-xs md:text-sm font-industrial text-white uppercase tracking-wide mt-2">
+          <div className="text-xs md:text-sm font-industrial uppercase tracking-wide mt-2">
             {stat.label}
           </div>
         </UnderlineToBackground>
