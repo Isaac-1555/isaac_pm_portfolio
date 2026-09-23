@@ -11,7 +11,7 @@ export function FooterParallax() {
 
   return (
     <Floating
-      sensitivity={1}
+      sensitivity={2}
       easingFactor={0.08}
       onClick={toggle}
       className="absolute inset-0 z-10 cursor-pointer"
@@ -19,35 +19,33 @@ export function FooterParallax() {
       aria-pressed={colorful}
       aria-label="Toggle footer artwork color"
     >
-      <FloatingElement depth={1.5} className="left-0 top-0 w-full h-full">
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full">
-          <img
-            src="/adam.svg"
-            alt=""
-            draggable={false}
-            className={cn(
-              "block w-full h-auto select-none pointer-events-none transition-[filter,opacity] duration-500 footer-svg-mask [clip-path:inset(0_50%_0_0)]",
-              colorful ? "footer-svg-colorful opacity-90" : "opacity-50"
-            )}
-            style={{ aspectRatio: "444 / 484.8", ...(!colorful ? { filter: "grayscale(1)" } : {}) }}
-          />
-        </div>
-      </FloatingElement>
-
-      <FloatingElement depth={-1.5} className="right-0 top-0 w-full h-full">
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-full">
+      <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-1/2">
+        <FloatingElement depth={1.5} className="left-0 top-1/2 -translate-y-1/2 w-full">
           <img
             src="/adam.svg"
             alt=""
             draggable={false}
             className={cn(
               "block w-full h-auto select-none pointer-events-none transition-[filter,opacity] duration-500 footer-svg-mask [clip-path:inset(0_0_0_50%)]",
-              colorful ? "footer-svg-colorful opacity-90" : "opacity-50"
+              colorful ? "footer-svg-colorful opacity-90" : "opacity-75"
             )}
-            style={{ aspectRatio: "444 / 484.8", ...(!colorful ? { filter: "grayscale(1)" } : {}) }}
+            style={{ aspectRatio: "444 / 484.8", ...(!colorful ? { filter: "grayscale(1) brightness(1.5)" } : {}) }}
           />
-        </div>
-      </FloatingElement>
+        </FloatingElement>
+
+        <FloatingElement depth={-1.5} className="left-0 top-1/2 -translate-y-1/2 w-full">
+          <img
+            src="/adam.svg"
+            alt=""
+            draggable={false}
+            className={cn(
+              "block w-full h-auto select-none pointer-events-none transition-[filter,opacity] duration-500 footer-svg-mask [clip-path:inset(0_50%_0_0)]",
+              colorful ? "footer-svg-colorful opacity-90" : "opacity-75"
+            )}
+            style={{ aspectRatio: "444 / 484.8", ...(!colorful ? { filter: "grayscale(1) brightness(1.5)" } : {}) }}
+          />
+        </FloatingElement>
+      </div>
     </Floating>
   );
 }
