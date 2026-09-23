@@ -25,7 +25,7 @@ export function Hero() {
         type="button"
         onClick={() => setIsGameOpen(true)}
         aria-label="Beat the high score"
-        className="hero-game-btn group absolute bottom-6 left-6 z-20 flex h-11 items-center overflow-hidden rounded-sm border-2 border-[#F0EAD6]/25 bg-tech text-[#F0EAD6] transition-colors duration-300 hover:border-[#F0EAD6]/50 hover:bg-tech/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8DCC0]"
+        className="hero-game-btn group absolute bottom-6 left-6 z-20 flex h-11 items-center overflow-hidden rounded-sm border-2 border-bg-dark/30 bg-tech text-white transition-colors duration-300 hover:border-bg-dark/60 hover:bg-tech/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bg-dark"
       >
         <span className="flex h-full w-11 shrink-0 items-center justify-center">
           <TrophyIcon size={18} />
@@ -38,11 +38,11 @@ export function Hero() {
       {isGameOpen && <GameOverlay onClose={() => setIsGameOpen(false)} />}
 
       {/* Decorative Status */}
-      <div className="absolute bottom-10 right-10 hidden lg:block text-right opacity-90 pointer-events-none z-20 [text-shadow:0_1px_2px_rgba(0,0,0,0.95),0_0_6px_rgba(0,0,0,0.85)]">
-        <div className="font-tech text-[#F0EAD6] uppercase tracking-widest text-xs">
+      <div className="absolute bottom-10 right-10 hidden lg:block text-right opacity-90 pointer-events-none z-20 [text-shadow:0_1px_2px_rgba(196,200,195,0.95),0_0_6px_rgba(196,200,195,0.85)]">
+        <div className="font-tech text-text-primary uppercase tracking-widest text-xs">
           STATUS: AVAILABLE
         </div>
-        <div className="font-tech text-[#F0EAD6] uppercase tracking-widest text-xs">
+        <div className="font-tech text-text-primary uppercase tracking-widest text-xs">
           LOC: CALGARY, AB
         </div>
       </div>

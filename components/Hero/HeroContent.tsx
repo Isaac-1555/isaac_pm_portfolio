@@ -47,7 +47,7 @@ export default function HeroContent() {
     >
       <motion.p
         variants={staggerItem}
-        className="hero-line flex flex-wrap items-baseline justify-center gap-x-1.5 gap-y-0 text-[#F0EAD6] leading-none [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_8px_rgba(0,0,0,0.75)]"
+        className="hero-line flex flex-wrap items-baseline justify-center gap-x-1.5 gap-y-0 text-text-primary leading-none [text-shadow:0_1px_2px_rgba(196,200,195,0.9),0_0_8px_rgba(196,200,195,0.75)]"
       >
         <span className="font-jb text-base sm:text-lg md:text-xl font-medium">Hi, I&apos;m</span>
         <span className="hero-isaac font-vt323 text-3xl sm:text-4xl md:text-5xl leading-none">Isaac,</span>
@@ -55,23 +55,23 @@ export default function HeroContent() {
 
       <motion.h1
         variants={staggerItem}
-        className="hero-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-industrial uppercase font-bold tracking-wide md:tracking-widest text-[#E8DCC0] leading-none select-none [text-shadow:0_2px_3px_rgba(0,0,0,0.85),0_0_10px_rgba(0,0,0,0.7)]"
+        className="hero-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-barlow uppercase font-bold tracking-wide md:tracking-widest text-text-primary leading-none select-none [text-shadow:0_2px_3px_rgba(196,200,195,0.85),0_0_10px_rgba(196,200,195,0.7)]"
       >
         {currentRole.title.split(' ').map((word, i) => (
           <span key={i} className="block">
             <ScrambleText text={word} />
           </span>
         ))}
-        <span className="hero-subtitle block mt-2 text-xs sm:text-sm md:text-base lg:text-lg leading-none overflow-hidden normal-case tracking-normal font-sans text-[#F0EAD6] [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_8px_rgba(0,0,0,0.75)]">
+        <span className="hero-subtitle block mt-2 text-xs sm:text-sm md:text-base lg:text-lg leading-none overflow-hidden normal-case tracking-normal font-sans text-text-primary [text-shadow:0_1px_1px_rgba(196,200,195,1),0_0_5px_rgba(196,200,195,0.95)]">
           <ScrambleText text={currentRole.subtitle} />
         </span>
       </motion.h1>
 
       <motion.div
         variants={staggerItem}
-        className="hero-desc max-w-xl mx-auto text-base sm:text-lg md:text-xl text-[#F2E9D8] font-sans leading-relaxed [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_8px_rgba(0,0,0,0.75)]"
+        className="hero-desc max-w-xl mx-auto text-base sm:text-lg md:text-xl text-text-primary font-sans leading-relaxed"
       >
-        <span className="block">
+        <span className="[box-decoration-break:clone] [-webkit-box-decoration-break:clone] bg-white/50 px-1.5 py-0.5">
           I&apos;ve shipped more features than I&apos;ve had good nights of sleep. No regrets. Mostly.
         </span>
         <MediaBetweenText
@@ -83,8 +83,8 @@ export default function HeroContent() {
           triggerType="hover"
           alt="where"
           className="hidden sm:flex mt-2 w-full justify-center items-center"
-          leftTextClassName="font-mono text-[#F2E9D8]/80 [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_6px_rgba(0,0,0,0.75)]"
-          rightTextClassName="font-mono text-[#F2E9D8]/80 [text-shadow:0_1px_2px_rgba(0,0,0,0.9),0_0_6px_rgba(0,0,0,0.75)]"
+          leftTextClassName="font-mono text-text-primary/80 bg-white/50 px-1 [box-decoration-break:clone] [-webkit-box-decoration-break:clone]"
+          rightTextClassName="font-mono text-text-primary/80 bg-white/50 px-1 [box-decoration-break:clone] [-webkit-box-decoration-break:clone]"
           mediaContainerClassName="h-[2.25em] overflow-hidden mx-1"
           animationVariants={{
             initial: { width: 0 },
@@ -119,7 +119,7 @@ export default function HeroContent() {
           rel="noopener noreferrer"
           data-icon-hover-trigger
         >
-          <Button variant="outline" size="lg" className="group w-full sm:w-auto text-[#F0EAD6]">
+          <Button variant="outline" size="lg" className="group w-full sm:w-auto bg-bg-base/85 backdrop-blur-sm text-text-primary">
             Download Resume
             <IconHoverWrapper hoverTrigger="closest">
               <FileDescriptionIcon size={16} className="ml-2 transition-transform group-hover:-rotate-12" />

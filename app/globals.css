@@ -67,6 +67,9 @@
   .font-vt323 {
     font-family: var(--font-devgothic), ui-monospace, monospace;
   }
+  .font-barlow {
+    font-family: var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
+  }
 }
 
 @layer base {

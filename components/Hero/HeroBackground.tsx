@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 
 const DEFAULT_TEXTURE_URL = '/hero_bg.png';
-const DEFAULT_COLOR_A = '#171D20';
-const DEFAULT_COLOR_B = '#525756';
+const DEFAULT_COLOR_A = '#C4C8C3';
+const DEFAULT_COLOR_B = '#7A8082';
 const RENDER_SCALE = 0.5;
 const MOUSE_EASE = 0.06;
 const SHIMMER = 0.08;

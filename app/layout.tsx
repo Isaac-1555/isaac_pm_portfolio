@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Hanken_Grotesk } from "next/font/google";
+import { Barlow, Hanken_Grotesk } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
@@ -23,6 +23,13 @@ const devGothic = localFont({
 const hankenGrotesk = Hanken_Grotesk({
   subsets: ["latin"],
   variable: "--font-hanken",
+  display: "swap",
+});
+
+const barlow = Barlow({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-barlow",
   display: "swap",
 });
 
@@ -58,7 +65,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${devGothic.variable} ${hankenGrotesk.variable}`}>
+    <html lang="en" className={`${devGothic.variable} ${hankenGrotesk.variable} ${barlow.variable}`}>
       <body
         className="antialiased bg-bg-base text-text-primary font-sans flex flex-col min-h-screen"
       >
