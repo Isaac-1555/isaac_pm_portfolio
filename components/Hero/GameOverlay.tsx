@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import InteractivePortfolioGame, { type GameResult } from './InteractivePortfolioGame';
+import { Button } from '@/components/ui/button';
 import { Leaderboard } from '@/components/leaderboard/Leaderboard';
 import { ScoreEntryForm } from '@/components/leaderboard/ScoreEntryForm';
 import { useLeaderboard } from '@/components/leaderboard/use-leaderboard';
@@ -23,6 +24,7 @@ const GAME_HEIGHT = 520;
  */
 export default function GameOverlay({ onClose }: Props) {
   const overlayRef = useRef<HTMLDivElement>(null);
+  const keepPlayingRef = useRef<HTMLButtonElement>(null);
 
   const leaderboard = useLeaderboard();
 
@@ -31,6 +33,8 @@ export default function GameOverlay({ onClose }: Props) {
   const [gameResult, setGameResult] = useState<GameResult | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [confirmQuit, setConfirmQuit] = useState(false);
 
   // Issue a fresh one-time session token when the lightbox opens.
   useEffect(() => {
@@ -50,12 +54,32 @@ export default function GameOverlay({ onClose }: Props) {
   const handleGameStart = useCallback(() => {
     setGameResult(null);
     setSubmitError(null);
+    setIsPlaying(true);
   }, []);
 
   const handleGameOver = useCallback((result: GameResult) => {
     setGameResult(result);
     setSubmitError(null);
+    setIsPlaying(false);
   }, []);
+
+  const requestClose = useCallback(() => {
+    if (isPlaying) {
+      setConfirmQuit(true);
+      return;
+    }
+    onClose();
+  }, [isPlaying, onClose]);
+
+  useEffect(() => {
+    if (!isPlaying) setConfirmQuit(false);
+  }, [isPlaying]);
+
+  useEffect(() => {
+    if (!confirmQuit) return;
+    const timer = setTimeout(() => keepPlayingRef.current?.focus(), 30);
+    return () => clearTimeout(timer);
+  }, [confirmQuit]);
 
   const qualifies = gameResult !== null && leaderboard.qualifiesFor(gameResult.score);
 
@@ -122,7 +146,7 @@ export default function GameOverlay({ onClose }: Props) {
     document.body.style.overflow = 'hidden';
     const timer = setTimeout(() => {
       const el = overlayRef.current?.querySelector<HTMLElement>(
-        'button, canvas, input, [tabindex]:not([tabindex="-1"])'
+        'canvas, button, input, [tabindex]:not([tabindex="-1"])'
       );
       el?.focus();
     }, 50);
@@ -140,9 +164,6 @@ export default function GameOverlay({ onClose }: Props) {
       aria-modal="true"
       aria-label="Interactive portfolio game"
       className="fixed inset-0 z-[60] flex flex-col items-center gap-4 overflow-y-auto bg-bg-dark/80 p-4 backdrop-blur-sm"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
     >
       {/* Centered game card. The leaderboard floats to the right on lg+. */}
       <div className="relative w-full lg:my-auto lg:w-auto">
@@ -160,6 +181,14 @@ export default function GameOverlay({ onClose }: Props) {
         </div>
       </div>
 
+      <button
+        onClick={requestClose}
+        aria-label="Quit game"
+        className="fixed top-4 right-4 z-[70] w-8 h-8 flex items-center justify-center rounded-sm border border-divider bg-bg-dark/60 text-text-secondary hover:bg-bg-accent hover:text-white transition-colors text-sm leading-none"
+      >
+        ✕
+      </button>
+
       {/* Standalone global leaderboard — stacked below the game on mobile,
           pinned to the right edge on desktop. */}
       <Leaderboard
@@ -171,8 +200,8 @@ export default function GameOverlay({ onClose }: Props) {
         className="w-full max-w-md lg:absolute lg:right-6 lg:top-1/2 lg:max-h-[calc(100dvh-8rem)] lg:w-80 lg:max-w-80 lg:-translate-y-1/2"
       />
 
-      <div className="text-center font-tech text-[10px] uppercase tracking-widest text-text-secondary opacity-60">
-        [A/D] or [←/→] move &middot; [Space] shoot &middot; click loot to view projects
+      <div className="text-center font-tech text-[10px] uppercase tracking-widest text-white">
+        [A/D] or [←/→] or mouse move &middot; hold click / [Space] shoot &middot; click loot to view projects
       </div>
 
       {qualifies && gameResult && (
@@ -184,6 +213,37 @@ export default function GameOverlay({ onClose }: Props) {
           onSubmit={handleSubmitName}
           onDismiss={() => setGameResult(null)}
         />
+      )}
+
+      {confirmQuit && (
+        <div className="absolute inset-0 z-30 flex items-center justify-center bg-bg-dark/50 p-4 backdrop-blur-sm">
+          <div
+            role="alertdialog"
+            aria-modal="true"
+            aria-label="Quit game?"
+            className="w-full max-w-xs rounded-sm border-2 border-bg-dark bg-card p-5 shadow-lg"
+          >
+            <h3 className="font-industrial text-base uppercase tracking-wider text-text-primary">
+              Quit current run?
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-text-secondary font-sans">
+              Your progress in this run will be lost.
+            </p>
+            <div className="mt-4 flex justify-end gap-2">
+              <Button
+                ref={keepPlayingRef}
+                variant="outline"
+                size="sm"
+                onClick={() => setConfirmQuit(false)}
+              >
+                Keep playing
+              </Button>
+              <Button variant="destructive" size="sm" onClick={onClose}>
+                Quit
+              </Button>
+            </div>
+          </div>
+        </div>
       )}
     </div>,
     document.body

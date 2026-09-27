@@ -190,6 +190,7 @@ export default function InteractivePortfolioGame({
   const touchPendingShotRef = useRef(false);
   const isTouchingRef = useRef(false);
   const suppressClickRef = useRef(false);
+  const mouseShootRef = useRef(false);
 
   const [selectedProject, setSelectedProject] = useState<GameProject | null>(null);
   const [reducedMotion, setReducedMotion] = useState(() => {
@@ -356,7 +357,9 @@ export default function InteractivePortfolioGame({
         const touchShoot = isTouchingRef.current || touchPendingShotRef.current;
         touchPendingShotRef.current = false;
 
-        processInput(state, dt, left, right, kbShoot || touchShoot);
+        const mouseShoot = mouseShootRef.current;
+
+        processInput(state, dt, left, right, kbShoot || touchShoot || mouseShoot);
         updatePlayer(state.player, dt);
         updatePlayerAnim(state, dt);
         updateBullets(state.bullets, dt);
@@ -580,6 +583,46 @@ export default function InteractivePortfolioGame({
     }, 150);
   };
 
+  const handleMouseDown = (e: React.MouseEvent) => {
+    const phase = gameStateRef.current.phase;
+    if (phase === 'start' || phase === 'gameOver') {
+      tapPendingRef.current = true;
+      return;
+    }
+    if (phase !== 'playing') return;
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const rect = canvas.getBoundingClientRect();
+      const scale = scaleRef.current;
+      const vx = (e.clientX - rect.left) / scale.x;
+      const vy = (e.clientY - rect.top) / scale.y;
+      const hitLoot = findLootAtPosition(
+        gameStateRef.current.lootItems,
+        vx,
+        vy,
+        LOOT_CLICK_THRESHOLD
+      );
+      if (hitLoot) return;
+    }
+    mouseShootRef.current = true;
+  };
+
+  const handleMouseUp = () => {
+    mouseShootRef.current = false;
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (gameStateRef.current.phase !== 'playing') return;
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const scale = scaleRef.current;
+    gameStateRef.current.player.x = (e.clientX - rect.left) / scale.x;
+  };
+
+  const handleMouseLeave = () => {
+    mouseShootRef.current = false;
+  };
+
   const handleClick = (e: React.MouseEvent) => {
     const phase = gameStateRef.current.phase;
     if (phase === 'start' || phase === 'gameOver') {
@@ -615,12 +658,16 @@ export default function InteractivePortfolioGame({
       <canvas
         ref={canvasRef}
         role="img"
-        aria-label="Portfolio interactive game. Use arrow keys or A/D to move, Space to shoot. Defeat waves of enemies and collect loot to learn about projects."
+        aria-label="Portfolio interactive game. Use arrow keys or A/D, or move the mouse, to move. Hold the mouse button or press Space to shoot. Defeat waves of enemies and collect loot to learn about projects."
         tabIndex={0}
         className="w-full h-full block outline-none focus:outline-none"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
+        onMouseMove={handleMouseMove}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseLeave}
         onClick={handleClick}
       />
       {selectedProject && (

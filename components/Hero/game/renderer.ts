@@ -542,13 +542,13 @@ export function drawStartScreen(
   ctx.font = '9px ui-monospace, monospace';
   ctx.fillText('A SPACE SHOOTER PORTFOLIO', cx, 210);
 
-  ctx.fillStyle = COLORS.textPrimary;
+  ctx.fillStyle = '#FFFFFF';
   ctx.font = '10px ui-monospace, monospace';
   const lineY = 260;
   const lines = [
-    '[A/D] or [<-/->]      MOVE',
-    '[SPACE]               SHOOT',
-    '[CLICK LOOT]          EXPLORE',
+    '[A/D] or [<-/->] or MOUSE   MOVE',
+    '[SPACE] or HOLD CLICK       SHOOT',
+    '[CLICK LOOT]                EXPLORE',
   ];
   for (let i = 0; i < lines.length; i++) {
     ctx.textAlign = 'left';
