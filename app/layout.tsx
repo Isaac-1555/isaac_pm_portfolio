@@ -48,8 +48,8 @@ export const metadata: Metadata = {
     description: "Software Developer & Technical Product Manager building AI-powered products across web, mobile, and intelligent automation. Portfolio exploring the intersection of AI engineering, product strategy, and full-stack development.",
     images: [{
       url: "/og-image.png",
-      width: 2850,
-      height: 1270,
+      width: 2400,
+      height: 1260,
       alt: "Isaac Daniel Sudakar's portfolio preview",
     }],
   },
