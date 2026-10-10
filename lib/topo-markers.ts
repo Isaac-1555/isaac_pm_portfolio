@@ -28,7 +28,7 @@ export const topoMarkers: TopoMarker[] = [
   { id: "phone-barcode", label: "Phone-Barcode", group: "work", x: 44, y: 22 },
   { id: "ez-resume", label: "Ez-Resume", group: "work", x: 70, y: 30 },
   { id: "summarease", label: "Summarease", group: "work", x: 78, y: 50 },
-  { id: "anickie", label: "Anickie", group: "work", x: 70, y: 68 },
+  { id: "anirust", label: "AniRust", group: "work", x: 70, y: 68 },
   { id: "coachgg", label: "CoachGG", group: "work", x: 84, y: 78 },
   { id: "betteryt", label: "BetterYT", group: "work", x: 18, y: 22 },
   { id: "d4c", label: "D4C", group: "work", x: 56, y: 10 },

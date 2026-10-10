@@ -67,12 +67,12 @@ const technicalProjects = [
     icon: RadioIcon,
   },
   {
-    id: "anickie",
-    title: "Anickie",
+    id: "anirust",
+    title: "AniRust",
     role: "Developer",
     description: "Tauri desktop app for anime fans — a clean web-style interface over ani-cli. Native window, no browser.",
     tags: ["Tauri", "React", "Anime"],
-    href: "https://github.com/Isaac-1555/Anickie",
+    href: "https://github.com/Isaac-1555/AniRust",
     icon: PlayIcon,
   },
   {
