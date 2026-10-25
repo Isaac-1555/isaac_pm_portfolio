@@ -10,7 +10,7 @@ import { caseStudies } from "./data";
 const METRICS: Record<string, string[]> = {
   "tux": ["1-Day Build", "Sub-2s Cold Start"],
   "satbrain": ["500+ Docs", "~70% Time Saved"],
-  "pocket-resume": ["<20s Resume", "Store Live"],
+  "pocket-resume": ["4,000+ Users", "<20s Resume"],
   "notebucket": ["41 MB APK", "0 Network Calls"],
 };
 

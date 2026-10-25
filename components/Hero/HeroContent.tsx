@@ -113,8 +113,8 @@ export default function HeroContent() {
           </Button>
         </Link>
         <a
-          href="/Isaac_Daniel_Sudakar_Resume.pdf"
-          download
+          href="/Isaac_Daniel_Sudakar_Resume.pdf?v=2026-10-26"
+          download="Isaac_Daniel_Sudakar_Resume.pdf"
           target="_blank"
           rel="noopener noreferrer"
           data-icon-hover-trigger

@@ -301,7 +301,7 @@ export const caseStudies: CaseStudy[] = [
     role: "Software Developer & Technical PM",
     timeline: "4 Weeks",
     team: "Solo",
-    status: "Live in Store",
+    status: "Live · 4,000+ Users",
     
     context: "The modern job market expects a tailored resume for every application to clear ATS filters. Producing those variations manually is slow, repetitive, and easy to do badly.",
     
@@ -313,7 +313,7 @@ export const caseStudies: CaseStudy[] = [
     
     goals: {
       objectives: ["Reduce resume tailoring from 30 minutes to 30 seconds.", "Generate high-quality, ATS-friendly content.", "Integrate seamlessly into the browsing workflow."],
-      kpis: ["Active Users", "Resumes Generated", "Time Saved per Application"]
+      kpis: ["Weekly Active Users", "Resumes Generated", "Time Saved per Application"]
     },
     
     research: {
@@ -329,7 +329,7 @@ export const caseStudies: CaseStudy[] = [
     
     solution: {
       description: "A Chrome extension that reads the active tab's job description, takes the user's master resume, and rewrites it to match the role's keywords and tone.",
-      features: ["One-click Page Analysis", "Multi-provider AI (Gemini, OpenAI, Anthropic, OpenRouter, local endpoints)", "PDF Generation (jsPDF)", "Cover Letter Writer", "Local Data Persistence"],
+      features: ["One-click Page Analysis", "Quick Download (4 ATS-safe layouts)", "ATS Score Checker", "Multi-provider AI (Gemini, OpenAI, Anthropic, OpenRouter, local endpoints)", "PDF Generation (jsPDF)", "Cover Letter Writer", "Job Tracker + AI Form Filler", "Local Data Persistence"],
       rationale: "A browser extension was the only form factor that granted seamless access to job board content without copy-pasting — and local processing satisfied the privacy constraint outright."
     },
     
@@ -344,13 +344,13 @@ export const caseStudies: CaseStudy[] = [
     },
     
     outcome: {
-      quantifiable: ["Live on Chrome Web Store", "Generates a tailored resume in under 20 seconds", "Supports all major job boards"],
+      quantifiable: ["4,000+ weekly active users on the Chrome Web Store", "5-star Chrome Web Store rating", "Generates a tailored resume in under 20 seconds", "Supports all major job boards"],
       qualitative: ["Consistently cited the cover letter feature as unexpected value.", "Strong accuracy in keyword matching reported by users."]
     },
     
     learnings: {
       takeaways: ["Prompt engineering functions as a product feature in its own right.", "Client-side AI is viable and cost-effective at consumer scale."],
-      nextSteps: ["Application automation", "Resume score analysis", "History tracking"]
+      nextSteps: ["Application automation", "Deeper ATS insights", "Provider fallback + local model onboarding"]
     },
 
     icon: FileDescriptionIcon,

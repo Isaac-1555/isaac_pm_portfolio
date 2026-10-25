@@ -75,7 +75,7 @@ export function Hero() {
               </IconHoverWrapper>
             </Button>
           </Link>
-<a href="/Isaac_Daniel_Sudakar_Resume.pdf" download target="_blank" rel="noopener noreferrer" data-icon-hover-trigger>
+<a href="/Isaac_Daniel_Sudakar_Resume.pdf?v=2026-10-26" download="Isaac_Daniel_Sudakar_Resume.pdf" target="_blank" rel="noopener noreferrer" data-icon-hover-trigger>
             <Button variant="outline" size="lg" className="group w-full sm:w-auto">
               Download Resume
               <IconHoverWrapper hoverTrigger="closest">
