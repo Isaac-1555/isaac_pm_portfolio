@@ -38,5 +38,5 @@ export const topoMarkers: TopoMarker[] = [
   { id: "blog-notebucket", label: "Notes Deep Dive", group: "blog", x: 10, y: 88 },
   { id: "blog-barcode-lists", label: "Coop Workflow", group: "blog", x: 94, y: 38 },
   { id: "blog-d4c", label: "Agent Build", group: "blog", x: 20, y: 8 },
-  { id: "blog-pocket-resume", label: "PocketResume Growth", group: "blog", x: 14, y: 52 },
+  { id: "blog-pocket-resume", label: "PocketResume Growth", group: "blog", x: 44, y: 6 },
 ];
