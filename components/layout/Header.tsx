@@ -78,7 +78,7 @@ export function Header() {
         {/* CTA + Mobile Hamburger */}
         <div className="flex items-center gap-4">
           <Link
-            href="https://www.linkedin.com/in/isaac-daniel-sudakar-182792375"
+            href="https://www.linkedin.com/in/isaacdani"
             target="_blank"
             className="hidden md:block font-industrial text-base font-medium text-text-secondary hover:text-cta transition-colors uppercase tracking-wide"
           >

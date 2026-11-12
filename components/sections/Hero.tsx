@@ -63,7 +63,7 @@ export function Hero() {
         </h1>
         
         <p className="max-w-xl text-base sm:text-lg md:text-xl text-text-secondary font-sans leading-relaxed">
-          Transforming ambiguous problems into scalable, user-centric solutions. 5+ years driving adoption and workflow efficiency through data-driven strategy.
+          Transforming ambiguous problems into scalable, user-centric solutions. 7+ years turning manual work into automation across product, engineering, and IT operations.
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 mt-4 md:mt-8 w-full sm:w-auto">
@@ -75,7 +75,7 @@ export function Hero() {
               </IconHoverWrapper>
             </Button>
           </Link>
-<a href="/Isaac_Daniel_Sudakar_Resume.pdf?v=2026-10-26" download="Isaac_Daniel_Sudakar_Resume.pdf" target="_blank" rel="noopener noreferrer" data-icon-hover-trigger>
+<a href="/Isaac_Sudakar_Resume.pdf?v=2026-11-12b" download="Isaac_Sudakar_Resume.pdf" target="_blank" rel="noopener noreferrer" data-icon-hover-trigger>
             <Button variant="outline" size="lg" className="group w-full sm:w-auto">
               Download Resume
               <IconHoverWrapper hoverTrigger="closest">

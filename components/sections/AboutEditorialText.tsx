@@ -10,7 +10,7 @@ import {
 } from "@chenglou/pretext";
 import { useCursor } from "@/components/cursor/cursor-context";
 
-const ABOUT_TEXT = `I'm a software developer and product builder who's always looking for a better way to do things. My mind gravitates toward inefficiencies, broken workflows, and the question of why something works the way it does. With 5+ years across software development, AI integration, and product management, I turn complex problems into tools that are faster, easier, and more intuitive for the people using them. I'd rather build and test than explain and promise; I let the work speak for itself. And I've learned that good problem-solving isn't just knowing what to build, it's knowing what's worth building.`;
+const ABOUT_TEXT = `I'm a software developer and product builder who's always looking for a better way to do things. My mind gravitates toward inefficiencies, broken workflows, and the question of why something works the way it does. With 7+ years across software development, IT operations, automation, and product management, I turn complex problems into tools that are faster, easier, and more intuitive for the people using them. I'd rather build and test than explain and promise; I let the work speak for itself. And I've learned that good problem-solving isn't just knowing what to build, it's knowing what's worth building.`;
 
 const OBSTACLE_RADIUS = 48;
 const OBSTACLE_HPAD = 10;

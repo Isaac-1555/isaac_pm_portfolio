@@ -8,9 +8,9 @@ import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 import { caseStudies } from "./data";
 
 const METRICS: Record<string, string[]> = {
-  "tux": ["1-Day Build", "Sub-2s Cold Start"],
+  "tux": ["v1.0.0 Released", "Cross-Platform"],
   "satbrain": ["500+ Docs", "~70% Time Saved"],
-  "pocket-resume": ["4,000+ Users", "<20s Resume"],
+  "pocket-resume": ["4,000+ Users", "On-Device"],
   "notebucket": ["41 MB APK", "0 Network Calls"],
 };
 

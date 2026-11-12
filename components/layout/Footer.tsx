@@ -27,7 +27,7 @@ export function Footer() {
         <ul className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 pointer-events-auto">
           <li>
             <Link
-              href="https://www.linkedin.com/in/isaac-daniel-sudakar-182792375"
+              href="https://www.linkedin.com/in/isaacdani"
               target="_blank"
               data-icon-hover-trigger
               className="flex items-center gap-2.5 text-base md:text-lg text-white hover:text-cta transition-colors font-sans"

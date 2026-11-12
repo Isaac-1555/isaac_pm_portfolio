@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button";
 import { AccentWord } from "@/components/ui/AccentWord";
 import Link from "next/link";
 import RocketIcon from "@/components/icons/rocket-icon";
-import ShieldCheck from "@/components/icons/shield-check";
+import GearIcon from "@/components/icons/gear-icon";
 import StackIcon from "@/components/icons/stack-icon";
-import UsersIcon from "@/components/icons/users-icon";
+import CpuIcon from "@/components/icons/cpu-icon";
 import CodeIcon from "@/components/icons/code-icon";
 import FileDescriptionIcon from "@/components/icons/file-description-icon";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
@@ -23,30 +23,71 @@ import { ScrambleIn } from "@/components/fancy/text/scramble-in";
 import { TextHighlighter } from "@/components/fancy/text/text-highlighter";
 
 const skills = [
-  { 
-    category: "Product Strategy", 
-    items: ["Roadmapping", "Prioritization", "OKRs", "Competitive Analysis", "GTM Strategy"], 
-    icon: RocketIcon 
+  {
+    category: "Systems & Operations",
+    items: [
+      "Troubleshooting & Issue Resolution",
+      "Active Directory & Entra ID",
+      "Intune Device Management",
+      "Windows & Microsoft 365",
+      "Patching & Imaging",
+      "Ticketing & Escalation",
+      "Incident & Change Documentation",
+    ],
+    icon: GearIcon,
   },
-  { 
-    category: "User-Centric Design", 
-    items: ["Workflow Mapping", "User Testing", "Wireframing", "Journey Mapping", "Figma"], 
-    icon: UsersIcon 
+  {
+    category: "Scripting & Automation",
+    items: [
+      "Python",
+      "JavaScript",
+      "TypeScript",
+      "SQL",
+      "Rust",
+      "Git & Shell",
+      "Docker",
+      "CI/CD Pipelines",
+      "REST & Chrome Extension APIs",
+      "OCR",
+    ],
+    icon: CodeIcon,
   },
-  { 
-    category: "Technical", 
-    items: ["APIs", "React/Next.js", "AI Coding Agents", "System Architecture", "DevOps", "MCP"], 
-    icon: StackIcon 
+  {
+    category: "AI & Automation",
+    items: [
+      "LLM Integration",
+      "Prompt Engineering",
+      "Agentic Development Workflows",
+      "On-Device Inference",
+      "Multi-Provider AI Routing",
+    ],
+    icon: CpuIcon,
   },
-  { 
-    category: "Leadership", 
-    items: ["Stakeholder Management", "Agile/Scrum", "Change Management", "Sprint Planning"], 
-    icon: ShieldCheck 
+  {
+    category: "Technical Platforms",
+    items: [
+      "React / Next.js",
+      "Node.js",
+      "PostgreSQL / Supabase",
+      "Chrome Extension APIs",
+      "Kotlin / Jetpack Compose",
+      "Rust / Tauri",
+      "Vercel / Netlify",
+    ],
+    icon: StackIcon,
   },
-  { 
-    category: "Languages", 
-    items: ["TypeScript", "Python", "Rust", "SQL", "Kotlin", "Swift", "React", "C++", "Java", "HTML 5", "CSS 3", "Tailwind", "Node.js", "Express.js", "Next.js", "Django", "Flask"], 
-    icon: CodeIcon 
+  {
+    category: "Product & Delivery",
+    items: [
+      "Roadmapping",
+      "Prioritization",
+      "Requirements Gathering",
+      "Stakeholder Management",
+      "Agile & Sprint Planning",
+      "Solution Documentation",
+      "User Acceptance Testing",
+    ],
+    icon: RocketIcon,
   },
 ];
 
@@ -54,28 +95,40 @@ const experience = [
   {
     role: "IT Operations Specialist",
     company: "Calgary Co-op",
-    period: "2024 - Present",
+    period: "Apr 2024 - Present",
     bullets: [
-      "The FMC department did barcode/file lookup work manually for years, taking 4-6 hours per session; the backend wiped nightly, so unfinished work was lost and staff restarted from scratch every day.",
-      "Built a standalone AI-powered Chrome Extension (JavaScript, OCR) that persists progress independently of company software and auto-resumes from where staff left off, cutting the task from 4-6 hours to under 10 minutes, a reduction of roughly 95% in time spent.",
+      "Provide hands-on IT support for store and department staff — troubleshooting Windows devices, POS and peripheral hardware, and user issues, and escalating incidents when needed.",
+      "Manage user accounts and access in Active Directory and Entra ID, and support end users on Microsoft 365 alongside device patching, imaging, and management through Intune.",
+      "Log, track, and resolve support tickets, report recurring issues so permanent fixes can be prioritized, and write and maintain the documentation and how-to guides the whole team uses.",
+      "Designed and built Barcode Lists, a standalone Chrome extension (JavaScript, Manifest V3) that replaced a manual FMC barcode and file lookup taking 4 to 6 hours per session — cutting the task to under 10 minutes, a 95% reduction.",
+      "Deploy and maintain the tool across 11 stores without a dedicated engineering team, script away repetitive IT tasks, and cross-train across other departments.",
     ],
   },
   {
-    role: "Full Stack Developer (Intern)",
+    role: "Web Developer (Internship)",
     company: "The Blessed Life",
-    period: "2025 - 2026",
+    period: "Jan 2025 - Aug 2025",
     bullets: [
-      "The company had no way to rapidly prototype stakeholder vision into something tangible, and needed a fast path from concept to a convincing, working demo to prove an idea was worth investing in.",
-      "Built full-stack applications and prototypes using React, TypeScript, Next.js, Python, and PostgreSQL (dummy backend data for prototyping), improving feature adoption by 30% and workflow completion by 100%.",
+      "Worked directly with stakeholders to gather requirements and turn their vision into two working full-stack prototypes (React, TypeScript, Next.js, Python, PostgreSQL), so ideas could be validated before investment was committed.",
+      "Iterated on feedback to drive a 30% improvement in feature adoption and a 100% improvement in workflow completion, and documented designs for non-technical stakeholders.",
     ],
   },
   {
     role: "Electrical Engineer",
     company: "Cris Planners and Builders",
-    period: "2021 - 2023",
+    period: "Jul 2021 - Nov 2023",
     bullets: [
-      "The company built homes and delivered interior design for individual homeowners but had no upsell offering, leaving revenue on the table with clients who were ready to spend more.",
-      "Proposed and delivered a home automation/IoT upsell using ESP32 and embedded systems to automate lighting and water tank filling; priced at a premium as an early, novel offering, netting the company additional profit per project.",
+      "Assessed client needs and designed, configured, tested, and installed a home automation and IoT solution (ESP32, embedded systems) for lighting and water tank filling across 40+ home building and interior design projects.",
+      "Positioned the offering as a premium upsell, generating additional profit per project, and adapted each installation to the client's environment and budget.",
+    ],
+  },
+  {
+    role: "Educator & Records Administrator",
+    company: "CSC Computer Science Institute",
+    period: "Jan 2019 - Jan 2021",
+    bullets: [
+      "Taught and supported government school students as a volunteer educator — including remotely during the COVID-19 lockdown — and maintained accurate, easy-to-retrievable student records for the institute.",
+      "Built a Python program that let students look up their own results, removing the need for teachers to retrieve them manually.",
     ],
   },
 ];
@@ -98,7 +151,7 @@ const education = [
   },
 ];
 
-const certifications = [
+const certifications: { name: string; url?: string }[] = [
   {
     name: "Product Marketing Fundamental",
     url: "https://www.credly.com/badges/27eb5767-0aee-4ebe-ba3e-37bfac97b5f7",
@@ -155,6 +208,13 @@ const certifications = [
     name: "Using Time Effectively and Productively",
     url: "https://www.credly.com/badges/b169ff2a-86ed-4c0d-a3c8-92598985e947",
   },
+  // Credentials without a public badge page — rendered as plain badges.
+  { name: "Microsoft 365 Fundamentals (MS-900)" },
+  { name: "Python" },
+  { name: "SQL" },
+  { name: "C++" },
+  { name: "Java" },
+  { name: "Web Development" },
 ];
 
 export default function AboutPage() {
@@ -200,16 +260,16 @@ export default function AboutPage() {
             variants={staggerItem}
             className="text-lg text-text-secondary leading-relaxed mt-4"
           >
-            I&apos;m a software developer and product manager who likes <TextHighlighter highlightColor="hsla(1, 85%, 65%, 0.7)" highlightTextColor="#2B3233" direction="ltr" transition={{ type: "spring", duration: 1, delay: 1.5, bounce: 0 }}>digging into messy problems</TextHighlighter>, understanding how people actually work, and turning &quot;there has to be a better way&quot; moments into products people love using.
+            I&apos;m a developer and automation engineer with 7+ years of shipping software who likes <TextHighlighter highlightColor="hsla(1, 85%, 65%, 0.7)" highlightTextColor="#2B3233" direction="ltr" transition={{ type: "spring", duration: 1, delay: 1.5, bounce: 0 }}>digging into messy problems</TextHighlighter>, understanding how people actually work, and turning &quot;there has to be a better way&quot; moments into tools people actually use &mdash; whether that&apos;s a product, an internal extension, or a script that saves a store four hours a day.
           </motion.p>
           <motion.p
             variants={staggerItem}
             className="text-lg text-text-secondary leading-relaxed mt-4"
           >
-            No matter the industry, the problem is usually the same: people are <TextHighlighter highlightColor="hsla(1, 85%, 65%, 0.7)" highlightTextColor="#2B3233" direction="ltr" transition={{ type: "spring", duration: 1, delay: 1.5, bounce: 0 }}>stuck doing things the hard way</TextHighlighter>. My work has always revolved around finding those moments, understanding why they exist, and building solutions that make work faster, simpler, and more enjoyable. I&apos;ve been able to move between engineering, product, and business teams because I enjoy <TextHighlighter highlightColor="hsla(1, 85%, 65%, 0.7)" highlightTextColor="#2B3233" direction="ltr" transition={{ type: "spring", duration: 1, delay: 1.5, bounce: 0 }}>speaking both languages</TextHighlighter>: the technical details and the human side of the problem. I&apos;m at my best when I&apos;m collaborating with people, earning their trust, and <TextHighlighter highlightColor="hsla(1, 85%, 65%, 0.7)" highlightTextColor="#2B3233" direction="ltr" transition={{ type: "spring", duration: 1, delay: 1.5, bounce: 0 }}>turning messy ideas into something teams can actually use</TextHighlighter>.
+            No matter the industry, the problem is usually the same: people are <TextHighlighter highlightColor="hsla(1, 85%, 65%, 0.7)" highlightTextColor="#2B3233" direction="ltr" transition={{ type: "spring", duration: 1, delay: 1.5, bounce: 0 }}>stuck doing things the hard way</TextHighlighter>. My work has always revolved around finding those moments, understanding why they exist, and building solutions that make work faster, simpler, and more enjoyable. I&apos;ve been able to move between engineering, product, and operations teams because I enjoy <TextHighlighter highlightColor="hsla(1, 85%, 65%, 0.7)" highlightTextColor="#2B3233" direction="ltr" transition={{ type: "spring", duration: 1, delay: 1.5, bounce: 0 }}>speaking both languages</TextHighlighter>: the technical details and the human side of the problem. I&apos;m at my best when I&apos;m collaborating with people, earning their trust, and <TextHighlighter highlightColor="hsla(1, 85%, 65%, 0.7)" highlightTextColor="#2B3233" direction="ltr" transition={{ type: "spring", duration: 1, delay: 1.5, bounce: 0 }}>turning messy ideas into something teams can actually use</TextHighlighter>.
           </motion.p>
           <motion.div variants={staggerItem} className="mt-8">
-            <a href="/Isaac_Daniel_Sudakar_Resume.pdf?v=2026-10-26" download="Isaac_Daniel_Sudakar_Resume.pdf" target="_blank" rel="noopener noreferrer" data-icon-hover-trigger>
+            <a href="/Isaac_Sudakar_Resume.pdf?v=2026-11-12b" download="Isaac_Sudakar_Resume.pdf" target="_blank" rel="noopener noreferrer" data-icon-hover-trigger>
               <Button variant="outline" className="gap-2">
                 <IconHoverWrapper hoverTrigger="closest">
                   <FileDescriptionIcon size={16} />
@@ -326,6 +386,10 @@ export default function AboutPage() {
           >
             Certifications
           </motion.h2>
+          <p className="text-sm text-text-secondary mb-6 -mt-4">
+            SAIT program credentials and certifications. Linked badges verify
+            on Credly.
+          </p>
           <motion.div
             {...certificationsRow}
             variants={staggerContainer}
@@ -333,11 +397,17 @@ export default function AboutPage() {
           >
             {certifications.map((cert) => (
               <motion.div key={cert.name} variants={staggerItemFast}>
-                <Link href={cert.url} target="_blank" rel="noopener noreferrer">
-                  <Badge variant="outline" className="text-sm px-4 py-2 border-cta/50 text-text-secondary transition-colors hover:border-cta hover:text-cta">
+                {cert.url ? (
+                  <Link href={cert.url} target="_blank" rel="noopener noreferrer">
+                    <Badge variant="outline" className="text-sm px-4 py-2 border-cta/50 text-text-secondary transition-colors hover:border-cta hover:text-cta">
+                      {cert.name}
+                    </Badge>
+                  </Link>
+                ) : (
+                  <Badge variant="outline" className="text-sm px-4 py-2 border-divider text-text-secondary">
                     {cert.name}
                   </Badge>
-                </Link>
+                )}
               </motion.div>
             ))}
           </motion.div>

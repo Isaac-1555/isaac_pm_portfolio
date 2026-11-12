@@ -21,7 +21,7 @@ const posts = [
     slug: "pocket-resume",
     title: "PocketResume: Eight Months to 70, Three Days to 4,000",
     subtitle:
-      "A candid postmortem of the bug spiral, the v9.0.1 update, Quick Download, and the SEO landing page that took PocketResume from 27 weekly users to 4,000+ in three days.",
+      "A candid postmortem of the bug spiral, the v9.0.1 update, Quick Download, and the SEO landing page that took PocketResume from 27 weekly users to 4,000+ in three days — plus a November 2026 update on the on-device engine that replaced it.",
     date: "October 2026",
     readTime: "12 min",
     author: "Isaac",
@@ -33,7 +33,7 @@ const posts = [
     slug: "notebucket",
     title: "NoteBucket: Lessons from Building an Offline-First Semantic Note Organizer",
     subtitle:
-      "Why I built it, the all-night rabbit hole that went nowhere, the pivot that saved the project, the bug that taught me about edge cases, and what I'd do differently next time.",
+      "Why I built it, the all-night rabbit hole that went nowhere, the pivot that saved the project, the bug that taught me about edge cases, and what I'd do differently next time — plus the release pipeline that shipped v0.3.2.",
     date: "June 2026",
     readTime: "9 min",
     author: "Isaac",
@@ -46,7 +46,7 @@ const posts = [
     title:
       "Barcode Lists: A Shared Workflow for Calgary Coop",
     subtitle:
-      "A Monday-morning scanning problem turned into a shared Chrome extension with AI-powered OCR, realtime sync, and 24 commits of iteration over three months.",
+      "A Monday-morning scanning problem turned into a shared Chrome extension with Excel import, page automation, realtime sync, and 56 commits of iteration — now used daily across 11 Calgary Co-op stores.",
     date: "June 2026",
     readTime: "10 min",
     author: "Isaac",

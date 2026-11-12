@@ -25,7 +25,7 @@ export const metadata = {
   title:
     "PocketResume: Eight Months to 70, Three Days to 4,000 | Isaac PM Blog",
   description:
-    "A candid postmortem of the bug spiral, the v9.0.1 update, Quick Download, and the SEO landing page that took PocketResume from 27 weekly users to 4,000+ in three days.",
+    "A candid postmortem of the bug spiral, the v9.0.1 update, Quick Download, and the SEO landing page that took PocketResume from 27 weekly users to 4,000+ in three days — plus a November 2026 update on the on-device engine that replaced it.",
 };
 
 const TOC = [
@@ -239,6 +239,25 @@ export default function PocketResumeArticle() {
             </aside>
 
             <div className="lg:col-span-9 max-w-none">
+              <div className="mb-12 border-l-4 border-cta bg-bg-accent/5 p-5 md:p-6">
+                <div className="font-industrial uppercase tracking-widest text-cta text-sm mb-2">
+                  Update — November 2026
+                </div>
+                <p className="text-text-secondary leading-relaxed text-sm md:text-base">
+                  The growth story below is a snapshot of v9.0.1 in October, and
+                  I left it exactly as it happened. The product has since
+                  changed shape:{" "}
+                  <strong className="text-text-primary">
+                    v10.8 runs a deterministic, on-device engine
+                  </strong>{" "}
+                  — no API key, no upload, no quota, and it never rewrites your
+                  wording or invents metrics. The FAANG layout was removed
+                  (Professional covers it), Double Sided is now guaranteed to
+                  fit on one page, Academic CV paginates properly, and every
+                  resume keeps its own cover letter. The paid tier is now
+                  $4/month or $47/year.
+                </p>
+              </div>
               <nav className="lg:hidden mb-10 bg-card border-2 border-bg-dark rounded-sm p-5">
                 <h2 className="text-sm font-industrial uppercase tracking-widest text-text-secondary mb-3">
                   Contents

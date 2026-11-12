@@ -12,7 +12,8 @@ import { motion } from 'framer-motion';
 import { staggerContainer, staggerItem, useRevealMotion } from '@/lib/motion';
 
 const ROLES = [
-  { title: 'Software Developer', subtitle: 'Web and mobile apps' },
+  { title: 'Software Developer', subtitle: 'Web, mobile and desktop apps' },
+  { title: 'Automation Engineer', subtitle: 'IT Ops & Internal Tooling' },
   { title: 'Product Manager', subtitle: 'B2B SaaS & Internal Tools' },
   { title: 'AI Engineer', subtitle: 'AI Powered Automations' },
 ] as const;
@@ -113,8 +114,8 @@ export default function HeroContent() {
           </Button>
         </Link>
         <a
-          href="/Isaac_Daniel_Sudakar_Resume.pdf?v=2026-10-26"
-          download="Isaac_Daniel_Sudakar_Resume.pdf"
+          href="/Isaac_Sudakar_Resume.pdf?v=2026-11-12b"
+          download="Isaac_Sudakar_Resume.pdf"
           target="_blank"
           rel="noopener noreferrer"
           data-icon-hover-trigger

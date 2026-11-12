@@ -253,7 +253,7 @@ export default function D4CArticle() {
                 <FeatureBlock
                   icon={<CpuIcon size={20} className="text-cta" />}
                   title="Native MCP Client"
-                  description="D4C implements the Model Context Protocol natively in the Rust core — no external MCP launcher process. Tools and context servers plug in through a standard protocol instead of vendor-specific glue."
+                  description="D4C implements the Model Context Protocol in the Rust core — it spawns and supervises MCP server processes itself instead of requiring an external launcher. Tools and context servers plug in through a standard protocol instead of vendor-specific glue."
                 />
                 <FeatureBlock
                   icon={<MagnifierIcon size={20} className="text-cta" />}
@@ -274,6 +274,19 @@ export default function D4CArticle() {
                   Keeping the router small and inside the agent means startup
                   stays fast, there&apos;s nothing else to deploy, and the
                   selection logic stays auditable in one place.
+                </p>
+              </Callout>
+
+              <Callout>
+                <p className="text-sm md:text-base">
+                  <strong>Where the providers actually stand:</strong> the
+                  provider layer is an abstraction, and the first implementation
+                  behind it talks to the OpenCode server over its V2 HTTP API —
+                  sessions, streaming responses, tool calls, and usage all
+                  included. The router already classifies work into simple and
+                  complex tiers and records why it picked a model, so adding
+                  the next provider is a new implementation behind an
+                  interface that is already in place, not a rewrite.
                 </p>
               </Callout>
 

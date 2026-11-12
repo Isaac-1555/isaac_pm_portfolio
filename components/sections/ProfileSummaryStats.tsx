@@ -3,7 +3,7 @@
 import UnderlineToBackground from "@/components/fancy/text/underline-to-background";
 
 const stats = [
-  { value: "5+", label: "Years Exp" },
+  { value: "7+", label: "Years Exp" },
   { value: "30+", label: "Products Shipped" },
 ];
 

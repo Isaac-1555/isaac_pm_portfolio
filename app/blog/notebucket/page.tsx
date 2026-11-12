@@ -433,6 +433,15 @@ export default function NoteBucketArticle() {
                 folders, search, and attachments.
               </p>
               <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-6">
+                That was the first release. The app is now at v0.3.2 and 24
+                commits, with a signed release pipeline on top of it: local
+                keystore signing, R8 minification and resource shrinking, and
+                llama.cpp plus ggml compiled from source through the NDK and
+                CMake. The signed arm64-v8a APK is published on GitHub
+                Releases, so it installs and updates on a real phone without a
+                build step.
+              </p>
+              <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-6">
                 Looking back, the most important decision I made was the
                 constraint: 100% offline, no accounts, no analytics. Every
                 technical choice flowed from that. BGE-small instead of a larger

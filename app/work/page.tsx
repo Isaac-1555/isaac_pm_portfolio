@@ -11,7 +11,6 @@ import RadioIcon from "@/components/icons/radio-icon";
 import SparklesIcon from "@/components/icons/sparkles-icon";
 import YoutubeIcon from "@/components/icons/youtube-icon";
 import CodeIcon from "@/components/icons/code-icon";
-import SendIcon from "@/components/icons/send-icon";
 import PlayIcon from "@/components/icons/play-icon";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 import { AccentWord } from "@/components/ui/AccentWord";
@@ -34,8 +33,8 @@ const technicalProjects = [
     id: "barcode-lists",
     title: "Barcode-Lists",
     role: "Developer",
-    description: "Chrome extension for the Calgary Coop store team — shared barcode storage with AI extraction from images and spreadsheets, synced across shifts in real time.",
-    tags: ["Chrome Extension", "JavaScript", "Internal Tool"],
+    description: "Chrome extension used daily across 11 Calgary Co-op stores — Excel UPC import with duplicate detection, XPath page automation, TCO price runs, UPC scraping, and Supabase sync that still works fully offline.",
+    tags: ["Chrome Extension", "JavaScript", "Supabase", "Automation"],
     href: "https://github.com/Isaac-1555/Barcode-Lists",
     icon: ScanBarcodeIcon,
   },
@@ -52,7 +51,7 @@ const technicalProjects = [
     id: "ez-resume",
     title: "Ez-Resume",
     role: "Developer",
-    description: "No-AI resume builder packaged as a Chrome extension that works like a web app — produces clean, structured resumes in under a minute. Speed over smarts.",
+    description: "Deterministic resume builder as a Chrome extension — no AI, no API key, no cloud. Four ATS-safe layouts, up to three master profiles, and per-job overrides that never leave the browser.",
     tags: ["Chrome Extension", "JavaScript", "Resume"],
     href: "https://github.com/Isaac-1555/Ez-Resume",
     icon: FileDescriptionIcon,
@@ -61,8 +60,8 @@ const technicalProjects = [
     id: "summarease",
     title: "Summarease",
     role: "Developer",
-    description: "Turns long audio and conversations into whatever format the moment needs — summaries, action items, or transcripts.",
-    tags: ["React", "Firebase", "Gemini"],
+    description: "Turns long audio and conversations into whatever format the moment needs — summaries, action items, transcripts, or quizzes you can actually study from.",
+    tags: ["React 19", "Firebase", "Gemini"],
     href: "https://github.com/Isaac-1555/summarease_v1",
     icon: RadioIcon,
   },
@@ -70,10 +69,19 @@ const technicalProjects = [
     id: "anirust",
     title: "AniRust",
     role: "Developer",
-    description: "Tauri desktop app for anime fans — a clean web-style interface over ani-cli. Native window, no browser.",
-    tags: ["Tauri", "React", "Anime"],
+    description: "Desktop anime catalog and player built on ani-cli — fast search, episode and quality pickers, sub/dub, a built-in HLS/MP4 player, and continue-watching history. Released for macOS, Windows, and Linux.",
+    tags: ["Tauri", "React", "Desktop"],
     href: "https://github.com/Isaac-1555/AniRust",
     icon: PlayIcon,
+  },
+  {
+    id: "mytube",
+    title: "MyTube",
+    role: "Android Developer",
+    description: "All-in-one Android shell for YouTube, YouTube Music, Movies, and Anime — hosts-file ad blocking, background playback, Picture-in-Picture, sleep timer, screen lock, and a home-screen widget.",
+    tags: ["Kotlin", "Jetpack Compose", "Android"],
+    href: "https://github.com/Isaac-1555/MyTube_Android",
+    icon: YoutubeIcon,
   },
   {
     id: "coachgg",
@@ -88,28 +96,19 @@ const technicalProjects = [
     id: "betteryt",
     title: "BetterYT",
     role: "Developer",
-    description: "Chrome extension that fixes YouTube's recommendations with custom category chips and curated feeds, using AI with a bring-your-own API key.",
-    tags: ["Chrome Extension", "React", "TypeScript"],
+    description: "Chrome extension that replaces YouTube's recommendation feed with your own curated categories — RSS and Data API sourcing, optional AI reranking, cached per category per day.",
+    tags: ["Chrome Extension", "React 19", "TypeScript"],
     href: "https://github.com/Isaac-1555/BetterYT",
-    icon: YoutubeIcon,
+    icon: SparklesIcon,
   },
   {
     id: "d4c",
     title: "D4C",
     role: "Developer",
-    description: "Terminal coding agent built from scratch in Rust — planning-first workflows, native Ratatui TUI, built-in MCP client, provider-agnostic model support.",
+    description: "Terminal coding agent built from scratch in Rust — planning-first /plan → /build workflows, a native Ratatui TUI, a native MCP client, and an embedded router that picks a model by task complexity.",
     tags: ["Rust", "Ratatui", "Coding Agent"],
     href: "https://github.com/Isaac-1555/D4C",
     icon: CodeIcon,
-  },
-  {
-    id: "pigeon",
-    title: "Pigeon",
-    role: "Developer",
-    description: "Automated status notifications for small businesses — customers stay in the loop on job progress without anyone picking up the phone.",
-    tags: ["Expo", "React Native", "EmailJS"],
-    href: "https://github.com/Isaac-1555/Pigeon",
-    icon: SendIcon,
   },
 ];
 
@@ -190,9 +189,10 @@ export default function WorkPage() {
           className="text-text-secondary max-w-2xl text-lg leading-relaxed opacity-0"
         >
           Tools built because the existing options didn&apos;t do the job —
-          internal store tooling, on-device AI, and agent infrastructure. The
-          flagship case studies above carry the deep dives; these are the
-          smaller builds, each with its own story.
+          internal store tooling, on-device AI, an agent written from scratch,
+          and a media shell that costs nothing to run. The flagship case
+          studies above carry the deep dives; these are the smaller builds,
+          each with its own story.
         </p>
       </div>
 

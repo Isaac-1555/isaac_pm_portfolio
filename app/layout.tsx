@@ -36,7 +36,8 @@ const barlow = Barlow({
 export const metadata: Metadata = {
   metadataBase: new URL("https://isaacdani.ca"),
   title: "Isaac Daniel Sudakar | Software Developer & Technical Product Manager",
-  description: "Software Developer & Technical Product Manager building AI-powered products across web, mobile, and intelligent automation. Portfolio exploring the intersection of AI engineering, product strategy, and full-stack development.",
+  description:
+    "Software developer and technical product manager with 7+ years across full-stack development, AI-powered tools, and internal platforms — including a Chrome extension used daily across 11 Calgary Co-op stores and a resume product used by 4,000+ job seekers.",
   icons: {
     icon: "/logo.png",
   },
@@ -45,7 +46,8 @@ export const metadata: Metadata = {
     url: "https://isaacdani.ca",
     siteName: "Isaac Daniel Sudakar",
     title: "Isaac Daniel Sudakar | Software Developer & Technical Product Manager",
-    description: "Software Developer & Technical Product Manager building AI-powered products across web, mobile, and intelligent automation. Portfolio exploring the intersection of AI engineering, product strategy, and full-stack development.",
+    description:
+      "Software developer and technical product manager with 7+ years across full-stack development, AI-powered tools, and internal platforms — including a Chrome extension used daily across 11 Calgary Co-op stores and a resume product used by 4,000+ job seekers.",
     images: [{
       url: "/og-image.png",
       width: 2400,

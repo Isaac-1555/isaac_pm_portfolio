@@ -24,7 +24,7 @@ import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 export const metadata = {
   title: "Barcode Lists: Building a Shared Barcode Workflow for Calgary Coop | Isaac PM Blog",
   description:
-    "How a Monday-morning scanning problem at Calgary Coop turned into a shared Chrome extension with Supabase sync, Excel barcode import, and 24 commits of iteration.",
+    "How a Monday-morning scanning problem at Calgary Coop turned into a shared Chrome extension with Supabase sync, Excel barcode import, and 56 commits of iteration — now used daily across 11 stores.",
 };
 
 const TOC = [
@@ -284,6 +284,20 @@ export default function BarcodeListsArticle() {
                 of those commits were fixes, not features — which is the honest
                 story I&apos;ll get into below.
               </p>
+              <Callout>
+                <p className="text-sm md:text-base">
+                  <strong>Since this post:</strong> the extension is at 56
+                  commits and runs daily across 11 Calgary Co-op stores. The
+                  Excel import stayed; the AI/OCR pass was replaced by a
+                  deterministic SheetJS path with duplicate detection and a
+                  review modal. Newer work includes XPath-driven batch
+                  automation on the pricing site, a TCO run that applies
+                  per-barcode prices to sign templates, UPC scraping straight
+                  off the sign grid with pagination, and an important-lists
+                  channel from the companion app. The tool still runs fully
+                  offline and syncs to Supabase when the network allows.
+                </p>
+              </Callout>
               <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-6">
                 This post is the builder&apos;s log — why I built it, how my
                 colleagues used it, the feature deep-dives, the bugs I had to

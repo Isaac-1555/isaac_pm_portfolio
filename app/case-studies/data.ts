@@ -98,14 +98,14 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "tux",
     title: "Tux",
-    subtitle: "Terminal-first IDE focused on split panes, session management, and git visibility — built after Warp and VSCode buried the features a terminal-centric workflow depends on.",
+    subtitle: "Terminal-first desktop workspace — multi-session PTY terminals, file explorer, live git state, an editor with diffs, and signed CI releases for macOS, Windows, and Linux.",
     company: "Developer Tooling (Personal)",
     role: "Solo Developer & Designer",
-    timeline: "1 Day (Initial + 5 Fixes)",
+    timeline: "Ongoing · v1.0.0 Shipped",
     team: "Solo",
-    status: "Open Source (GitHub)",
+    status: "Open Source · v1.0.0",
 
-    context: "The daily development environment was a combination of Warp and VSCode. Both shipped split panes, a file explorer, a git tree, and session monitoring as secondary concerns — missing, hidden behind flags, or buried several menus deep. Tux was built to expose only the features a terminal-centric workflow actually uses, in a predictable order, with a native feel and a small footprint.",
+    context: "The daily development environment was a combination of Warp and VSCode. Both shipped split panes, a file explorer, a git tree, and session monitoring as secondary concerns — missing, hidden behind flags, or buried several menus deep. Tux was built to expose only the features a terminal-centric workflow actually uses, in a predictable order, with a native feel and a small footprint. What started as a one-day scaffold is now a released, cross-platform desktop app.",
 
     problem: {
       statement: "Modern IDEs and terminals prioritize feature breadth over feature access. The capabilities that matter most — layout, git visibility, file state, fast terminal access — sit behind menus and flags, creating friction that compounds across a full workday.",
@@ -115,14 +115,14 @@ export const caseStudies: CaseStudy[] = [
 
     goals: {
       objectives: [
-        "Split panes (vertical and horizontal)",
-        "Right-side terminal",
-        "Left sidebar: file explorer, git tree, terminal sessions",
-        "Inline git diffs",
-        "File reading, writing, and editing with CodeMirror highlighting and Prettier formatting",
-        "Rust + Tauri for performance and binary size"
+        "Split panes (vertical and horizontal) with multi-session PTY terminals",
+        "Right-side terminal and left sidebar: file explorer, git tree, terminal sessions",
+        "Inline git diffs and a CodeMirror editor with syntax highlighting",
+        "Themeable, rebindable, keyboard-first — every major action has a shortcut",
+        "Rust + Tauri for performance and binary size",
+        "One-command releases for macOS, Windows, and Linux"
       ],
-      kpis: ["Time from launch to first command", "Package / binary size", "Feature count held intentionally small"]
+      kpis: ["Time from launch to first command", "Package / binary size", "Feature count held intentionally small", "Release availability across platforms"]
     },
 
     research: {
@@ -134,26 +134,30 @@ export const caseStudies: CaseStudy[] = [
       insights: [
         "Most IDE features went unused across the two-week window — extensions marketplace, debugger, plugin system, integrated package manager.",
         "Layout, git state, and file state covered roughly 90% of daily usage. Those three justified the entire build.",
-        "Tauri delivers native UX with webview flexibility, without the ~200MB Electron overhead."
+        "Tauri delivers native UX with webview flexibility, without the ~200MB Electron overhead.",
+        "Shell-aware tooling (OSC 7999, SIXEL, kitty graphics) is what makes AI coding agents usable inside a terminal — a feature worth more than any plugin marketplace."
       ]
     },
 
     approach: {
-      strategy: "PRD-first development: a single-day scaffold followed by 5 targeted fix commits. The Rust backend owns PTY, git operations, and the editor engine; the React frontend owns layout, where the webview pays for itself.",
-      frameworks: ["Tauri 2", "xterm.js 6 (terminal rendering)", "CodeMirror 6 (editor)", "@pierre/diffs (diff viewer)", "portable-pty (PTY sessions)", "git2-rs (git operations)"],
+      strategy: "PRD-first development: a single-day scaffold followed by 5 targeted fix commits, then a slow climb to v1.0.0. The Rust backend owns PTY, git operations, and the editor engine; the React frontend owns layout, where the webview pays for itself. Releases are built by a GitHub Actions matrix on every `v*` tag.",
+      frameworks: ["Tauri 2", "xterm.js 6 with WebGL renderer", "CodeMirror 6 (editor)", "@pierre/diffs (diff viewer)", "portable-pty (PTY sessions)", "git2-rs (git operations)", "GitHub Actions release matrix"],
       collaboration: "Solo. Dogfooding from the first commit — every feature entered daily use the same day it was built."
     },
 
     solution: {
-      description: "A three-pane desktop app. Sessions and the file tree occupy the left pane. The terminal plus editor/diff sit in the middle. Git state lives on the right. xterm.js with a WebGL renderer powers the terminal; CodeMirror powers the editor with Prettier formatting for JS/TS/JSON/HTML/CSS/MD; @pierre/diffs renders the diff pane. Session state persists across launches.",
+      description: "A three-pane desktop app. Sessions and the file tree occupy the left pane. The terminal plus editor/diff sit in the middle. Git state lives on the right. xterm.js with a WebGL renderer powers the terminal; CodeMirror powers the editor; @pierre/diffs renders the diff pane. Session state, cwd, theme, and keybindings all persist across launches.",
       features: [
         "Split panes (vertical and horizontal, resizable)",
-        "Right-side terminal powered by xterm.js 6",
-        "Left sidebar: file explorer, git tree, terminal session list",
+        "Multi-session PTY terminals running the user's real login shell",
+        "Left sidebar: file explorer with git status overlays, git tree, terminal session list",
         "Inline git diffs (unified and side-by-side)",
-        "File editing with CodeMirror highlighting and Prettier formatting",
-        "Session persistence across launches",
-        "Keyboard-first — every major action has a shortcut"
+        "File editing with CodeMirror highlighting",
+        "11 built-in theme presets plus a custom theme builder that recolors UI, terminal, and editor live",
+        "Fully rebindable keymap with inline conflict detection",
+        "Shell integration (OSC 7999) for live command and cwd-aware tab titles",
+        "Inline graphics support (SIXEL / kitty protocols) so agent TUIs like opencode and Claude Code render inside the pane",
+        "Session, cwd, theme, keymap, and window state persist across launches"
       ],
       rationale: "Rust + Tauri for sub-2s cold start and a small binary. React only where layout genuinely requires it (split panes, drag-resize, sidebar collapse). No LSP, no plugin marketplace, no debugger — explicitly out of scope per the PRD."
     },
@@ -162,27 +166,31 @@ export const caseStudies: CaseStudy[] = [
       roadmap: [
         { label: "PRD", description: "20-section PRD covering layout, terminal, git, editor, persistence, performance targets" },
         { label: "Initial commit", description: "Tauri 2 + React 19 scaffold with all 7 panes wired (App, Sidebar, FileTree, Terminal, GitViewer, Diff, Editor)" },
-        { label: "5 fix passes", description: "File explorer → CWD reset → GitViewer → shortcuts + git.rs → backspace keystroke" }
+        { label: "5 fix passes", description: "File explorer → CWD reset → GitViewer → shortcuts + git.rs → backspace keystroke" },
+        { label: "v1.0.0", description: "Theme system, rebindable keymap, shell integration, inline graphics, and a CI release matrix for macOS, Windows, and Linux" }
       ],
       challenges: [
         "File explorer: PTY and sidebar state required rewiring so the tree and terminals stayed in sync (`7097843`).",
         "CWD reset bug: shell working directory failed to restore on session switch, breaking per-session isolation (`de63eac`).",
         "GitViewer stability: two passes required to render diffs reliably across staged / unstaged / untracked states (`d10a0a4`, `53678a0`).",
-        "Keyboard shortcut layer and dedicated `git.rs` module landed in the same commit to keep surface area small (`53678a0`).",
-        "Backspace keystrokes reached the shell in dev but not in the built binary — keymap registration was happening too late (`be3d4d1`)."
+        "Backspace keystrokes reached the shell in dev but not in the built binary — keymap registration was happening too late (`be3d4d1`).",
+        "Unsigned release binaries: Gatekeeper and SmartScreen both block first launch, so the release notes now ship the exact commands that clear the quarantine flag.",
+        "Inline graphics: agent TUIs only render correctly when the terminal advertises the right color and image capabilities — `TERM=xterm-256color`, `COLORTERM=truecolor`, and `TERM_PROGRAM=ghostty` had to be set explicitly."
       ]
     },
 
     outcome: {
       quantifiable: [
-        "Terminal, editor, and git state visible at a glance — no menu navigation",
-        "Single binary replaces a two-tool setup (Warp + VSCode) for daily sessions",
-        "Dogfooded from the first commit: every feature entered daily use the day it shipped"
+        "v1.0.0 published with a macOS universal build, Windows installer + MSI, and Linux .deb, .rpm, and .AppImage",
+        "28 commits from one-day scaffold to shipped release",
+        "11 built-in themes plus a custom theme builder, recoloring UI, terminal, and editor live",
+        "Every shortcut rebindable, with conflicts detected before a binding is saved",
+        "Single binary replaces a two-tool setup (Warp + VSCode) for daily sessions"
       ],
       qualitative: [
         "Feels native, not browser-like",
         "No features shipped that require ignoring or disabling",
-        "Daily-driver capable for terminal-centric workflows"
+        "Daily-driver capable for terminal-centric workflows, including AI coding agents"
       ]
     },
 
@@ -274,7 +282,7 @@ export const caseStudies: CaseStudy[] = [
     
     learnings: {
       takeaways: ["Generative AI requires strict guardrails when the output is structured data.", "Visualizations drive stronger engagement than plain text summaries."],
-      nextSteps: ["Mobile app development", "Collaborative study groups", "Integration with Canvas/LMS"]
+      nextSteps: ["Rust + Tauri desktop rewrite — offline-first with Google OAuth", "Mobile app development", "Collaborative study groups", "Integration with Canvas/LMS"]
     },
 
     icon: BrainCircuitIcon,
@@ -296,67 +304,105 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "pocket-resume",
     title: "Pocket Resume",
-    subtitle: "Context-aware browser extension that rewrites a master resume to match any job description.",
+    subtitle: "Chrome extension that turns one saved resume into a tailored PDF for every job posting — an on-device engine with no API key, no upload, and no rate limit.",
     company: "Consumer Tool",
-    role: "Software Developer & Technical PM",
-    timeline: "4 Weeks",
+    role: "Solo Developer & Operator",
+    timeline: "Ongoing · v10.8 Shipped",
     team: "Solo",
     status: "Live · 4,000+ Users",
-    
-    context: "The modern job market expects a tailored resume for every application to clear ATS filters. Producing those variations manually is slow, repetitive, and easy to do badly.",
-    
+
+    context: "The modern job market expects a tailored resume for every application to clear ATS filters. Producing those variations manually is slow, repetitive, and easy to do badly. The first version of PocketResume leaned on the user's own AI provider key — which worked, but made the first-run experience depend on someone else's quota, pricing, and uptime.",
+
     problem: {
-      statement: "Job seekers spend hours rewriting a resume for each application, guessing at the keywords individual ATS systems prioritize.",
-      importance: "Resume tailoring is the highest-leverage step in the application pipeline — the difference between a generic submission and a targeted one directly affects screening outcomes.",
-      constraints: ["Must operate on any job board (LinkedIn, Indeed, etc.)", "Privacy-first: all data stays local to the browser"]
+      statement: "Job seekers spend hours rewriting a resume for each application, guessing at the keywords individual ATS systems prioritize — and every AI-powered tool they reach for asks for an API key before it shows them anything useful.",
+      importance: "Resume tailoring is the highest-leverage step in the application pipeline — the difference between a generic submission and a targeted one directly affects screening outcomes. If the first run needs a key, a provider choice, and a wait, most users never see the value.",
+      constraints: ["Must operate on any job board (LinkedIn, Indeed, etc.)", "Privacy-first: resume data stays in the browser unless the user opts into cloud sync", "No hard dependency on a third-party AI provider or its quota"]
     },
-    
+
     goals: {
-      objectives: ["Reduce resume tailoring from 30 minutes to 30 seconds.", "Generate high-quality, ATS-friendly content.", "Integrate seamlessly into the browsing workflow."],
-      kpis: ["Weekly Active Users", "Resumes Generated", "Time Saved per Application"]
+      objectives: ["Reduce resume tailoring from 30 minutes to a single click.", "Generate ATS-friendly content that never invents experience.", "Work with zero setup — no API key, no signup, no credits.", "Track applications in one place instead of a spreadsheet."],
+      kpis: ["Users who complete a first generation", "Time from page load to PDF", "Resumes generated per active user", "Free-to-paid conversion"]
     },
-    
+
     research: {
-      methods: ["Analysis of ATS (Applicant Tracking Systems) parsing behavior.", "Interviews and feedback loops with active job seekers."],
-      insights: ["Formatting matters as much as keywords in ATS screening.", "Users are reluctant to store personal employment data in cloud services."]
+      methods: [
+        "Analysis of ATS (Applicant Tracking Systems) parsing behavior.",
+        "Interviews and feedback loops with active job seekers.",
+        "Reading the product's own failure modes: weekly active users fell from 70 to 27 while the bug backlog grew."
+      ],
+      insights: [
+        "Formatting matters as much as keywords in ATS screening.",
+        "Users are reluctant to store personal employment data in cloud services.",
+        "A quota error looks exactly like a broken product — the failure was indistinguishable from a bug.",
+        "The fastest path to value is a no-key, no-wait download. Everything else is optional."
+      ]
     },
-    
+
     approach: {
-      strategy: "In-context augmentation: the tool operates directly on the job page, reading the DOM to understand requirements and generating the tailored PDF locally — no copy-pasting, no data leaving the device.",
-      frameworks: ["Chrome Extension Manifest V3", "Multi-provider AI (Gemini, OpenAI, Anthropic, OpenRouter, custom/local endpoints)", "Clerk (auth) + Convex (cloud sync)"],
-      collaboration: "Open source community feedback on GitHub."
+      strategy: "Deterministic on-device alignment: the extension reads the job posting and the stored profile, then selects, reorders, trims, and repairs the user's own wording. It never rewrites their bullets and reverts any number that is not present in the profile, so the output is trustworthy and the whole run needs no network call.",
+      frameworks: ["Chrome Extension Manifest V3", "Vanilla JS + HTML/CSS (no framework, no bundler for app code)", "Deterministic parser + JD aligner + O*NET skill lexicon", "jsPDF (PDF generation)", "Clerk (auth & pricing) + Convex (optional resume sync)", "esbuild for the cloud-sync bundle only"],
+      collaboration: "Open source on GitHub, with a public changelog and an issue-driven backlog."
     },
-    
+
     solution: {
-      description: "A Chrome extension that reads the active tab's job description, takes the user's master resume, and rewrites it to match the role's keywords and tone.",
-      features: ["One-click Page Analysis", "Quick Download (4 ATS-safe layouts)", "ATS Score Checker", "Multi-provider AI (Gemini, OpenAI, Anthropic, OpenRouter, local endpoints)", "PDF Generation (jsPDF)", "Cover Letter Writer", "Job Tracker + AI Form Filler", "Local Data Persistence"],
-      rationale: "A browser extension was the only form factor that granted seamless access to job board content without copy-pasting — and local processing satisfied the privacy constraint outright."
+      description: "A Chrome extension that parses a pasted resume into a structured, editable profile, reads the active tab's job description, and rebuilds a print-ready PDF around the matching content — plus a job tracker card for every application.",
+      features: [
+        "On-device resume engine — deterministic alignment, no API key, no upload, no rate limit",
+        "Local parser: paste a resume once, fix it in an editable form",
+        "3 layouts: Professional, Double Sided (one page, never clips), Academic CV (multi-page)",
+        "One cover letter per resume, with company, role, and recipient filled from the posting",
+        "Job Tracker: pipeline board + analytics, with no extra requests",
+        "Quick Download — re-download a saved resume as a clean professional PDF without reading a page",
+        "Multi-profile — up to 3 master resumes, switched in one click",
+        "Resume Health Check (opt-in beta) — flags weak action verbs, missing metrics, tense drift, filler",
+        "Optional cloud sync (Clerk + Convex) and a Pro plan for sync, tracker, and generation",
+        "Long-resume warning before a two-page PDF is saved"
+      ],
+      rationale: "The extension form factor was the only one that grants access to job board content without copy-pasting. Moving the engine on-device removed the API-key wall, the quota failure mode, and the privacy problem in one move — and made the product fast enough that the wait disappeared."
     },
-    
+
     execution: {
       roadmap: [
-        { label: "Week 1", description: "Manifest V3 setup & DOM scraping" },
-        { label: "Week 2", description: "AI prompt tuning" },
-        { label: "Week 3", description: "PDF generation" },
-        { label: "Week 4", description: "Store listing" }
+        { label: "v1.0 (Jan 2026)", description: "Manifest V3 setup, DOM scraping, multi-provider AI, PDF generation, Chrome Web Store launch" },
+        { label: "Aug–Sep 2026", description: "Bug spiral — weekly users drop from 70 to 27 as the core flows break" },
+        { label: "v9.0.1 (Oct 17, 2026)", description: "Bug backlog cleared, Quick Download added, landing page rebuilt for search intent — 495 weekly users, then 4,000+ within two days" },
+        { label: "v10.5–10.8 (Nov 2026)", description: "Cover letter per resume, single-page Double Sided layout, Academic CV pagination, on-device engine, long-resume warning" }
       ],
-      challenges: ["Scraping dynamic SPAs (LinkedIn/Indeed) required robust DOM observers.", "In-browser PDF generation needed careful handling of fonts and layout."]
+      challenges: [
+        "Scraping dynamic SPAs (LinkedIn/Indeed) required robust DOM observers.",
+        "In-browser PDF generation needed careful handling of fonts, layout, and page fitting.",
+        "The Double Sided layout had to be measured before rendering, then tightened progressively — spacing, bullet length, then section priority — so nothing silently falls off the page edge.",
+        "Academic CV pagination had to keep an entry header attached to its first bullet and reserve room for right-aligned dates.",
+        "Skill extraction matched job-description prose too loosely — 'reduce the backlog' became the REDUCE computer-algebra system and 'excel at demos' became Microsoft Excel. Ambiguous terms now need case evidence before they can be pulled in.",
+        "Free-tier quotas on the AI path turned provider limits into apparent product failures, so the free path became deterministic and the paid path became a Pro plan."
+      ]
     },
-    
+
     outcome: {
-      quantifiable: ["4,000+ weekly active users on the Chrome Web Store", "5-star Chrome Web Store rating", "Generates a tailored resume in under 20 seconds", "Supports all major job boards"],
-      qualitative: ["Consistently cited the cover letter feature as unexpected value.", "Strong accuracy in keyword matching reported by users."]
+      quantifiable: [
+        "4,000+ job seekers have used PocketResume",
+        "Tailored PDF generated on-device in about a second — no API key, no upload, no waiting on a server",
+        "3 ATS-ready layouts, each with its own fit and pagination rules",
+        "Job Tracker pipeline board with analytics, no extra API calls",
+        "Pro plan at $4/month or $47/year, with a 7-day trial",
+        "20+ shipped versions from the first release to v10.8"
+      ],
+      qualitative: [
+        "Users trust the output because it never rewrites their words or invents metrics",
+        "No signup, no key, no credit card in the path to a finished PDF",
+        "Cover letters became the feature people mention most"
+      ]
     },
-    
+
     learnings: {
-      takeaways: ["Prompt engineering functions as a product feature in its own right.", "Client-side AI is viable and cost-effective at consumer scale."],
-      nextSteps: ["Application automation", "Deeper ATS insights", "Provider fallback + local model onboarding"]
+      takeaways: ["Reliability is a growth feature — a quota error that looks like a bug costs more users than any missing feature.", "Deterministic software can be a better product than a probabilistic one, not just a cheaper one.", "Prompt engineering became a product feature in its own right — then became unnecessary once the rules were explicit."],
+      nextSteps: ["Rebuild the ATS score checker and form filler without an AI dependency", "More layout coverage for specific industries", "Retention instrumentation beyond weekly active users", "Keep the privacy promise as the user base grows"]
     },
 
     icon: FileDescriptionIcon,
     gradient: "from-warning to-gold",
-    tags: ["GenAI", "Chrome Extension", "JavaScript"],
-    techStack: ["Chrome MV3", "JavaScript", "Multi-provider AI", "Clerk", "Convex", "jsPDF", "Chrome Storage API"],
+    tags: ["Chrome Extension", "On-Device", "Product"],
+    techStack: ["Chrome MV3", "Vanilla JavaScript", "jsPDF", "Clerk", "Convex", "Chrome Storage API", "Deterministic Align Engine", "O*NET Skill Vocabulary"],
     websiteUrl: "https://pocket-resume.xyz",
     repoUrl: "https://github.com/Isaac-1555/pocket-resume",
     screenshots: [
@@ -375,9 +421,9 @@ export const caseStudies: CaseStudy[] = [
     subtitle: "Local-first Android note organizer — BGE-small embeddings + llama.cpp route notes into folders by semantic similarity. 100% offline.",
     company: "Android App",
     role: "Solo Developer",
-    timeline: "8 Days (Spike → v0.3.0)",
+    timeline: "Spike → v0.3.2 (Shipped)",
     team: "Solo",
-    status: "Open Source (GitHub)",
+    status: "Open Source · v0.3.2",
 
     context: "Note-taking apps rely on cloud sync, require accounts, or depend on keyword-based folders. NoteBucket organizes notes by meaning rather than keywords and runs entirely on-device with zero network calls.",
 
@@ -428,7 +474,8 @@ export const caseStudies: CaseStudy[] = [
         "Hilt (DI)",
         "WorkManager + ProcessLifecycleObserver (background draft commits)",
         "Coil (image loading)",
-        "llama.cpp via NDK + CMake (inference runtime)"
+        "llama.cpp via NDK + CMake (inference runtime)",
+        "NDK 28.2 + CMake 3.22 (llama.cpp and ggml built from source via submodule)"
       ],
       collaboration: "Solo. PRD-driven — architecture decisions were locked before implementation began."
     },
@@ -454,21 +501,24 @@ export const caseStudies: CaseStudy[] = [
         { label: "Days 3-4", description: "BGE routing, UI overhaul (dark mode, folder colors, notion-style editor)" },
         { label: "Day 5", description: "Search with filters, note input UX, disambiguation dialog, bulk ops" },
         { label: "Days 6-7", description: "Hidden folders, settings, UI polish, keyboard fixes" },
-        { label: "Day 8", description: "v0.3.0: onboarding flow, voice removal, MIT license" }
+        { label: "Day 8", description: "v0.3.0: onboarding flow, voice removal, MIT license" },
+        { label: "Release pipeline", description: "Local signing config plus R8 minify and resource shrink — signed arm64-v8a APK published to GitHub Releases (v0.3.2)" }
       ],
       challenges: [
         "Replacing the LLM classifier with BGE embedding routing mid-development required rewriting the core sort pipeline",
         "The JNI bridge between Kotlin and llama.cpp required careful memory management for 384-dim float arrays",
         "Background draft auto-commit demanded ProcessLifecycleObserver + WorkManager coordination to avoid data loss",
-        "Disambiguation at cosine margin ≤ 0.03 — too ambiguous to auto-route, too close to ignore"
+        "Disambiguation at cosine margin ≤ 0.03 — too ambiguous to auto-route, too close to ignore",
+        "Shipping a signed build meant a local keystore, R8 minification, and compiling llama.cpp plus ggml from source through NDK and CMake — the first clean release build takes several minutes"
       ]
     },
 
     outcome: {
       quantifiable: [
-        "20 commits across 8 days (spike → v0.3.0 release)",
+        "24 commits from one-day spike to the v0.3.2 release",
         "4 Room tables: folders, notes, drafts, attachments",
-        "33MB BGE model bundled in APK assets",
+        "33MB BGE-small model bundled in APK assets (Q4_K_M ~25MB variant supported)",
+        "41 MB release APK, R8-minified and resource-shrunk, arm64-v8a (Android 12+)",
         "Zero network permissions — fully offline"
       ],
       qualitative: [
