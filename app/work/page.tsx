@@ -9,7 +9,6 @@ import FileDescriptionIcon from "@/components/icons/file-description-icon";
 import GamepadIcon from "@/components/icons/gamepad-icon";
 import RadioIcon from "@/components/icons/radio-icon";
 import SparklesIcon from "@/components/icons/sparkles-icon";
-import YoutubeIcon from "@/components/icons/youtube-icon";
 import CodeIcon from "@/components/icons/code-icon";
 import PlayIcon from "@/components/icons/play-icon";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
@@ -73,15 +72,6 @@ const technicalProjects = [
     tags: ["Tauri", "React", "Desktop"],
     href: "https://github.com/Isaac-1555/AniRust",
     icon: PlayIcon,
-  },
-  {
-    id: "mytube",
-    title: "MyTube",
-    role: "Android Developer",
-    description: "All-in-one Android shell for YouTube, YouTube Music, Movies, and Anime — hosts-file ad blocking, background playback, Picture-in-Picture, sleep timer, screen lock, and a home-screen widget.",
-    tags: ["Kotlin", "Jetpack Compose", "Android"],
-    href: "https://github.com/Isaac-1555/MyTube_Android",
-    icon: YoutubeIcon,
   },
   {
     id: "coachgg",

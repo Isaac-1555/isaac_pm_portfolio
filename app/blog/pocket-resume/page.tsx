@@ -25,7 +25,7 @@ export const metadata = {
   title:
     "PocketResume: Eight Months to 70, Three Days to 4,000 | Isaac PM Blog",
   description:
-    "A candid postmortem of the bug spiral, the v9.0.1 update, Quick Download, and the SEO landing page that took PocketResume from 27 weekly users to 4,000+ in three days — plus a November 2026 update on the on-device engine that replaced it.",
+    "A candid postmortem of the bug spiral, the v9.0.1 update, Quick Download, and the SEO landing page that took PocketResume from 27 weekly users to 4,000+ in three days — plus a November 2026 update on the on-device engine and the free-forever v11 release.",
 };
 
 const TOC = [
@@ -47,27 +47,21 @@ const TOC = [
 const FORMATS = [
   {
     name: "Professional",
-    bestFor: "Freshers and entry-level roles",
+    bestFor: "Most applications",
     detail:
       "The standard corporate layout. Clean sections, predictable order, ATS-safe text.",
   },
   {
-    name: "FAANG",
-    bestFor: "Experienced professionals",
-    detail:
-      "Impact-first. Leads with outcomes, scope, and measurable results instead of responsibilities.",
-  },
-  {
-    name: "Deedy / double-sided",
+    name: "Double Sided",
     bestFor: "Experienced candidates with more to show",
     detail:
-      "A two-page FAANG-style layout for people who need more room without turning the resume into a wall of text.",
+      "A dense two-column layout that is measured before rendering so it always fits on one page — without clipping a bullet or a date.",
   },
   {
     name: "Academic CV",
     bestFor: "PhD and higher-education applications",
     detail:
-      "Long-form academic format. Built for publications, research, teaching, and grants.",
+      "Long-form academic format with real pagination. Entries stay attached to their first bullet and dates stay aligned.",
   },
 ];
 
@@ -152,10 +146,10 @@ export default function PocketResumeArticle() {
               {[
                 "Chrome Extension",
                 "Growth",
-                "AI",
+                "On-Device",
                 "Product",
                 "Postmortem",
-                "BYOK",
+                "Free",
               ].map((tag) => (
                 <Badge
                   key={tag}
@@ -248,14 +242,14 @@ export default function PocketResumeArticle() {
                   I left it exactly as it happened. The product has since
                   changed shape:{" "}
                   <strong className="text-text-primary">
-                    v10.8 runs a deterministic, on-device engine
+                    v11.0 is free forever, with no account required
                   </strong>{" "}
-                  — no API key, no upload, no quota, and it never rewrites your
-                  wording or invents metrics. The FAANG layout was removed
-                  (Professional covers it), Double Sided is now guaranteed to
-                  fit on one page, Academic CV paginates properly, and every
-                  resume keeps its own cover letter. The paid tier is now
-                  $4/month or $47/year.
+                  — no API key, no upload, no quota, and no paywall. The
+                  deterministic engine runs on-device, the panel and tracker
+                  share a paper-and-ink interface (with an Ink theme), and every
+                  feature works signed out. Cloud sync is the one optional
+                  account. The Supporter plan at $4/month or $47/year is a tip
+                  jar that unlocks nothing.
                 </p>
               </div>
               <nav className="lg:hidden mb-10 bg-card border-2 border-bg-dark rounded-sm p-5">
@@ -362,19 +356,21 @@ export default function PocketResumeArticle() {
 
                 <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-6">
                   PocketResume is a Chrome extension that reads the job posting
-                  in the active tab and rewrites your master resume to match the
+                  in the active tab and rebuilds your master resume around the
                   role. No copy-pasting. Open the job page, press Generate, and
-                  get a tailored PDF.
+                  get a tailored PDF — with the job title, company, location,
+                  and recipient read from the posting and confirmed before
+                  anything is saved.
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-8">
                   {[
-                    "One-click job-page analysis",
-                    "ATS score checker",
-                    "AI resume refinement",
-                    "Cover letter generation",
-                    "Job tracker + AI form filler (paid)",
-                    "Multi-provider AI, including local models",
+                    "Free forever, no account",
+                    "On-device deterministic engine",
+                    "3 ATS-ready layouts",
+                    "Cover letter per resume",
+                    "Job tracker + form filler",
+                    "Review dialog + learned directories",
                   ].map((feature) => (
                     <div
                       key={feature}
@@ -387,17 +383,17 @@ export default function PocketResumeArticle() {
                 </div>
 
                 <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-6">
-                  The core promise is privacy and control. No forced signup, no
-                  copy-pasting, no per-generation limit. You bring your own API
-                  key — Google Gemini, OpenRouter, or another provider — and the
-                  key stays on your machine. If you have the hardware, you can
-                  run a local model and keep the whole workflow offline.
+                  The core promise is privacy and control. No signup, no
+                  copy-pasting, no upload, no per-generation limit. The engine
+                  runs on your device: it selects, reorders, trims, and repairs
+                  your own wording, and reverts any number that is not in your
+                  profile. An account is only for optional cloud sync.
                 </p>
 
                 <StoreFigure
                   src="/PocketResume_Store_1.png"
-                  alt="PocketResume store listing hero showing one-click resume tailoring with a master resume and provider options"
-                  caption="Fig 2 — The store listing pitch: open a job post, press Generate, get a tailored PDF. Your keys, your data."
+                  alt="PocketResume v11 paper-and-ink side panel showing free-forever resume generation"
+                  caption="Fig 2 — The v11 panel: free forever, no account, no upload. The generated PDF stays on a shelf next to the posting."
                 />
               </section>
 
@@ -520,8 +516,8 @@ export default function PocketResumeArticle() {
 
                 <StoreFigure
                   src="/PocketResume_Store_3.png"
-                  alt="PocketResume store listing showing four resume layouts: Professional, FAANG, Deedy, and Academic CV"
-                  caption="Fig 3 — Quick Download ships four layouts: Professional, FAANG, Deedy / double-sided, and Academic CV."
+                  alt="PocketResume v11 store listing showing three resume layouts: Professional, Double Sided, and Academic CV"
+                  caption="Fig 3 — Three layouts now: Professional, Double Sided (always one page), and Academic CV (real pagination). The old FAANG layout was folded into Professional."
                 />
               </section>
 
@@ -696,8 +692,8 @@ export default function PocketResumeArticle() {
                   />
                   <FeatureBlock
                     icon={<CheckedIcon size={20} className="text-cta" />}
-                    title="The next fixes"
-                    description="Clearer quota errors, provider fallback, better key onboarding, and a stronger local-model path. BYOK is the right model for privacy, but it needs better failure handling at scale."
+                    title="How it was actually solved"
+                    description="Not with better quota errors — by removing the provider from the core path. v10 replaced the AI call with a deterministic on-device engine, and v11 removed the account and the paywall as well. There is no quota left to hit."
                   />
                 </div>
               </section>
@@ -706,21 +702,23 @@ export default function PocketResumeArticle() {
                 <SectionHeading icon={RocketIcon} title="Business Model" />
 
                 <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-6">
-                  The core product is free: AI-polished PDF generation, the ATS
-                  score checker, and AI resume refinement. Cloud sync is also
-                  free if you create an account, so the same resume and history
-                  follow you across devices.
+                  The current model is simple: the product is free forever.
+                  Generation, cover letters, the Form Filler, the Job Tracker,
+                  and every layout work without an account. There is no trial,
+                  no access window, and no feature behind a plan.
                 </p>
                 <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-6">
-                  The paid tier is $5/month, or $4.16/month billed annually. It
-                  includes the job application tracker and the AI form filler.
-                  Both are live.
+                  Cloud sync is the only thing that needs a session, and it is
+                  free — signing in stores your resumes and restores them on
+                  another device. If the product saves you time, you can chip
+                  in $4/month or $47/year as a Supporter. It adds a badge and
+                  unlocks nothing else.
                 </p>
 
                 <StoreFigure
                   src="/PocketResume_Store_4.png"
                   alt="PocketResume job tracker board with saved, applied, interview, and offer columns"
-                  caption="Fig 5 — The paid job tracker. Saved, applied, interview, and offer stages, with recruiters, rounds, and notes attached."
+                  caption="Fig 5 — The Job Tracker, free without an account. Saved, applied, interview, and offer stages, with recruiters, rounds, and notes attached."
                 />
               </section>
 
@@ -748,35 +746,37 @@ export default function PocketResumeArticle() {
                 <SectionHeading icon={RocketIcon} title="What's Next" />
 
                 <p className="text-text-secondary leading-relaxed text-base md:text-lg mb-8">
-                  The spike exposed the next set of problems. These are the
-                  ones I care about most.
+                  The spike exposed the next set of problems. The free-tier
+                  problem and the account wall are gone; what remains is
+                  retention, layout coverage, and keeping the privacy promise
+                  as the product grows.
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {[
                     {
-                      title: "Better BYOK onboarding",
-                      desc: "Make the first key setup obvious, test the key before the first run, and explain exactly what each provider can do for free.",
-                    },
-                    {
-                      title: "Provider fallback",
-                      desc: "If one free tier hits a quota, offer a clear retry path or another provider instead of a dead end.",
+                      title: "Rebuild the ATS checker",
+                      desc: "Bring the score checker back without an AI dependency, so it can stay free and local like the rest of the engine.",
                     },
                     {
                       title: "Retention instrumentation",
                       desc: "Weekly active users is a lagging number. I need to know who comes back, who generates a second resume, and who churns.",
                     },
                     {
-                      title: "Grow the paid tier",
-                      desc: "The tracker and AI form filler are live. The next step is making them part of the same daily workflow as the resume generator.",
+                      title: "More layout coverage",
+                      desc: "Three layouts cover most applications, but different industries still have different expectations. Add formats where users ask for them.",
                     },
                     {
-                      title: "More layout coverage",
-                      desc: "Four layouts cover a lot, but different industries still have different expectations. Add formats where users ask for them.",
+                      title: "Form-filler coverage",
+                      desc: "Every custom design system invents its own controls. Keep detecting radio groups, iframes, and consent dialogs without guessing.",
                     },
                     {
                       title: "Keep the privacy promise",
-                      desc: "No forced signup, no keys in the cloud, and a real offline path. Growth should not cost the thing that makes the product different.",
+                      desc: "No signup, no upload, no keys in the cloud, and a real offline path. Growth should not cost the thing that makes the product different.",
+                    },
+                    {
+                      title: "Make the Supporter badge worth wearing",
+                      desc: "The tip jar unlocks nothing by design. The work is making the product good enough that people want to chip in.",
                     },
                   ].map((item) => (
                     <div
@@ -802,9 +802,9 @@ export default function PocketResumeArticle() {
                     Try PocketResume
                   </h3>
                   <p className="text-white/80 leading-relaxed max-w-xl mb-6">
-                    One click, one tailored resume. Bring your own key, keep
-                    your data local, and use Quick Download when you just need
-                    a clean PDF.
+                    Free forever, no account. One click, one tailored resume,
+                    generated on your device and kept in the side panel until
+                    you need it.
                   </p>
                   <div className="flex flex-wrap gap-3">
                     <Link

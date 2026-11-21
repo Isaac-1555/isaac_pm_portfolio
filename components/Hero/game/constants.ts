@@ -123,10 +123,10 @@ export const GAME_PROJECTS: GameProject[] = [
   {
     id: 'pocket-resume',
     title: 'Pocket Resume',
-    subtitle: 'Context-Aware AI Browser Extension',
+    subtitle: 'On-Device Resume Engine',
     description:
-      'Tailors resumes to any job description using AI. Works on LinkedIn, Indeed, and all major job boards.',
-    tags: ['Chrome MV3', 'Multi-provider AI', 'JavaScript'],
+      'Tailors a saved resume to the posting on the active tab — free forever, no account, no API key, no upload. Deterministic alignment, PDF layouts, cover letters, form filling, and a job tracker.',
+    tags: ['Chrome MV3', 'On-Device', 'JavaScript'],
     websiteUrl: 'https://pocket-resume.xyz',
     repoUrl: 'https://github.com/Isaac-1555/pocket-resume',
     color: COLORS.warning,

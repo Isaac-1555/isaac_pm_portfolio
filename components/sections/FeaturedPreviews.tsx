@@ -13,7 +13,7 @@ import {
 import { caseStudies, type CaseStudy } from "@/app/case-studies/data";
 import { cn } from "@/lib/utils";
 
-const FLAGSHIP_IDS = ["satbrain", "tux", "pocket-resume", "notebucket"] as const;
+const FLAGSHIP_IDS = ["tux", "satbrain", "pocket-resume", "mytube"] as const;
 
 function pick(id: string): CaseStudy {
   const found = caseStudies.find((c) => c.id === id);
@@ -153,25 +153,29 @@ export function FeaturedPreviews() {
         aria-hidden
         className="pointer-events-none fixed -left-[10000px] top-0 z-[-50] opacity-0"
       >
-        {studies.map((s) =>
-          s.previewImage ? (
+        {studies.map((s) => {
+          const image = s.coverImage ?? s.previewImage;
+          return image ? (
             <div
               key={s.id}
               className="relative w-[320px]"
               style={{
-                aspectRatio: `${s.previewWidth ?? s.imageWidth} / ${s.previewHeight ?? s.imageHeight}`,
+                aspectRatio: s.coverImage
+                  ? "16 / 10"
+                  : `${s.previewWidth ?? s.imageWidth} / ${s.previewHeight ?? s.imageHeight}`,
               }}
             >
               <Image
-                src={s.previewImage}
+                src={image}
                 alt=""
                 fill
                 sizes="320px"
                 loading="eager"
+                unoptimized={Boolean(s.coverImage)}
               />
             </div>
-          ) : null,
-        )}
+          ) : null;
+        })}
       </div>
 
       <AnimatePresence>
@@ -187,15 +191,16 @@ export function FeaturedPreviews() {
             className="pointer-events-none fixed left-0 top-0 z-[9000] w-[320px] will-change-transform"
           >
             <div
-              style={{ aspectRatio: `${active.previewWidth ?? active.imageWidth} / ${active.previewHeight ?? active.imageHeight}` }}
+              style={{ aspectRatio: active.coverImage ? "16 / 10" : `${active.previewWidth ?? active.imageWidth} / ${active.previewHeight ?? active.imageHeight}` }}
               className="relative w-full overflow-hidden rounded-sm border border-divider bg-bg-dark shadow-[0_12px_40px_rgba(0,0,0,0.55)]"
             >
-              {active.previewImage && (
+              {(active.coverImage ?? active.previewImage) && (
                 <Image
-                  src={active.previewImage}
+                  src={(active.coverImage ?? active.previewImage)!}
                   alt={active.title}
                   fill
                   sizes="320px"
+                  unoptimized={Boolean(active.coverImage)}
                   className="object-cover object-top"
                 />
               )}

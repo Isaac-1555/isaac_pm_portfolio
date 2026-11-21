@@ -21,12 +21,12 @@ const posts = [
     slug: "pocket-resume",
     title: "PocketResume: Eight Months to 70, Three Days to 4,000",
     subtitle:
-      "A candid postmortem of the bug spiral, the v9.0.1 update, Quick Download, and the SEO landing page that took PocketResume from 27 weekly users to 4,000+ in three days — plus a November 2026 update on the on-device engine that replaced it.",
+      "A candid postmortem of the bug spiral, the v9.0.1 update, Quick Download, and the SEO landing page that took PocketResume from 27 weekly users to 4,000+ in three days — plus a November 2026 update on the on-device engine and the free-forever v11 release.",
     date: "October 2026",
     readTime: "12 min",
     author: "Isaac",
-    tags: ["Chrome Extension", "Growth", "AI", "Product", "Postmortem"],
-    image: "/PocketResume_UI.png",
+    tags: ["Chrome Extension", "Growth", "On-Device", "Product", "Postmortem"],
+    image: "/PocketResume_Store_1.png",
     gradient: "from-amber-900 to-slate-950",
   },
   {

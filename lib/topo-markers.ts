@@ -22,6 +22,7 @@ export const topoMarkers: TopoMarker[] = [
   { id: "satbrain", label: "SatBrain", group: "featured", x: 88, y: 18 },
   { id: "pocket-resume", label: "PocketResume", group: "featured", x: 70, y: 85 },
   { id: "notebucket", label: "NoteBucket", group: "featured", x: 92, y: 62 },
+  { id: "mytube", label: "MyTube", group: "featured", x: 48, y: 88 },
 
   // Other work items — /work grid
   { id: "barcode-lists", label: "Barcode-Lists", group: "work", x: 36, y: 14 },
@@ -32,7 +33,6 @@ export const topoMarkers: TopoMarker[] = [
   { id: "coachgg", label: "CoachGG", group: "work", x: 84, y: 78 },
   { id: "betteryt", label: "BetterYT", group: "work", x: 18, y: 22 },
   { id: "d4c", label: "D4C", group: "work", x: 56, y: 10 },
-  { id: "mytube", label: "MyTube", group: "work", x: 40, y: 90 },
 
   // Blog posts — /blog
   { id: "blog-notebucket", label: "Notes Deep Dive", group: "blog", x: 10, y: 88 },

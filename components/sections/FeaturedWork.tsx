@@ -9,10 +9,10 @@ function pick(id: string): CaseStudy {
 
 export function FeaturedWork() {
   const studies = [
-    pick("satbrain"),
     pick("tux"),
+    pick("satbrain"),
     pick("pocket-resume"),
-    pick("notebucket"),
+    pick("mytube"),
   ];
   const missionIds = ["MSSN-01", "MSSN-02", "MSSN-03", "MSSN-04"] as const;
   return (

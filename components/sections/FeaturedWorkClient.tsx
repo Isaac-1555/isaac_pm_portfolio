@@ -64,13 +64,15 @@ export function FeaturedWorkClient({
         className="pointer-events-none fixed -left-[10000px] top-0 z-[-50] opacity-0"
       >
         {studies.map((s) => {
-          const preload = s.previewImage ?? s.screenshots[0];
+          const preload = s.coverImage ?? s.previewImage ?? s.screenshots[0];
           return preload ? (
             <div
               key={s.id}
               className="relative w-[980px]"
               style={{
-                aspectRatio: `${s.previewWidth ?? s.imageWidth} / ${s.previewHeight ?? s.imageHeight}`,
+                aspectRatio: s.coverImage
+                  ? "16 / 10"
+                  : `${s.previewWidth ?? s.imageWidth} / ${s.previewHeight ?? s.imageHeight}`,
               }}
             >
               <Image
@@ -79,6 +81,7 @@ export function FeaturedWorkClient({
                 fill
                 sizes="(max-width: 768px) 100vw, 980px"
                 loading="eager"
+                unoptimized={Boolean(s.coverImage)}
               />
             </div>
           ) : null;
@@ -405,7 +408,7 @@ function OpenPanel({
   index: number;
   onClose: () => void;
 }) {
-  const screenshot = study.previewImage ?? study.screenshots[0];
+  const screenshot = study.coverImage ?? study.previewImage ?? study.screenshots[0];
   const stats = study.outcome.quantifiable;
 
   return (
@@ -415,7 +418,7 @@ function OpenPanel({
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
-        style={{ aspectRatio: `${study.previewWidth ?? study.imageWidth} / ${study.previewHeight ?? study.imageHeight}` }}
+        style={{ aspectRatio: study.coverImage ? "16 / 10" : `${study.previewWidth ?? study.imageWidth} / ${study.previewHeight ?? study.imageHeight}` }}
         className="relative order-1 self-stretch md:self-center md:flex-1 min-w-0 max-h-full rounded-sm overflow-hidden bg-bg-dark border border-divider"
       >
         {screenshot && (
@@ -423,7 +426,8 @@ function OpenPanel({
             src={screenshot}
             alt={study.title}
             fill
-            className="object-contain"
+            unoptimized={Boolean(study.coverImage)}
+            className={study.coverImage ? "object-cover" : "object-contain"}
             sizes="(max-width: 768px) 100vw, 980px"
             priority
           />

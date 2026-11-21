@@ -226,7 +226,7 @@ export default function CaseStudyDetail({ params }: { params: Promise<{ slug: st
                   src,
                   alt: `Screenshot ${i + 1}`,
                 }))}
-                aspect={`${project.imageWidth} / ${project.imageHeight}`}
+                aspect={project.screenshotAspect ?? `${project.imageWidth} / ${project.imageHeight}`}
                 fit={project.carouselFit}
                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 600px"
               />
@@ -361,7 +361,7 @@ export default function CaseStudyDetail({ params }: { params: Promise<{ slug: st
                     </Button>
                   </a>
                   <p className="text-xs text-text-secondary leading-relaxed">
-                    Android 12+ · arm64 only · enable Install unknown apps.
+                    {project.apkRequirement ?? "Android 12+ · arm64 only"} · enable Install unknown apps.
                     {project.apkSha256 && (
                       <>
                         {" "}

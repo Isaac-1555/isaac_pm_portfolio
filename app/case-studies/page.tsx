@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AccentWord } from "@/components/ui/AccentWord";
 import Link from "next/link";
+import Image from "next/image";
 import RightChevron from "@/components/icons/right-chevron";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 import { caseStudies } from "./data";
@@ -10,8 +11,9 @@ import { caseStudies } from "./data";
 const METRICS: Record<string, string[]> = {
   "tux": ["v1.0.0 Released", "Cross-Platform"],
   "satbrain": ["500+ Docs", "~70% Time Saved"],
-  "pocket-resume": ["4,000+ Users", "On-Device"],
+  "pocket-resume": ["Free Forever", "On-Device"],
   "notebucket": ["41 MB APK", "0 Network Calls"],
+  "mytube": ["v2.11.3", "4 Tabs · 0 Ads"],
 };
 
 export default function CaseStudiesPage() {
@@ -36,15 +38,28 @@ export default function CaseStudiesPage() {
               data-icon-hover-trigger
               className="group h-full flex flex-col hover:border-cta transition-colors"
             >
-              <div className={`h-48 w-full bg-gradient-to-br ${study.gradient} relative overflow-hidden flex items-center justify-center`}>
-                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
-                <IconHoverWrapper
-                  hoverTrigger="closest"
-                  className="transition-transform group-hover:scale-110 [&_svg]:transition-colors group-hover:[&_svg]:text-white/40"
-                >
-                  <Icon size={64} color="rgba(255,255,255,0.2)" />
-                </IconHoverWrapper>
-                <Badge variant="outline" className="absolute top-4 right-4 bg-black/50 backdrop-blur text-white border-white/20">
+              <div className={`relative aspect-[16/10] w-full overflow-hidden flex items-center justify-center ${study.coverImage ? "bg-bg-dark" : `bg-gradient-to-br ${study.gradient}`}`}>
+                {study.coverImage ? (
+                  <Image
+                    src={study.coverImage}
+                    alt={`${study.title} cover`}
+                    fill
+                    unoptimized
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover object-center"
+                  />
+                ) : (
+                  <>
+                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
+                    <IconHoverWrapper
+                      hoverTrigger="closest"
+                      className="transition-transform group-hover:scale-110 [&_svg]:transition-colors group-hover:[&_svg]:text-white/40"
+                    >
+                      <Icon size={64} color="rgba(255,255,255,0.2)" />
+                    </IconHoverWrapper>
+                  </>
+                )}
+                <Badge variant="outline" className="absolute top-4 right-4 z-[1] bg-black/50 backdrop-blur text-white border-white/20">
                   {study.company}
                 </Badge>
               </div>
