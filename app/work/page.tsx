@@ -11,6 +11,7 @@ import RadioIcon from "@/components/icons/radio-icon";
 import SparklesIcon from "@/components/icons/sparkles-icon";
 import CodeIcon from "@/components/icons/code-icon";
 import PlayIcon from "@/components/icons/play-icon";
+import BucketIcon from "@/components/icons/bucket-icon";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 import { AccentWord } from "@/components/ui/AccentWord";
 import { FeaturedPreviews } from "@/components/sections/FeaturedPreviews";
@@ -99,6 +100,15 @@ const technicalProjects = [
     tags: ["Rust", "Ratatui", "Coding Agent"],
     href: "https://github.com/Isaac-1555/D4C",
     icon: CodeIcon,
+  },
+  {
+    id: "notebucket",
+    title: "NoteBucket",
+    role: "Solo Developer",
+    description: "Offline-first Android note organizer that files notes by meaning — BGE-small embeddings plus llama.cpp over JNI, semantic search with filters, crash-safe drafts, and zero network permissions.",
+    tags: ["Android", "On-Device AI", "Local-First"],
+    href: "https://github.com/Isaac-1555/NoteBucket",
+    icon: BucketIcon,
   },
 ];
 
