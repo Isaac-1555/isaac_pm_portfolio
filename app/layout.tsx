@@ -4,7 +4,6 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { MascotMount } from "@/components/mascot/MascotMount";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { CursorProvider } from "@/components/cursor/cursor-context";
 import { Cursor } from "@/components/cursor/Cursor";
@@ -79,7 +78,6 @@ export default function RootLayout({
               <RouteTransitionProvider>{children}</RouteTransitionProvider>
               <Noise />
             </main>
-            <MascotMount />
             <Footer />
             <Cursor />
           </LenisProvider>

@@ -28,7 +28,6 @@ Every featured work (case study) page and every blog post page renders a shared 
 2. Add the same `id` to the in-file card arrays on the home page and `app/work/page.tsx` so cards link to the case study.
 3. Add a marker to `lib/topo-markers.ts` with `group: "featured"` and a distinct `x`/`y` (avoid overlapping existing markers).
 4. If the project also appears as a plain work item, add it to `technicalProjects` in `app/work/page.tsx` and add a `group: "work"` marker.
-5. Check `components/mascot/AstronautMascot.tsx` `TOUR_CONFIGS` if the new page introduces or renames section IDs (`mission-*`).
 
 ## Adding a new blog post
 
