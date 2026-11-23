@@ -56,6 +56,7 @@ export function FeaturedWorkClient({
     <section
       ref={sectionRef}
       id="mission-home-featured"
+      data-section="projects"
       data-booted={booted ? "true" : "false"}
       className="relative h-[calc(100dvh-3.5rem)] md:h-[calc(100dvh-4rem)] flex flex-col overflow-hidden bg-bg-base"
     >

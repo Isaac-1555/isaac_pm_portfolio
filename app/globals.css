@@ -50,6 +50,10 @@
   --color-gold: #E07A5F;
   --color-card: #B5B9B5;
   --color-divider: #7A8082;
+  --color-eye-housing: #14191a;
+  --color-eye-glow: #ff3b30;
+  --color-eye-amber: #e0a33e;
+  --color-eye-rim: #7d8788;
   
   /* Fonts */
   --font-sans: var(--font-hanken), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -79,6 +83,116 @@
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-industrial uppercase tracking-wider;
+  }
+}
+
+/* ── K.I.D assistant ─────────────────────────────────────────────── */
+.kid-dialog::backdrop {
+  background: transparent;
+}
+
+.kid-console {
+  background-color: #edeae1;
+  background-image:
+    linear-gradient(rgba(43, 50, 51, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(43, 50, 51, 0.045) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+.kid-console::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(43, 50, 51, 0.025) 0px,
+    rgba(43, 50, 51, 0.025) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  z-index: 1;
+}
+
+.kid-dot {
+  animation: kid-dot 1s ease-in-out infinite;
+}
+
+@keyframes kid-dot {
+  0%, 100% { opacity: 0.25; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-2px); }
+}
+
+.kid-chat-cursor-none,
+.kid-chat-cursor-none * {
+  cursor: none !important;
+}
+
+.kid-mascot[data-state="dormant"] .kid-eye-svg {
+  animation: kid-breathe 4.2s ease-in-out infinite;
+}
+
+.kid-mascot[data-state="idle"] .kid-eye-svg {
+  animation: kid-breathe 5.6s ease-in-out infinite;
+}
+
+.kid-mascot[data-state="error"] .kid-eye-svg {
+  animation: kid-flicker 0.32s steps(2, end) 3;
+}
+
+.kid-lens,
+.kid-pupil {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.kid-mascot[data-state="ready"] .kid-lens {
+  animation: kid-blink 6.4s ease-in-out infinite;
+}
+
+.kid-scan {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: kid-scan 1.15s linear infinite;
+}
+
+.kid-caret {
+  animation: kid-caret 0.62s steps(1, end) infinite;
+}
+
+@keyframes kid-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.035); }
+}
+
+@keyframes kid-flicker {
+  0% { opacity: 1; }
+  35% { opacity: 0.35; }
+  55% { opacity: 0.9; }
+  75% { opacity: 0.45; }
+  100% { opacity: 1; }
+}
+
+@keyframes kid-blink {
+  0%, 91%, 100% { transform: scaleY(1); }
+  94% { transform: scaleY(0.08); }
+}
+
+@keyframes kid-scan {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes kid-caret {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kid-mascot .kid-eye-svg,
+  .kid-mascot .kid-lens,
+  .kid-scan,
+  .kid-caret {
+    animation: none !important;
   }
 }
 

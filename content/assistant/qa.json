@@ -1,0 +1,875 @@
+[
+  {
+    "id": "intro",
+    "topic": "intro",
+    "questions": [
+      "Who is Isaac?",
+      "Tell me about Isaac",
+      "What does Isaac do?",
+      "Tell me a bit about yourself",
+      "What is this portfolio about?",
+      "What does Isaac actually do?"
+    ],
+    "answer": "Isaac Daniel Sudakar is a software developer and technical product manager in Calgary. He has spent 7+ years turning messy manual work into software people actually use, from a Chrome extension running in 11 stores to a resume tool used by 4,000+ job seekers.",
+    "actions": [
+      {
+        "label": "See the work",
+        "href": "/work"
+      }
+    ],
+    "followUps": [
+      "current-role",
+      "skills",
+      "pocket-resume",
+      "contact"
+    ],
+    "sections": [
+      "projects",
+      "about",
+      "contact"
+    ],
+    "chip": "Who is Isaac?"
+  },
+  {
+    "id": "current-role",
+    "topic": "experience",
+    "questions": [
+      "What is your current role?",
+      "Where do you work now?",
+      "What do you do at Calgary Co-op?",
+      "Tell me about your current job"
+    ],
+    "answer": "Isaac is an IT Operations Specialist at Calgary Co-op. He supports stores and departments across Windows, POS hardware, Active Directory, Entra ID, Intune and Microsoft 365, and builds internal tools when a manual process keeps costing people time.",
+    "actions": [
+      {
+        "label": "View experience",
+        "href": "/experience"
+      }
+    ],
+    "followUps": [
+      "barcode-lists",
+      "experience-years",
+      "skills"
+    ],
+    "sections": [
+      "about",
+      "contact"
+    ],
+    "chip": "Isaac's current role?"
+  },
+  {
+    "id": "experience-years",
+    "topic": "experience",
+    "questions": [
+      "How many years of experience do you have?",
+      "What is your work history?",
+      "Walk me through your experience",
+      "Have you worked in software long?"
+    ],
+    "answer": "Isaac has about 7+ years across software, product and operations: IT operations at Calgary Co-op, a web development internship at The Blessed Life, electrical and IoT work at Cris Planners, and teaching and records work at CSC. He has shipped tools in every role.",
+    "actions": [
+      {
+        "label": "Open the full profile",
+        "href": "/experience"
+      }
+    ],
+    "followUps": [
+      "current-role",
+      "background",
+      "leadership"
+    ],
+    "sections": [
+      "about",
+      "contact"
+    ],
+    "chip": "Isaac's experience?"
+  },
+  {
+    "id": "background",
+    "topic": "background",
+    "questions": [
+      "What is your background?",
+      "How did you get into software?",
+      "You studied electrical engineering, right?",
+      "Tell me about your career switch"
+    ],
+    "answer": "Isaac started in electrical and electronics engineering, then moved through IoT installations, IT operations and web development. That path taught him to read both the technical system and the human workflow before choosing a solution.",
+    "actions": [
+      {
+        "label": "See education and roles",
+        "href": "/experience"
+      }
+    ],
+    "followUps": [
+      "education",
+      "work-style",
+      "skills"
+    ],
+    "sections": [
+      "about"
+    ],
+    "chip": "Isaac's background?"
+  },
+  {
+    "id": "education",
+    "topic": "background",
+    "questions": [
+      "Where did you study?",
+      "What is your education?",
+      "Do you have a product management qualification?",
+      "What degrees do you have?",
+      "Which schools did he attend?"
+    ],
+    "answer": "Isaac completed SAIT's Product Management program in 2025 and Project Management program in 2024. He also holds a B.E. in Electrical and Electronics Engineering from Panimalar Engineering College, 2018.",
+    "actions": [
+      {
+        "label": "Education details",
+        "href": "/experience"
+      }
+    ],
+    "followUps": [
+      "certifications",
+      "background"
+    ],
+    "sections": [
+      "about"
+    ],
+    "chip": "Where did Isaac study?"
+  },
+  {
+    "id": "certifications",
+    "topic": "background",
+    "questions": [
+      "What certifications do you have?",
+      "Are you certified in product management?",
+      "Tell me about your credentials",
+      "Do you have PM certifications?"
+    ],
+    "answer": "Isaac holds product marketing, project management and leadership certifications through Credly, including go-to-market strategy, Agile project management, risk and stakeholder fundamentals, plus Microsoft 365 Fundamentals (MS-900).",
+    "actions": [
+      {
+        "label": "View credentials",
+        "href": "/experience"
+      }
+    ],
+    "followUps": [
+      "education",
+      "product-management"
+    ],
+    "sections": [
+      "about"
+    ],
+    "chip": "Isaac's certifications?"
+  },
+  {
+    "id": "skills",
+    "topic": "skills",
+    "questions": [
+      "What is your tech stack?",
+      "What technologies do you use?",
+      "What are your skills?",
+      "Can you build full-stack applications?",
+      "Do you know React and TypeScript?",
+      "What languages and frameworks does he use?"
+    ],
+    "answer": "Isaac works with TypeScript, JavaScript, React and Next.js on the front end; Node, Python, SQL, Rust and Kotlin when needed; PostgreSQL, Supabase, Docker and CI/CD around the edges. He also works in IT systems, automation and on-device AI.",
+    "actions": [
+      {
+        "label": "See the full skill set",
+        "href": "/experience"
+      }
+    ],
+    "followUps": [
+      "product-management",
+      "tux",
+      "notebucket"
+    ],
+    "sections": [
+      "about",
+      "projects"
+    ],
+    "chip": "Isaac's tech stack?"
+  },
+  {
+    "id": "product-management",
+    "topic": "product",
+    "questions": [
+      "How do you approach product management?",
+      "What is your product process?",
+      "How do you decide what to build?",
+      "Tell me about your PM style"
+    ],
+    "answer": "Isaac starts with the workflow and the constraint, writes a short PRD, then ships the smallest slice that proves the outcome. On Tux and Pocket Resume, that meant cutting features that did not earn their place and measuring the ones that did.",
+    "actions": [
+      {
+        "label": "Read a case study",
+        "href": "/case-studies/tux"
+      }
+    ],
+    "followUps": [
+      "leadership",
+      "work-style",
+      "pocket-resume"
+    ],
+    "sections": [
+      "about",
+      "projects"
+    ],
+    "chip": "How does Isaac work?"
+  },
+  {
+    "id": "leadership",
+    "topic": "experience",
+    "questions": [
+      "Have you led teams?",
+      "Do you have leadership experience?",
+      "Can you manage stakeholders?",
+      "Have you worked cross-functionally?"
+    ],
+    "answer": "Isaac has led projects end to end rather than managing a large engineering team: gathering requirements, aligning stakeholders, making trade-offs and shipping. At Calgary Co-op he also trains users and coordinates rollouts across 11 stores without a dedicated engineering team.",
+    "actions": [
+      {
+        "label": "See experience",
+        "href": "/experience"
+      }
+    ],
+    "followUps": [
+      "product-management",
+      "current-role",
+      "work-style"
+    ],
+    "sections": [
+      "about",
+      "contact"
+    ],
+    "chip": "Has Isaac led teams?"
+  },
+  {
+    "id": "availability",
+    "topic": "hiring",
+    "questions": [
+      "Are you available for hire?",
+      "Are you open to new roles?",
+      "What are you looking for next?",
+      "Can I hire you?"
+    ],
+    "answer": "Isaac is open to conversations about software developer and technical product manager roles where the work combines engineering, product judgement and real operational problems. Calgary, remote or hybrid all work for him.",
+    "actions": [
+      {
+        "label": "Email Isaac",
+        "href": "mailto:benisaac1892@gmail.com"
+      }
+    ],
+    "followUps": [
+      "hiring",
+      "contact",
+      "location"
+    ],
+    "sections": [
+      "contact"
+    ],
+    "chip": "Is Isaac available?"
+  },
+  {
+    "id": "hiring",
+    "topic": "hiring",
+    "questions": [
+      "Why should we hire you?",
+      "What makes you different?",
+      "What do you bring to a team?",
+      "What is your strongest quality?"
+    ],
+    "answer": "Isaac moves between the code, the product decision and the person doing the work. He has shipped a 4,000+ user product, cut a 4–6 hour store task to under 10 minutes, and built on-device AI without a backend. He finishes things.",
+    "actions": [
+      {
+        "label": "See the proof",
+        "href": "/work"
+      }
+    ],
+    "followUps": [
+      "availability",
+      "pocket-resume",
+      "barcode-lists"
+    ],
+    "sections": [
+      "contact"
+    ],
+    "chip": "Why hire Isaac?"
+  },
+  {
+    "id": "location",
+    "topic": "hiring",
+    "questions": [
+      "Where are you located?",
+      "Do you work remotely?",
+      "Are you in Calgary?",
+      "Would you relocate?",
+      "Where is he based?"
+    ],
+    "answer": "Isaac is based in Calgary, Alberta. He has worked with distributed teams and is comfortable remote or hybrid. For the right role he is open to discussing relocation.",
+    "actions": [
+      {
+        "label": "Contact Isaac",
+        "href": "mailto:benisaac1892@gmail.com"
+      }
+    ],
+    "followUps": [
+      "availability",
+      "contact"
+    ],
+    "sections": [
+      "contact"
+    ],
+    "chip": "Where is Isaac based?"
+  },
+  {
+    "id": "contact",
+    "topic": "contact",
+    "questions": [
+      "How can I contact you?",
+      "What is your email?",
+      "Where can I find you online?",
+      "How do I get in touch?"
+    ],
+    "answer": "Email is the fastest route to Isaac: benisaac1892@gmail.com. He is also on LinkedIn at /in/isaacdani and GitHub at Isaac-1555, and is happy to talk about roles, products or a problem worth automating.",
+    "actions": [
+      {
+        "label": "Email Isaac",
+        "href": "mailto:benisaac1892@gmail.com"
+      },
+      {
+        "label": "LinkedIn",
+        "href": "https://www.linkedin.com/in/isaacdani"
+      },
+      {
+        "label": "GitHub",
+        "href": "https://github.com/Isaac-1555"
+      }
+    ],
+    "followUps": [
+      "availability",
+      "resume"
+    ],
+    "sections": [
+      "contact"
+    ],
+    "chip": "How to contact Isaac?"
+  },
+  {
+    "id": "resume",
+    "topic": "contact",
+    "questions": [
+      "Can I see your resume?",
+      "Where is your CV?",
+      "Download your resume",
+      "Can I get a PDF?"
+    ],
+    "answer": "Yes. Isaac's current PDF is on the experience page, and this link downloads it directly. For a role-specific version, email him and he can tailor one.",
+    "actions": [
+      {
+        "label": "Download resume",
+        "href": "/Isaac_Sudakar_Resume.pdf?v=2026-11-12b"
+      }
+    ],
+    "followUps": [
+      "experience-years",
+      "contact"
+    ],
+    "sections": [
+      "about",
+      "contact"
+    ],
+    "chip": "Isaac's resume?"
+  },
+  {
+    "id": "barcode-lists",
+    "topic": "projects",
+    "questions": [
+      "Tell me about Barcode Lists",
+      "What did you build at Calgary Co-op?",
+      "How did you cut the barcode task by 95%?",
+      "What is the Chrome extension used in stores?",
+      "How much time did the Co-op tool save?"
+    ],
+    "answer": "Barcode Lists is a Manifest V3 Chrome extension that replaced a manual FMC barcode and file lookup taking 4–6 hours per session. It now runs in under 10 minutes across 11 Calgary Co-op stores: a 95% reduction, still maintained without a dedicated engineering team.",
+    "actions": [
+      {
+        "label": "Open Barcode Lists",
+        "href": "https://github.com/Isaac-1555/Barcode-Lists"
+      }
+    ],
+    "followUps": [
+      "current-role",
+      "skills",
+      "side-projects"
+    ],
+    "sections": [
+      "projects"
+    ],
+    "chip": "Barcode Lists"
+  },
+  {
+    "id": "pocket-resume",
+    "topic": "projects",
+    "questions": [
+      "Tell me about Pocket Resume",
+      "What is your AI resume project?",
+      "Have you built anything with AI?",
+      "What is PocketResume?",
+      "Tell me about the resume Chrome extension"
+    ],
+    "answer": "Pocket Resume is a free Chrome extension used by 4,000+ job seekers. It reads a job posting and rebuilds the user's own resume around it with a deterministic, on-device engine: no API key, no upload, no account, and a tailored PDF in about a second.",
+    "actions": [
+      {
+        "label": "Open Pocket Resume",
+        "href": "/case-studies/pocket-resume"
+      }
+    ],
+    "followUps": [
+      "satbrain",
+      "notebucket",
+      "skills"
+    ],
+    "sections": [
+      "projects"
+    ],
+    "chip": "Pocket Resume"
+  },
+  {
+    "id": "tux",
+    "topic": "projects",
+    "questions": [
+      "Tell me about Tux",
+      "What is your terminal project?",
+      "Did you build a desktop app?",
+      "What is the Rust Tauri project?"
+    ],
+    "answer": "Tux is a terminal-first desktop workspace built with Rust and Tauri 2: split PTY terminals, file explorer, live git state, inline diffs and a CodeMirror editor. v1.0.0 ships for macOS, Windows and Linux, with 11 themes and fully rebindable shortcuts.",
+    "actions": [
+      {
+        "label": "Open the Tux case study",
+        "href": "/case-studies/tux"
+      }
+    ],
+    "followUps": [
+      "skills",
+      "product-management",
+      "mytube"
+    ],
+    "sections": [
+      "projects"
+    ],
+    "chip": "Tux"
+  },
+  {
+    "id": "satbrain",
+    "topic": "projects",
+    "questions": [
+      "Tell me about SatBrain",
+      "What is your edtech project?",
+      "How does the AI study assistant work?",
+      "What did you build with Gemini?"
+    ],
+    "answer": "SatBrain turns PDFs, documents and lecture audio into summaries, quizzes, flashcards and charts. It processed 500+ documents in beta and cut study prep time by roughly 70%. Isaac was product manager and lead developer, using Gemini, Supabase and a React SPA.",
+    "actions": [
+      {
+        "label": "Open SatBrain",
+        "href": "https://satbrain.vercel.app/"
+      }
+    ],
+    "followUps": [
+      "pocket-resume",
+      "product-management"
+    ],
+    "sections": [
+      "projects"
+    ],
+    "chip": "SatBrain"
+  },
+  {
+    "id": "notebucket",
+    "topic": "projects",
+    "questions": [
+      "Tell me about NoteBucket",
+      "What is the Android notes app?",
+      "How does on-device note routing work?",
+      "Have you built offline AI?"
+    ],
+    "answer": "NoteBucket is a local-first Android app that files notes by meaning. BGE-small runs through llama.cpp on the phone, produces 384-dimension embeddings, and routes notes by cosine similarity. No cloud, no account, zero network permissions, and a 41 MB arm64 APK.",
+    "actions": [
+      {
+        "label": "Open NoteBucket",
+        "href": "/case-studies/notebucket"
+      }
+    ],
+    "followUps": [
+      "mytube",
+      "tux",
+      "skills"
+    ],
+    "sections": [
+      "projects"
+    ],
+    "chip": "NoteBucket"
+  },
+  {
+    "id": "mytube",
+    "topic": "projects",
+    "questions": [
+      "Tell me about MyTube",
+      "What is your Android media app?",
+      "Can you explain the YouTube app?",
+      "Have you built a WebView app?"
+    ],
+    "answer": "MyTube puts YouTube, YouTube Music, Movies and Anime into one Android shell with isolated WebView profiles, hosts-based ad blocking, background playback, PiP and a real MediaSession. It is a 12 MB signed APK with 11 tagged releases and zero dropped frames in its 1,151-frame PiP test.",
+    "actions": [
+      {
+        "label": "Open MyTube",
+        "href": "/case-studies/mytube"
+      }
+    ],
+    "followUps": [
+      "notebucket",
+      "tux"
+    ],
+    "sections": [
+      "projects"
+    ],
+    "chip": "MyTube"
+  },
+  {
+    "id": "side-projects",
+    "topic": "projects",
+    "questions": [
+      "What other projects have you built?",
+      "Do you contribute to open source?",
+      "What is on your GitHub?",
+      "Show me more projects"
+    ],
+    "answer": "Beyond the case studies, Isaac has built Ez-Resume, D4C, Summarease, AniRust, CoachGG, BetterYT and Phone Barcode Scanner. Most are open source on GitHub under Isaac-1555, and several started as tools he needed himself.",
+    "actions": [
+      {
+        "label": "See all work",
+        "href": "/work"
+      },
+      {
+        "label": "GitHub",
+        "href": "https://github.com/Isaac-1555"
+      }
+    ],
+    "followUps": [
+      "barcode-lists",
+      "pocket-resume",
+      "contact"
+    ],
+    "sections": [
+      "projects"
+    ],
+    "chip": "More projects?"
+  },
+  {
+    "id": "work-style",
+    "topic": "about",
+    "questions": [
+      "What is your working style?",
+      "How do you collaborate?",
+      "What kind of teammate are you?",
+      "How do you handle messy problems?"
+    ],
+    "answer": "Isaac digs into how people actually work before proposing software. He likes small, shippable slices, written decisions and direct feedback, and is comfortable translating between engineering detail and the human side of the problem.",
+    "actions": [
+      {
+        "label": "Read the profile",
+        "href": "/experience"
+      }
+    ],
+    "followUps": [
+      "product-management",
+      "leadership",
+      "background"
+    ],
+    "sections": [
+      "about",
+      "contact"
+    ],
+    "chip": "Isaac's work style?"
+  },
+  {
+    "id": "assistant",
+    "topic": "meta",
+    "questions": [
+      "How does this assistant work?",
+      "Are you an AI chatbot?",
+      "Do you use ChatGPT?",
+      "Is this a language model?",
+      "What is this assistant?"
+    ],
+    "answer": "K.I.D is a retrieval assistant, not a generative model. Isaac wrote every answer in advance. The question is embedded in the browser with a small model, matched by meaning to those answers, and returned locally. No API call leaves the page.",
+    "actions": [
+      {
+        "label": "See how Isaac builds",
+        "href": "/work"
+      }
+    ],
+    "followUps": [
+      "privacy",
+      "name",
+      "contact"
+    ],
+    "sections": [
+      "projects",
+      "about",
+      "contact"
+    ],
+    "chip": "How does K.I.D work?"
+  },
+  {
+    "id": "privacy",
+    "topic": "meta",
+    "questions": [
+      "Is my data private?",
+      "Do you send my questions anywhere?",
+      "What happens to what I type?",
+      "Is this tracked?"
+    ],
+    "answer": "Questions stay in the browser. There is no backend, no API key and no analytics on what is typed. The only network request is downloading the small model once; after that, matching happens on the device.",
+    "actions": [
+      {
+        "label": "How K.I.D works",
+        "href": "/"
+      }
+    ],
+    "followUps": [
+      "assistant",
+      "contact"
+    ],
+    "sections": [
+      "projects",
+      "about",
+      "contact"
+    ],
+    "chip": "Is this private?"
+  },
+  {
+    "id": "name",
+    "topic": "meta",
+    "questions": [
+      "What is your name?",
+      "What does K.I.D stand for?",
+      "Who are you?",
+      "Why are you called K.I.D?",
+      "What does K.I.D stand for?",
+      "What does kid stand for?"
+    ],
+    "answer": "K.I.D stands for Knowledge Integration Daemon. It lives in the corner of this site, wakes up when a visitor gets close, and answers from Isaac's notes. The red lens is a design choice, not a warning light.",
+    "actions": [
+      {
+        "label": "Ask about the work",
+        "href": "/work"
+      }
+    ],
+    "followUps": [
+      "assistant",
+      "intro",
+      "easter-egg-eye"
+    ],
+    "sections": [
+      "projects",
+      "about",
+      "contact"
+    ],
+    "chip": "What is K.I.D?"
+  },
+  {
+    "id": "easter-egg-robot",
+    "topic": "easter-egg",
+    "questions": [
+      "Are you a robot?",
+      "Are you alive?",
+      "Do you ever sleep?",
+      "Can you think?"
+    ],
+    "answer": "K.I.D is a very small search engine with a dramatic lighting budget. It does not think, does not sleep, and has exactly one job: finding the answer Isaac already wrote.",
+    "followUps": [
+      "assistant",
+      "name",
+      "easter-egg-eye"
+    ],
+    "chip": "Are you a robot?"
+  },
+  {
+    "id": "easter-egg-eye",
+    "topic": "easter-egg",
+    "questions": [
+      "Why is the eye red?",
+      "What is the glowing eye?",
+      "Is the eye watching me?",
+      "Do you like your design?"
+    ],
+    "answer": "The lens is red because it looks like a machine that has been awake for a long time. It tracks the cursor, blinks occasionally, and dims when nobody is asking questions. It is not judging search history.",
+    "followUps": [
+      "name",
+      "assistant",
+      "easter-egg-robot"
+    ],
+    "chip": "Why a red lens?"
+  },
+  {
+    "id": "easter-egg-caffeine",
+    "topic": "easter-egg",
+    "questions": [
+      "Do you drink coffee?",
+      "What keeps you running?",
+      "Are you tired?",
+      "What is your fuel?"
+    ],
+    "answer": "K.I.D runs on geometry and cached tensors. No coffee, no standups, no opinions about tabs versus spaces — although Isaac probably has one.",
+    "followUps": [
+      "work-style",
+      "easter-egg-robot",
+      "contact"
+    ],
+    "chip": "Do you drink coffee?"
+  },
+  {
+    "id": "greeting",
+    "topic": "small-talk",
+    "questions": [
+      "Hi",
+      "Hello",
+      "Hey",
+      "Hi K.I.D",
+      "Hey K.I.D",
+      "Good morning"
+    ],
+    "answer": "K.I.D — Knowledge Integration Daemon — is Isaac's on-device assistant. It can answer questions about his projects, experience, skills, availability, location and contact details. Everything runs in this browser.",
+    "actions": [
+      {
+        "label": "See the work",
+        "href": "/work"
+      }
+    ],
+    "followUps": [
+      "help",
+      "intro",
+      "contact"
+    ],
+    "chip": "Hello"
+  },
+  {
+    "id": "help",
+    "topic": "small-talk",
+    "questions": [
+      "What can you do?",
+      "What can I ask?",
+      "Help",
+      "What topics do you cover?",
+      "How do I use this?",
+      "What can I ask about Isaac?"
+    ],
+    "answer": "K.I.D can answer questions about Isaac's projects, experience, skills, education, certifications, availability, location, contact details and how this assistant works. Try a project name, a role, or a hiring question.",
+    "actions": [
+      {
+        "label": "See all work",
+        "href": "/work"
+      }
+    ],
+    "followUps": [
+      "intro",
+      "pocket-resume",
+      "contact"
+    ],
+    "chip": "What can you do?"
+  },
+  {
+    "id": "thanks",
+    "topic": "small-talk",
+    "questions": [
+      "Thanks",
+      "Thank you",
+      "Thanks K.I.D",
+      "Appreciate it",
+      "Cheers"
+    ],
+    "answer": "K.I.D is glad that helped. More questions about Isaac's work, experience or availability are welcome.",
+    "followUps": [
+      "help",
+      "contact"
+    ],
+    "chip": "Thanks"
+  },
+  {
+    "id": "goodbye",
+    "topic": "small-talk",
+    "questions": [
+      "Bye",
+      "Goodbye",
+      "See you",
+      "Later",
+      "That's all"
+    ],
+    "answer": "K.I.D will be here whenever the page is open. For anything else, Isaac can be reached at benisaac1892@gmail.com.",
+    "actions": [
+      {
+        "label": "Email Isaac",
+        "href": "mailto:benisaac1892@gmail.com"
+      }
+    ],
+    "followUps": [
+      "contact",
+      "help"
+    ],
+    "chip": "Bye"
+  },
+  {
+    "id": "how-are-you",
+    "topic": "small-talk",
+    "questions": [
+      "How are you?",
+      "How's it going?",
+      "Are you okay?",
+      "How do you feel?"
+    ],
+    "answer": "K.I.D is running locally and ready to help. It does not get tired, but it does dim when nobody asks anything for a while.",
+    "followUps": [
+      "help",
+      "intro"
+    ],
+    "chip": "How are you?"
+  },
+  {
+    "id": "who-made-you",
+    "topic": "meta",
+    "questions": [
+      "Who built you?",
+      "Who made K.I.D?",
+      "Who created you?",
+      "Who is behind this assistant?"
+    ],
+    "answer": "Isaac built K.I.D as a static, on-device assistant: a small embedding model, pre-written answers and a keyword fallback. No external AI service is involved.",
+    "followUps": [
+      "assistant",
+      "name",
+      "privacy"
+    ],
+    "chip": "Who built K.I.D?"
+  },
+  {
+    "id": "small-talk",
+    "topic": "small-talk",
+    "questions": [
+      "Cool",
+      "Nice",
+      "Okay",
+      "Got it",
+      "Sounds good",
+      "Alright"
+    ],
+    "answer": "Noted. K.I.D is here if a question about Isaac's projects, experience, skills or availability comes to mind.",
+    "followUps": [
+      "help",
+      "contact"
+    ],
+    "chip": "Cool"
+  }
+]

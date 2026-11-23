@@ -36,6 +36,7 @@ interface CursorContextValue {
   targetRect: DOMRect | null;
   isReducedMotion: boolean;
   hidden: boolean;
+  setHidden: (hidden: boolean) => void;
 }
 
 const Ctx = createContext<CursorContextValue | null>(null);
@@ -58,7 +59,8 @@ export function CursorProvider({ children }: Props) {
   const springY = useRef(createSpring(-1000, SPRING_STIFFNESS, SPRING_DAMPING, SPRING_MASS));
   const [variant, setVariant] = useState<CursorVariant>("default");
   const [targetRect, setTargetRect] = useState<DOMRect | null>(null);
-  const [hidden, setHidden] = useState(true);
+  const [pointerHidden, setPointerHidden] = useState(true);
+  const [forceHidden, setForceHidden] = useState(false);
   const [isTouchDevice] = useState(() => {
     if (typeof window === "undefined") return false;
     return matchMedia("(hover: none) and (pointer: coarse)").matches;
@@ -143,12 +145,12 @@ export function CursorProvider({ children }: Props) {
 
     const handleMouse = (e: MouseEvent) => {
       mouseRef.current = { x: e.clientX, y: e.clientY };
-      if (hidden) setHidden(false);
+      if (pointerHidden) setPointerHidden(false);
     };
     window.addEventListener("mousemove", handleMouse, { passive: true });
 
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setHidden((h) => !h);
+      if (e.key === "Escape") setPointerHidden((h) => !h);
     };
     window.addEventListener("keydown", handleKey);
 
@@ -159,7 +161,7 @@ export function CursorProvider({ children }: Props) {
       window.removeEventListener("keydown", handleKey);
       rmq.removeEventListener("change", handleMQ);
     };
-  }, [hidden, isTouchDevice, pathname]);
+  }, [pointerHidden, isTouchDevice, pathname]);
 
   useEffect(() => {
     if (isTouchDevice || isReducedMotion) return;
@@ -338,7 +340,7 @@ export function CursorProvider({ children }: Props) {
 
   useEffect(() => {
     const id = "cursor-none-override";
-    if (isTouchDevice || hidden) {
+    if (isTouchDevice || pointerHidden || forceHidden) {
       document.getElementById(id)?.remove();
       return;
     }
@@ -350,7 +352,7 @@ export function CursorProvider({ children }: Props) {
     return () => {
       document.getElementById(id)?.remove();
     };
-  }, [hidden, isTouchDevice]);
+  }, [pointerHidden, forceHidden, isTouchDevice]);
 
   const ctx: CursorContextValue = {
     variant,
@@ -359,7 +361,8 @@ export function CursorProvider({ children }: Props) {
     magnetismOffsetRef,
     targetRect,
     isReducedMotion: isTouchDevice || isReducedMotion,
-    hidden: hidden || isTouchDevice,
+    hidden: pointerHidden || forceHidden || isTouchDevice,
+    setHidden: setForceHidden,
   };
 
   return <Ctx.Provider value={ctx}>{children}</Ctx.Provider>;

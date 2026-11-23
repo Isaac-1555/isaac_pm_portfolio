@@ -1,0 +1,249 @@
+{
+  "notes": "expect is the entry id that should win, or null when the assistant should fall back. Keep this list varied: paraphrases, typos, slang and off-topic questions.",
+  "questions": [
+    {
+      "text": "who is isaac",
+      "expect": "intro"
+    },
+    {
+      "text": "tell me a bit about yourself",
+      "expect": "intro"
+    },
+    {
+      "text": "what does isaac actually do",
+      "expect": "intro"
+    },
+    {
+      "text": "where does he work right now",
+      "expect": "current-role"
+    },
+    {
+      "text": "what is his job at calgary co-op",
+      "expect": "current-role"
+    },
+    {
+      "text": "how many years has he been working",
+      "expect": "experience-years"
+    },
+    {
+      "text": "walk me through his career",
+      "expect": "experience-years"
+    },
+    {
+      "text": "what did he study before software",
+      "expect": "background"
+    },
+    {
+      "text": "did he do electrical engineering",
+      "expect": "background"
+    },
+    {
+      "text": "what schools did he go to",
+      "expect": "education"
+    },
+    {
+      "text": "does he have a product management diploma",
+      "expect": "education"
+    },
+    {
+      "text": "what certificates does he hold",
+      "expect": "certifications"
+    },
+    {
+      "text": "is he pmp certified",
+      "expect": "certifications"
+    },
+    {
+      "text": "what languages and frameworks does he use",
+      "expect": "skills"
+    },
+    {
+      "text": "does he know react and typescript",
+      "expect": "skills"
+    },
+    {
+      "text": "how does he run product discovery",
+      "expect": "product-management"
+    },
+    {
+      "text": "has he managed people before",
+      "expect": "leadership"
+    },
+    {
+      "text": "can we hire him",
+      "expect": "availability"
+    },
+    {
+      "text": "why is he worth hiring",
+      "expect": "hiring"
+    },
+    {
+      "text": "where is he based",
+      "expect": "location"
+    },
+    {
+      "text": "what is the best way to reach him",
+      "expect": "contact"
+    },
+    {
+      "text": "can i download the cv",
+      "expect": "resume"
+    },
+    {
+      "text": "tell me about the chrome extension for barcodes",
+      "expect": "barcode-lists"
+    },
+    {
+      "text": "how much time did the coop tool save",
+      "expect": "barcode-lists"
+    },
+    {
+      "text": "what is pocket resume",
+      "expect": "pocket-resume"
+    },
+    {
+      "text": "has he shipped any ai products",
+      "expect": "pocket-resume"
+    },
+    {
+      "text": "what is the rust terminal app",
+      "expect": "tux"
+    },
+    {
+      "text": "did he build a desktop ide",
+      "expect": "tux"
+    },
+    {
+      "text": "tell me about satbrain",
+      "expect": "satbrain"
+    },
+    {
+      "text": "what is the android note taking app",
+      "expect": "notebucket"
+    },
+    {
+      "text": "does notebucket work offline",
+      "expect": "notebucket"
+    },
+    {
+      "text": "what is mytube",
+      "expect": "mytube"
+    },
+    {
+      "text": "what else is on his github",
+      "expect": "side-projects"
+    },
+    {
+      "text": "how does he like to collaborate",
+      "expect": "work-style"
+    },
+    {
+      "text": "is this chatgpt",
+      "expect": "assistant"
+    },
+    {
+      "text": "does my question leave my browser",
+      "expect": "privacy"
+    },
+    {
+      "text": "what does kid stand for",
+      "expect": "name"
+    },
+    {
+      "text": "are you a robot",
+      "expect": "easter-egg-robot"
+    },
+    {
+      "text": "why is your eye glowing red",
+      "expect": "easter-egg-eye"
+    },
+    {
+      "text": "do you drink coffee",
+      "expect": "easter-egg-caffeine"
+    },
+    {
+      "text": "what is the weather in calgary",
+      "expect": null
+    },
+    {
+      "text": "what are his salary expectations",
+      "expect": null
+    },
+    {
+      "text": "hi",
+      "expect": "greeting"
+    },
+    {
+      "text": "hello",
+      "expect": "greeting"
+    },
+    {
+      "text": "hey there",
+      "expect": "greeting"
+    },
+    {
+      "text": "good morning",
+      "expect": "greeting"
+    },
+    {
+      "text": "thanks",
+      "expect": "thanks"
+    },
+    {
+      "text": "thank you",
+      "expect": "thanks"
+    },
+    {
+      "text": "what can you do",
+      "expect": "help"
+    },
+    {
+      "text": "what can i ask",
+      "expect": "help"
+    },
+    {
+      "text": "who built you",
+      "expect": "who-made-you"
+    },
+    {
+      "text": "how are you",
+      "expect": "how-are-you"
+    },
+    {
+      "text": "bye",
+      "expect": "goodbye"
+    },
+    {
+      "text": "cool",
+      "expect": "small-talk"
+    },
+    {
+      "text": "what is k.i.d",
+      "expect": "name"
+    },
+    {
+      "text": "what is this assistant",
+      "expect": "assistant"
+    },
+    {
+      "text": "what is isaac's tech stack?",
+      "expect": "skills"
+    },
+    {
+      "text": "how much experience does isaac have?",
+      "expect": "experience-years"
+    },
+    {
+      "text": "is isaac available?",
+      "expect": "availability"
+    },
+    {
+      "text": "how to contact isaac?",
+      "expect": "contact"
+    },
+    {
+      "text": "pocket resume",
+      "expect": "pocket-resume"
+    }
+  ]
+}

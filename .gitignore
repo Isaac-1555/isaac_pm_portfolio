@@ -47,3 +47,6 @@ next-env.d.ts
 # AI
 AGENTS.md
 .playwright-mcp
+
+# generated assistant worker
+/public/assistant/worker.js

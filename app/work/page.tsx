@@ -6,12 +6,12 @@ import { Badge } from "@/components/ui/badge";
 import TravelBag from "@/components/icons/travel-bag";
 import ScanBarcodeIcon from "@/components/icons/scan-barcode-icon";
 import FileDescriptionIcon from "@/components/icons/file-description-icon";
+import HoverFileDescriptionIcon from "@/components/itshover/file-description-icon";
 import GamepadIcon from "@/components/icons/gamepad-icon";
 import RadioIcon from "@/components/icons/radio-icon";
 import SparklesIcon from "@/components/icons/sparkles-icon";
 import CodeIcon from "@/components/icons/code-icon";
 import PlayIcon from "@/components/icons/play-icon";
-import BucketIcon from "@/components/icons/bucket-icon";
 import IconHoverWrapper from "@/components/icons/IconHoverWrapper";
 import { AccentWord } from "@/components/ui/AccentWord";
 import { FeaturedPreviews } from "@/components/sections/FeaturedPreviews";
@@ -108,7 +108,7 @@ const technicalProjects = [
     description: "Offline-first Android note organizer that files notes by meaning — BGE-small embeddings plus llama.cpp over JNI, semantic search with filters, crash-safe drafts, and zero network permissions.",
     tags: ["Android", "On-Device AI", "Local-First"],
     href: "https://github.com/Isaac-1555/NoteBucket",
-    icon: BucketIcon,
+    icon: HoverFileDescriptionIcon,
   },
 ];
 

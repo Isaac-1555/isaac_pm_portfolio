@@ -28,6 +28,7 @@ export default function Home() {
 
       <section
         id="mission-home-about"
+        data-section="about"
         className="min-h-[calc(100dvh-3.5rem)] md:min-h-[calc(100dvh-4rem)] flex items-center bg-bg-dark text-bg-base relative overflow-hidden"
       >
         <ProfileSummaryBackground />

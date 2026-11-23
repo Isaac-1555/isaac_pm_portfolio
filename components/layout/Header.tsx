@@ -27,16 +27,13 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
-
   return (
     <header className="sticky top-0 z-50 w-full border-b-2 border-bg-dark bg-bg-base/95 backdrop-blur supports-[backdrop-filter]:bg-bg-base/80">
       <div className="container mx-auto flex h-14 md:h-16 items-center justify-between px-4 md:px-6">
         {/* Logo */}
         <Link
           href="/"
+          onClick={() => setMobileOpen(false)}
           className="flex items-center w-[180px] font-industrial text-lg md:text-xl font-bold tracking-wide md:tracking-widest text-text-primary hover:text-cta transition-colors shrink-0"
         >
           <motion.span

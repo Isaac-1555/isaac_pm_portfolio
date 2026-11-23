@@ -81,3 +81,55 @@ Top 10 in a Redis sorted set for O(log n) reads.
 - Basic rate limiting (1 submission / 10 s per IP) uses a Redis `SET NX` window.
 - Credentials never leave the server; routes expose no secrets.
 
+## K.I.D assistant
+
+K.I.D (Knowledge Integration Daemon) is the on-device assistant in the bottom-right corner. It is a retrieval assistant, not a generative model: every answer is pre-written in `content/assistant/qa.json`. The browser embeds the visitor's question with a small model and returns the closest pre-written entry. No API key, backend call, or question logging.
+
+### Files
+
+| Path | Purpose |
+| --- | --- |
+| `content/assistant/qa.json` | Source of truth for answers, phrasings, actions and follow-ups |
+| `content/assistant/model.json` | Pinned model id/revision and file list |
+| `content/assistant/test-questions.json` | 40+ questions with expected ids |
+| `public/assistant/embeddings.json` | Generated semantic index (committed) |
+| `public/assistant/worker.js` | Prebundled Web Worker (generated before dev/build) |
+| `public/assistant/ort/` | Self-hosted ONNX Runtime WASM |
+| `public/models/v1/` | Self-hosted sentence-embedding model |
+| `components/assistant/` | Eye, dialog, messages, state machine, keyword fallback |
+| `workers/assistant.worker.ts` | Model loading and cosine matching |
+| `lib/assistant/` | Shared types, config, progress aggregation, similarity |
+| `scripts/` | Model fetch, worker bundle, embedding build, accuracy check |
+
+### Commands
+
+```bash
+npm run assistant:model   # download pinned model + ORT WASM (one time)
+npm run assistant:embed   # rebuild public/assistant/embeddings.json
+npm run assistant:check   # 40-question accuracy report (target >= 90%)
+npm run assistant:worker  # rebuild public/assistant/worker.js
+```
+
+`predev` and `prebuild` run `assistant:worker` automatically. Re-run `assistant:worker` manually if the worker changes while the dev server is already running.
+
+### Adding or changing answers
+
+1. Add/edit the entry in `content/assistant/qa.json`:
+   - unique `id`
+   - 1–6 `questions` phrasings
+   - third-person `answer` under ~60 words
+   - optional `chip` label for suggested questions
+   - optional `actions`, `followUps`, `sections`
+2. Add a test question to `content/assistant/test-questions.json`.
+3. Run `npm run assistant:embed` and `npm run assistant:check`.
+4. If a project is added to the portfolio, also add a `projects` answer and a `projects` section chip pick in `components/assistant/keyword-search.ts` (`SECTION_PICKS`).
+
+### Notes
+
+- The model and ORT assets live under `public/` so production deploys do not download from Hugging Face at runtime.
+- Model: `Xenova/all-MiniLM-L6-v2` (Apache-2.0), pinned in `content/assistant/model.json`.
+- The worker is prebundled with esbuild because Turbopack emits a module worker created from a `.ts` URL as raw source.
+- On Intel macOS, `npm run assistant:check` may print an ONNX Runtime teardown warning after a successful report; the wrapper script treats the printed ≥90% result as success.
+- The assistant is mounted once in `app/layout.tsx` and persists across route changes.
+
+

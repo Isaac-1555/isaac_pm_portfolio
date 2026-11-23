@@ -10,6 +10,7 @@ import { Cursor } from "@/components/cursor/Cursor";
 import { LenisProvider } from "@/components/scroll/LenisProvider";
 import { TabTitleManager } from "@/components/layout/TabTitleManager";
 import { RouteTransitionProvider } from "@/components/transitions/RouteTransitionProvider";
+import { AssistantLoader } from "@/components/assistant/assistant-loader";
 import Noise from "@/components/ui/Noise";
 
 const devGothic = localFont({
@@ -79,6 +80,7 @@ export default function RootLayout({
               <Noise />
             </main>
             <Footer />
+            <AssistantLoader />
             <Cursor />
           </LenisProvider>
         </CursorProvider>
