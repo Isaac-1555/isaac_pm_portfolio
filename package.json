@@ -10,6 +10,7 @@
     "assistant:model": "node scripts/fetch-assistant-model.mjs",
     "assistant:embed": "node scripts/build-embeddings.mjs",
     "assistant:check": "node scripts/run-assistant-check.mjs",
+    "assistant:quotes": "node --experimental-strip-types scripts/check-space-quotes.mjs",
     "predev": "npm run assistant:worker",
     "prebuild": "npm run assistant:worker",
     "assistant:worker": "node scripts/build-assistant-worker.mjs"

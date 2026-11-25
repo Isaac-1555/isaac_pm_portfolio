@@ -90,6 +90,7 @@ K.I.D (Knowledge Integration Daemon) is the on-device assistant in the bottom-ri
 | Path | Purpose |
 | --- | --- |
 | `content/assistant/qa.json` | Source of truth for answers, phrasings, actions and follow-ups |
+| `content/assistant/space-quotes.json` | Hidden space-cinema call-and-response easter eggs |
 | `content/assistant/model.json` | Pinned model id/revision and file list |
 | `content/assistant/test-questions.json` | 40+ questions with expected ids |
 | `public/assistant/embeddings.json` | Generated semantic index (committed) |
@@ -107,6 +108,7 @@ K.I.D (Knowledge Integration Daemon) is the on-device assistant in the bottom-ri
 npm run assistant:model   # download pinned model + ORT WASM (one time)
 npm run assistant:embed   # rebuild public/assistant/embeddings.json
 npm run assistant:check   # 40-question accuracy report (target >= 90%)
+npm run assistant:quotes  # validate the space-cinema quote archive
 npm run assistant:worker  # rebuild public/assistant/worker.js
 ```
 
@@ -123,6 +125,10 @@ npm run assistant:worker  # rebuild public/assistant/worker.js
 2. Add a test question to `content/assistant/test-questions.json`.
 3. Run `npm run assistant:embed` and `npm run assistant:check`.
 4. If a project is added to the portfolio, also add a `projects` answer and a `projects` section chip pick in `components/assistant/keyword-search.ts` (`SECTION_PICKS`).
+
+### Space-cinema easter eggs
+
+`content/assistant/space-quotes.json` holds hidden call-and-response pairs. The visitor says a recognizable line and K.I.D replies with the film's next line in its own voice, with no source label. Matching runs before keyword/semantic search, so these entries never enter the embedding index. Add pairs to the JSON, then run `npm run assistant:quotes`. `exactOnly` is for common phrases that should not hijack normal questions.
 
 ### Notes
 

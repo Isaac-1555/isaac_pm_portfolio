@@ -7,7 +7,7 @@ export const ASSISTANT: AssistantConfig = {
   name: "K.I.D",
   fullName: "Knowledge Integration Daemon",
   greeting:
-    "K.I.D — Knowledge Integration Daemon — is Isaac's on-device assistant. Ask about his work, experience, or how to reach him. Everything runs in this browser.",
+    "Hi — I'm K.I.D, the Knowledge Integration Daemon. I'm Isaac's on-device assistant. Ask about his work, experience, skills, or how to reach him. Everything runs in this browser.",
   modelPath: `/models/${MODEL.version}/`,
   wasmPath: "/assistant/ort/",
   embeddingsPath: "/assistant/embeddings.json",

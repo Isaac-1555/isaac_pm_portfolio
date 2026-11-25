@@ -150,6 +150,8 @@ All answers live in one JSON file, so updating the assistant never touches compo
 
 **Writing rules.** Answers are written in Isaac's voice, stay under about 60 words, and each includes something specific (a number, a technology, an outcome). Keep factual claims in sync with the rest of the site.
 
+**Hidden space-cinema archive.** A separate, lazily loaded easter-egg layer runs before keyword and semantic matching. It holds 200+ call-and-response pairs in `content/assistant/space-quotes.json`: the visitor says a recognizable line and K.I.D replies with the film's next line in its own voice, with no source label. The archive never enters the embedding index, so it cannot dilute real project answers. Validate changes with `npm run assistant:quotes`.
+
 ## Performance budget and loading strategy
 
 The rule is that a visitor who never touches the eye pays almost nothing. The figures below are targets to verify on real devices, not guarantees.
@@ -284,7 +286,7 @@ Each phase ends in something that works on its own, so the feature can ship afte
 | Low-memory phones kill the tab | Page reloads mid-chat | Keyword mode on devices reporting low `deviceMemory`; keep the model out of memory when idle for a long time |
 | Wrong match gives a confident bad answer | Hurts credibility | Thresholds, "did you mean" chips, and a test question set |
 | Answers drift out of date as the portfolio changes | Visitors see stale facts | Keep all answers in one file and add "update assistant" to the new-project checklist |
-| Mascot looks like a copy of a film character | Legal and originality concerns | Original name, shape and palette; any film references limited to short, paraphrased easter eggs |
+| Mascot looks like a copy of a film character | Legal and originality concerns | Original name, shape and palette; any film references limited to short, attributed one-liners rather than scene transcripts |
 | Animation competes with GSAP and Lenis | Scroll stutter | CSS-only animation, `will-change` on the glow layer only, hidden-tab pause |
 
 **Open questions**

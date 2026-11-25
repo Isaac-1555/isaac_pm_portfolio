@@ -222,6 +222,14 @@
       "expect": "name"
     },
     {
+      "text": "who are you",
+      "expect": "name"
+    },
+    {
+      "text": "introduce yourself",
+      "expect": "name"
+    },
+    {
       "text": "what is this assistant",
       "expect": "assistant"
     },

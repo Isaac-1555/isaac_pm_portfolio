@@ -21,7 +21,7 @@ export function Chips({ chips, label, disabled, onAsk }: ChipsProps) {
             key={entry.id}
             type="button"
             disabled={disabled}
-            onClick={() => onAsk(entry.chip ?? entry.questions[0] ?? entry.id)}
+            onClick={() => onAsk(entry.prompt ?? entry.chip ?? entry.questions[0] ?? entry.id)}
             className="border-2 border-text-primary/35 bg-[#F7F4EA] px-2.5 py-1 text-left font-mono text-[10px] leading-snug text-text-primary transition-colors hover:border-cta hover:bg-cta/15 disabled:cursor-not-allowed disabled:opacity-40"
           >
             {entry.chip ?? entry.questions[0] ?? entry.id}

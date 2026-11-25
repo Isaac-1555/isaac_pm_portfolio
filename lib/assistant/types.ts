@@ -19,6 +19,8 @@ export type QAEntry = {
   questions: string[];
   answer: string;
   chip?: string;
+  /** Exact text sent when the chip is clicked, when it differs from the label. */
+  prompt?: string;
   actions?: QAAction[];
   followUps?: string[];
   sections?: Array<"projects" | "about" | "contact">;

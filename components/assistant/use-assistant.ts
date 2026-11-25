@@ -2,6 +2,16 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ASSISTANT } from "@/lib/assistant/config";
+import {
+  isSpaceQuoteContinuation,
+  isSpaceQuoteRequest,
+  matchSpaceQuote,
+  randomSpaceQuote,
+  relatedSpaceQuotes,
+  spaceQuotePrompt,
+  spaceQuoteReply,
+} from "@/lib/assistant/space-quotes";
+import type { SpaceQuote } from "@/lib/assistant/space-quotes";
 import type {
   AssistantMode,
   AssistantState,
@@ -65,6 +75,9 @@ export function useAssistant(section: SectionId) {
   const messagesRef = useRef<ChatMessage[]>([]);
   const sectionRef = useRef(section);
   const keywordRef = useRef<KeywordModule | null>(null);
+  const quoteCatalogRef = useRef<SpaceQuote[] | null>(null);
+  const seenQuotesRef = useRef(new Set<string>());
+  const lastQuoteRef = useRef<SpaceQuote | null>(null);
   const hasOpenedRef = useRef(false);
   const pendingChipsRef = useRef<{ chips: QAEntry[]; label: string }>({
     chips: [],
@@ -80,6 +93,15 @@ export function useAssistant(section: SectionId) {
       keywordRef.current = await import("./keyword-search");
     }
     return keywordRef.current;
+  }, []);
+
+  const loadQuoteCatalog = useCallback(async () => {
+    let catalog = quoteCatalogRef.current;
+    if (!catalog) {
+      catalog = (await import("./space-quote-data")).SPACE_QUOTES;
+      quoteCatalogRef.current = catalog;
+    }
+    return catalog;
   }, []);
 
   useEffect(() => {
@@ -396,6 +418,66 @@ export function useAssistant(section: SectionId) {
         window.setTimeout(resolve, 520 + Math.random() * 560);
       });
 
+      // Hidden space-cinema archive runs before normal retrieval so themed
+      // phrases never hit the off-topic filter or the semantic index.
+      let quotes: SpaceQuote[] = [];
+      try {
+        quotes = await loadQuoteCatalog();
+      } catch {
+        quotes = [];
+      }
+
+      let quote = matchSpaceQuote(quotes, text)?.quote ?? null;
+
+      if (!quote && lastQuoteRef.current && isSpaceQuoteContinuation(text)) {
+        seenQuotesRef.current.add(lastQuoteRef.current.id);
+        quote =
+          randomSpaceQuote(quotes, seenQuotesRef.current, lastQuoteRef.current.franchise) ??
+          randomSpaceQuote(quotes, seenQuotesRef.current) ??
+          randomSpaceQuote(quotes);
+      }
+
+      if (!quote && isSpaceQuoteRequest(text)) {
+        quote = randomSpaceQuote(quotes, seenQuotesRef.current) ?? randomSpaceQuote(quotes);
+      }
+
+      if (quote) {
+        const matchedQuote = quote;
+        seenQuotesRef.current.add(matchedQuote.id);
+        lastQuoteRef.current = matchedQuote;
+
+        await delay;
+
+        const related = relatedSpaceQuotes(quotes, matchedQuote, 3);
+        pendingChipsRef.current = {
+          chips: related.map((candidate) => {
+            const prompt = spaceQuotePrompt(candidate);
+            return {
+              id: `space-quote-${candidate.id}`,
+              topic: "easter-egg",
+              questions: [prompt],
+              answer: candidate.reply,
+              chip: prompt.length > 42 ? `${prompt.slice(0, 40)}…` : prompt,
+              prompt,
+            };
+          }),
+          label: "More transmissions",
+        };
+
+        setMessages((current) => [
+          ...current,
+          {
+            id: nextId(),
+            role: "assistant",
+            text: spaceQuoteReply(matchedQuote),
+            streaming: true,
+          },
+        ]);
+        return;
+      }
+
+      lastQuoteRef.current = null;
+
       const keyword = await loadKeyword();
       const [answer] = await Promise.all([resolveAnswer(text, keyword), delay]);
       const entry = answer.entry;
@@ -434,7 +516,7 @@ export function useAssistant(section: SectionId) {
 
       setMessages((current) => [...current, assistantMessage]);
     },
-    [loadKeyword, resolveAnswer],
+    [loadKeyword, loadQuoteCatalog, resolveAnswer],
   );
 
   useEffect(() => {
