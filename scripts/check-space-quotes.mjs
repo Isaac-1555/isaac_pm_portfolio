@@ -69,6 +69,8 @@ const expectations = [
   ["what is the problem", "2001-problem"],
   ["what is the problem hal", "2001-problem"],
   ["open the pod bay doors hal please", "2001-pod-bay"],
+  ["open the bay", "2001-pod-bay"],
+  ["open bay", "2001-pod-bay"],
   ["live long and prosper", "st-prosper"],
   ["luke i am your father", "sw-father"],
   ["houston we have a problem", "apollo-problem"],
